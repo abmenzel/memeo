@@ -1,13 +1,31 @@
 import { ArrowRight } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Card from '../Card/Card'
 import ICard from '../Card/ICard'
 import Toolbar from '../Toolbar/Toolbar'
 
-const CardCarousel = ({ cards }: { cards: ICard[] }) => {
+const useFirstRender = () => {
+	const firstRender = useRef(true)
+
+	useEffect(() => {
+		firstRender.current = false
+	}, [])
+
+	return firstRender.current
+}
+
+const CardCarousel = ({
+	cards,
+	setCards,
+}: {
+	cards: ICard[]
+	setCards: Function
+}) => {
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
 	const [flipCard, setFlipCard] = useState(false)
 	const [editing, setEditing] = useState(false)
+	const firstRender = useFirstRender()
+	const activeCardInputRef = useRef<any>()
 	const next = () => {
 		const newCardIdx =
 			activeCardIdx + 1 >= cards.length ? 0 : activeCardIdx + 1
@@ -15,29 +33,49 @@ const CardCarousel = ({ cards }: { cards: ICard[] }) => {
 		setActiveCardIdx(newCardIdx)
 	}
 
+	useEffect(() => {
+		// New card was added
+		if (firstRender) return
+		setActiveCardIdx(cards.length - 1)
+		setEditing(true)
+	}, [cards.length])
+
+	const newCard = () => {
+		const newCards: ICard[] = [
+			...cards,
+			{
+				front: '',
+				back: '',
+				rating: 0,
+			},
+		]
+		setCards(newCards)
+	}
+
 	const handleEditClick = () => {
+		console.log(activeCardInputRef.current)
 		setEditing(!editing)
 	}
 
 	useEffect(() => {
-		console.log(flipCard)
-	})
-
-	useEffect(() => {
 		if (editing) {
-		} else {
+			activeCardInputRef.current?.focus()
 		}
 	}, [editing])
 
 	return (
 		<div className='max-w-xl w-full'>
 			<Card
+				activeCardInputRef={activeCardInputRef}
+				setCards={setCards}
 				editing={editing}
 				flipCard={flipCard}
-				card={cards[activeCardIdx]}
+				cardIdx={activeCardIdx}
+				cards={cards}
 			/>
 			<Toolbar
 				nextCard={next}
+				newCard={newCard}
 				setFlipCard={() => setFlipCard(!flipCard)}
 				handleEditClick={handleEditClick}
 				editing={editing}

@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 @layer base {
+	.rotate-x-180 {
+		transform: rotateX(180deg);
+	}
+	.-rotate-x-180 {
+		transform: rotateX(-180deg);
+	}
+	.rotate-x-90 {
+		transform: rotateX(45deg);
+	}
+	.-rotate-x-90 {
+		transform: rotateX(-45deg);
+	}
 	.big-title {
 		@apply text-5xl font-bold;
 	}

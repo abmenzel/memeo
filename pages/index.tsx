@@ -1,14 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import InterfaceContext, { InterfaceProvider } from '../context/interface'
-import { useContext } from 'react'
 import Layout from '../components/Layout/Layout'
 import Link from 'next/link'
 import { LogIn } from 'lucide-react'
 
 const Home: NextPage = () => {
-	const { state } = useContext(InterfaceContext)
-	const { theme } = state
 	return (
 		<>
 			<Head>

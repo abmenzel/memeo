@@ -1,10 +1,12 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 import CardCarousel from '../components/CardCarousel/CardCarousel'
 import Layout from '../components/Layout/Layout'
 import testDeck1 from '../test/data/testCards'
 
 const Dojo = () => {
+	const [cards, setCards] = useState(testDeck1)
+
 	return (
 		<>
 			<Head>
@@ -13,7 +15,7 @@ const Dojo = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout>
-				<CardCarousel cards={testDeck1} />
+				<CardCarousel cards={cards} setCards={setCards} />
 			</Layout>
 		</>
 	)
