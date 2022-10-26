@@ -1,8 +1,8 @@
 import { ArrowRight } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
-import Card from '../Card/Card'
-import ICard from '../Card/ICard'
-import Toolbar from '../Toolbar/Toolbar'
+import Card from './Card'
+import ICard from '../models/Card'
+import Toolbar from './Toolbar'
 
 const useFirstRender = () => {
 	const firstRender = useRef(true)

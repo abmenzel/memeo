@@ -22,7 +22,7 @@
 		@apply text-base;
 	}
 	.btn-primary {
-		@apply text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
+		@apply cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
 	}
 	.btn {
 		@apply rounded-md transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1 cursor-pointer;

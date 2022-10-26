@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useState } from 'react'
-import CardCarousel from '../components/CardCarousel/CardCarousel'
-import Layout from '../components/Layout/Layout'
+import CardCarousel from '../components/CardCarousel'
+import Layout from '../components/Layout'
 import testDeck1 from '../test/data/testCards'
 
 const Dojo = () => {

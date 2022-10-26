@@ -1,7 +1,7 @@
 import { TextareaAutosize } from '@mui/material'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
-import ICard from './ICard'
+import Card from '../models/Card'
 
 const Card = ({
 	cardIdx,
@@ -12,7 +12,7 @@ const Card = ({
 	activeCardInputRef,
 }: {
 	cardIdx: number
-	cards: ICard[]
+	cards: Card[]
 	flipCard: boolean
 	editing: boolean
 	setCards: Function

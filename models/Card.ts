@@ -1,7 +1,7 @@
-interface ICard {
+interface Card {
 	back: string
 	front: string
 	rating: number
 }
 
-export default ICard
+export default Card
