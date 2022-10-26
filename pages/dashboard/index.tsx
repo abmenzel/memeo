@@ -1,13 +1,19 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import React, { useContext } from 'react'
+import DeckList from '../../components/DeckList'
+import Deck from '../../components/DeckPreview'
 import Layout from '../../components/Layout'
+import SignOutButton from '../../components/SignOutButton'
 import { AppContext } from '../../context/app'
+import { testDecks } from '../../test/data/testDecks'
 
 const Dashboard: NextPage = () => {
 	const { state, dispatch } = useContext(AppContext)
-	const { user } = state
 	console.log('state', state)
+
+	const decks = testDecks
+
 	return (
 		<>
 			<Head>
@@ -15,9 +21,10 @@ const Dashboard: NextPage = () => {
 				<meta name='description' content='Memeo' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Layout hideNavBar={true}>
-				<h1 className='font-bold text-3xl mb-4'>Dashboard</h1>
-				<p>{user?.name}</p>
+			<Layout>
+				<h1 className='font-bold text-3xl mb-4'>Cards</h1>
+				<DeckList decks={decks} />
+				<SignOutButton />
 			</Layout>
 		</>
 	)

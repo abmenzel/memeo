@@ -2,10 +2,10 @@ import Head from 'next/head'
 import React, { useState } from 'react'
 import CardCarousel from '../components/CardCarousel'
 import Layout from '../components/Layout'
-import testDeck1 from '../test/data/testCards'
+import { testDeck1 } from '../test/data/testDecks'
 
 const Dojo = () => {
-	const [cards, setCards] = useState(testDeck1)
+	const [cards, setCards] = useState(testDeck1.cards)
 
 	return (
 		<>

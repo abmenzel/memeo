@@ -10,6 +10,7 @@ import { Types, UserActions, userReducer } from '../reducers/reducers'
 import { createClient } from '@supabase/supabase-js'
 import Database from '../models/Database'
 import { supabase } from '../lib/api'
+import { useRouter } from 'next/router'
 
 type initialAppStateType = {
 	user: null | User
@@ -35,8 +36,9 @@ type AppProviderProps = {
 
 const AppProvider = ({ children }: AppProviderProps) => {
 	const [state, dispatch] = useReducer(mainReducer, initialAppState)
-
+	const router = useRouter()
 	const tryFindUserFromSession = async () => {
+		console.log(router.pathname)
 		const { data } = await supabase.auth.getSession()
 		if (data?.session?.user) {
 			const user = data.session.user
@@ -49,6 +51,11 @@ const AppProvider = ({ children }: AppProviderProps) => {
 					},
 				})
 			}
+		} else {
+			dispatch({
+				type: Types.SignOut,
+				payload: null,
+			})
 		}
 	}
 
@@ -57,6 +64,12 @@ const AppProvider = ({ children }: AppProviderProps) => {
 			tryFindUserFromSession()
 		}
 	}, [state.user])
+
+	useEffect(() => {
+		console.log(state.user, router.pathname)
+		if (state.user && router.pathname == '/login') router.push('/dashboard')
+		if (!state.user && router.pathname != '/') router.push('/login')
+	}, [state.user, router.pathname])
 
 	return (
 		<AppContext.Provider value={{ state, dispatch }}>

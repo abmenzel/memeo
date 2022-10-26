@@ -8,11 +8,16 @@ const Navbar = () => {
 			<nav className='max-w-lg w-full'>
 				<ul className='w-full flex justify-center gap-x-2'>
 					<NavItem
+						route='/dashboard'
 						active={true}
 						icon={<LayoutGrid />}
 						label='Cards'
 					/>
-					<NavItem icon={<Settings />} label='Settings' />
+					<NavItem
+						route='/settings'
+						icon={<Settings />}
+						label='Settings'
+					/>
 				</ul>
 			</nav>
 		</div>

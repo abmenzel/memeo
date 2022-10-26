@@ -20,7 +20,11 @@ const Home: NextPage = () => {
 			</Head>
 			<Layout hideNavBar={true}>
 				<h1 className='font-bold text-3xl mb-4'>Welcome</h1>
-				<SignInCard />
+				<Link href={'/login'}>
+					<a className='btn-primary flex items-center gap-x-2'>
+						<LogIn /> Login
+					</a>
+				</Link>
 			</Layout>
 		</>
 	)
