@@ -8,11 +8,10 @@ import { Types } from '../reducers/reducers'
 
 const SignInCard = () => {
 	const handleOAuthLogin = async (provider: Provider) => {
-		const redirectUrl = process.env.NEXT_PUBLIC_AUTH_REDIRECT
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider,
 			options: {
-				redirectTo: redirectUrl,
+				redirectTo: 'http://localhost:3000/dashboard',
 			},
 		})
 		if (error) console.log('Error: ', error.message)

@@ -8,7 +8,6 @@ import React, {
 import User from '../models/User'
 import { Types, UserActions, userReducer } from '../reducers/reducers'
 import { createClient } from '@supabase/supabase-js'
-import Database from '../models/Database'
 import { supabase } from '../lib/api'
 import { useRouter } from 'next/router'
 
