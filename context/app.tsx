@@ -6,28 +6,54 @@ import React, {
 	useReducer,
 } from 'react'
 import User from '../models/User'
-import { Types, UserActions, userReducer } from '../reducers/reducers'
+import {
+	DeckActions,
+	deckReducer,
+	Types,
+	UserActions,
+	userReducer,
+} from '../reducers/reducers'
 import { createClient } from '@supabase/supabase-js'
 import { supabase } from '../lib/api'
 import { useRouter } from 'next/router'
+import Deck from '../models/Deck'
 
-type initialAppStateType = {
+export type AppStateType = {
 	user: null | User
+	decks: Deck[]
 }
 
-const initialAppState: initialAppStateType = {
+const initialAppState: AppStateType = {
 	user: null,
+	decks: [],
 }
 
 const AppContext = createContext<{
-	state: initialAppStateType
-	dispatch: Dispatch<UserActions>
+	state: AppStateType
+	dispatch: Dispatch<UserActions | DeckActions>
 }>({ state: initialAppState, dispatch: (_: any) => {} })
 
-const mainReducer = (state: initialAppStateType, action: UserActions) => ({
-	...state,
-	user: userReducer(state.user, action),
-})
+const mainReducer = (
+	state: AppStateType,
+	action: UserActions | DeckActions
+) => {
+	console.log('main reducer')
+	switch (action.type) {
+		case Types.SignIn:
+		case Types.SignOut:
+			return {
+				...state,
+				user: userReducer(state, action),
+			}
+		case Types.AddDeck:
+			return {
+				...state,
+				decks: deckReducer(state, action),
+			}
+		default:
+			return state
+	}
+}
 
 type AppProviderProps = {
 	children: ReactNode
@@ -36,20 +62,25 @@ type AppProviderProps = {
 const AppProvider = ({ children }: AppProviderProps) => {
 	const [state, dispatch] = useReducer(mainReducer, initialAppState)
 	const router = useRouter()
+
 	const tryFindUserFromSession = async () => {
-		console.log(router.pathname)
 		const { data } = await supabase.auth.getSession()
 		if (data?.session?.user) {
 			const user = data.session.user
+			console.log('user', user)
 			if (user.identities) {
 				const identity = user.identities[0]
 				dispatch({
 					type: Types.SignIn,
 					payload: {
+						id: user.id,
 						name: identity.identity_data.full_name,
 					},
 				})
 			}
+
+			const { data: userDecks } = await supabase.from('decks').select()
+			console.log('decks', userDecks)
 		} else {
 			dispatch({
 				type: Types.SignOut,
@@ -65,7 +96,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, [state.user])
 
 	useEffect(() => {
-		console.log(state.user, router.pathname)
 		if (state.user && router.pathname == '/login') router.push('/dashboard')
 		if (!state.user && router.pathname != '/') router.push('/login')
 	}, [state.user, router.pathname])

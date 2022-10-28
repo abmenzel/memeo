@@ -2,7 +2,6 @@ import { NextPage } from 'next'
 import Head from 'next/head'
 import React, { useContext } from 'react'
 import DeckList from '../../components/DeckList'
-import Deck from '../../components/DeckPreview'
 import Layout from '../../components/Layout'
 import SignOutButton from '../../components/SignOutButton'
 import { AppContext } from '../../context/app'
@@ -22,8 +21,8 @@ const Dashboard: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout>
-				<h1 className='font-bold text-3xl mb-4'>Cards</h1>
-				<DeckList decks={decks} />
+				<h1 className='font-bold text-3xl mb-4'>Test</h1>
+				<DeckList />
 				<SignOutButton />
 			</Layout>
 		</>
