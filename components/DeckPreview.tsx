@@ -22,6 +22,7 @@ import { AppContext } from '../context/app'
 import { deleteDeck, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
 import { Types } from '../reducers/reducers'
+import DeckPreviewToolbar from './DeckPreviewToolbar'
 import Stars from './Stars'
 
 type DeckPreviewProps = {
@@ -123,26 +124,13 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 				value={title}
 				placeholder='Deck Title'
 			/>
-			{deleting ? (
-				<div className='flex items-center gap-x-2 flex-grow justify-end'>
-					<p className='font-bold'>Delete ? </p>
-					<button className='btn-primary' onClick={handleDelete}>
-						<Check size={18} />
-					</button>
-					<button className='btn-primary' onClick={handleDeleting}>
-						<X size={18} />
-					</button>
-				</div>
-			) : (
-				<div className='flex flex-grow justify-end gap-x-2 opacity-0 group-hover:opacity-100 transition-opacity'>
-					<button className='btn-primary' onClick={handleEdit}>
-						{editing ? <Check size={18} /> : <Edit3 size={18} />}
-					</button>
-					<button className='btn-primary' onClick={handleDeleting}>
-						<Trash2 size={18} />
-					</button>
-				</div>
-			)}
+			<DeckPreviewToolbar
+				deleting={deleting}
+				editing={editing}
+				handleEdit={handleEdit}
+				handleDelete={handleDelete}
+				handleDeleting={handleDeleting}
+			/>
 			<Stars rating={0.55} />
 		</div>
 	)

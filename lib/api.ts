@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import Card from '../models/Card'
 import { Database } from '../models/Database'
 import Deck from '../models/Deck'
 import User from '../models/User'
@@ -75,4 +76,23 @@ export const updateDeck = async (deck: Deck) => {
 	} catch (error) {
 		console.error(error)
 	}
+}
+
+export const storeCard = async (card: Card) => {
+	try {
+		const { data: cardsAdded } = await supabase
+			.from('cards')
+			.insert({
+				front: card.front,
+				back: card.back,
+				deck_id: card.deck_id,
+			})
+			.select()
+		if (cardsAdded) {
+			return cardsAdded[0].id
+		}
+	} catch (error) {
+		console.error(error)
+	}
+	return null
 }

@@ -1,5 +1,6 @@
 import { AppStateType } from '../context/app'
 import { supabase } from '../lib/api'
+import Card from '../models/Card'
 import Deck from '../models/Deck'
 import User from '../models/User'
 
@@ -22,6 +23,8 @@ export enum Types {
 	UpdateDeck = 'DECK_UPDATE',
 	SetDecks = 'DECKS_SET',
 	PickDeck = 'DECK_PICK',
+	AddCard = 'CARD_ADD',
+	UpdateCard = 'CARD_UPDATE',
 }
 
 type UserPayload = {
@@ -46,12 +49,25 @@ type ActiveDeckPayload = {
 	[Types.PickDeck]: Deck
 }
 
+type CardPayload = {
+	[Types.AddCard]: Card
+	[Types.UpdateCard]: {
+		oldCard: Card
+		newCard: Card
+	}
+}
+
 export type DeckActions = ActionMap<DeckPayload>[keyof ActionMap<DeckPayload>]
 export type ActiveDeckActions =
 	ActionMap<ActiveDeckPayload>[keyof ActionMap<ActiveDeckPayload>]
 export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>]
+export type CardActions = ActionMap<CardPayload>[keyof ActionMap<CardPayload>]
 
-export type Actions = DeckActions | UserActions | ActiveDeckActions
+export type Actions =
+	| DeckActions
+	| UserActions
+	| ActiveDeckActions
+	| CardActions
 
 export const userReducer = (
 	state: AppStateType,
@@ -70,7 +86,7 @@ export const userReducer = (
 
 export const deckReducer = (
 	state: AppStateType,
-	action: DeckActions
+	action: DeckActions | CardActions
 ): Deck[] => {
 	switch (action.type) {
 		case Types.AddDeck: {
@@ -79,11 +95,6 @@ export const deckReducer = (
 				: [action.payload]
 		}
 		case Types.DeleteDeck: {
-			console.log('deleting deck', action.payload)
-			console.log(
-				'filter',
-				state.decks.filter((deck) => deck != action.payload)
-			)
 			return state.decks.filter((deck) => deck != action.payload)
 		}
 		case Types.SetDecks: {
@@ -99,6 +110,34 @@ export const deckReducer = (
 			})
 			return newDecks
 		}
+		case Types.AddCard: {
+			const newDecks = state.decks.map((deck) => {
+				if (deck.id === action.payload.deck_id) {
+					return {
+						...deck,
+						cards: [...deck.cards, action.payload],
+					}
+				} else {
+					return deck
+				}
+			})
+			return newDecks
+		}
+		case Types.UpdateCard: {
+			const newDecks = state.decks.map((deck) => {
+				if (deck.id === action.payload.oldCard.deck_id) {
+					return {
+						...deck,
+						cards: deck.cards.map((card) => {
+							if (card.id === action.payload.oldCard.id) {
+								return action.payload.newCard
+							} else return card
+						}),
+					}
+				} else return deck
+			})
+			return newDecks
+		}
 		default:
 			return state.decks
 	}
@@ -106,11 +145,32 @@ export const deckReducer = (
 
 export const activeDeckReducer = (
 	state: AppStateType,
-	action: ActiveDeckActions
+	action: ActiveDeckActions | CardActions
 ): null | Deck => {
 	switch (action.type) {
 		case Types.PickDeck:
 			return action.payload
+		case Types.AddCard: {
+			if (!state.activeDeck) return state.activeDeck
+			const newActiveDeck = {
+				...state.activeDeck,
+				cards: [...state.activeDeck.cards, action.payload],
+			}
+			return newActiveDeck
+		}
+		case Types.UpdateCard: {
+			if (!state.activeDeck) return state.activeDeck
+			const newActiveDeck = {
+				...state.activeDeck,
+				cards: state.activeDeck.cards.map((card) => {
+					if (card.id === action.payload.oldCard.id) {
+						return action.payload.newCard
+					} else return card
+				}),
+			}
+
+			return newActiveDeck
+		}
 		default:
 			return state.activeDeck
 	}

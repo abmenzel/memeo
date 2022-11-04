@@ -11,10 +11,9 @@ create table decks (
 
 create table cards (
   id uuid default uuid_generate_v4() primary key,
-  deck_id uuid references public.decks not null,
-  front TEXT NULL,
-  back TEXT NULL,
-  rating INTEGER NOT NULL
+  deck_id uuid references public.decks NOT NULL,
+  front TEXT NOT NULL,
+  back TEXT NOT NULL,
 );
 
 ALTER TABLE public.decks
