@@ -6,7 +6,7 @@ create table profiles (
 create table decks (
   id uuid default uuid_generate_v4() primary key,
   created_by uuid references auth.users not null,
-  title TEXT NULL
+  title TEXT NOT NULL
 );
 
 create table cards (

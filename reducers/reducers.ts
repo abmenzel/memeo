@@ -18,7 +18,10 @@ export enum Types {
 	SignIn = 'SIGN_IN',
 	SignOut = 'SIGN_OUT',
 	AddDeck = 'DECK_ADD',
+	DeleteDeck = 'DECK_DELETE',
+	UpdateDeck = 'DECK_UPDATE',
 	SetDecks = 'DECKS_SET',
+	PickDeck = 'DECK_PICK',
 }
 
 type UserPayload = {
@@ -31,13 +34,24 @@ type UserPayload = {
 
 type DeckPayload = {
 	[Types.AddDeck]: Deck
+	[Types.DeleteDeck]: Deck
+	[Types.UpdateDeck]: {
+		oldDeck: Deck
+		newDeck: Deck
+	}
 	[Types.SetDecks]: Deck[]
 }
 
+type ActiveDeckPayload = {
+	[Types.PickDeck]: Deck
+}
+
 export type DeckActions = ActionMap<DeckPayload>[keyof ActionMap<DeckPayload>]
+export type ActiveDeckActions =
+	ActionMap<ActiveDeckPayload>[keyof ActionMap<ActiveDeckPayload>]
 export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>]
 
-export type Actions = DeckActions | UserActions
+export type Actions = DeckActions | UserActions | ActiveDeckActions
 
 export const userReducer = (
 	state: AppStateType,
@@ -64,10 +78,40 @@ export const deckReducer = (
 				? [...state.decks, action.payload]
 				: [action.payload]
 		}
+		case Types.DeleteDeck: {
+			console.log('deleting deck', action.payload)
+			console.log(
+				'filter',
+				state.decks.filter((deck) => deck != action.payload)
+			)
+			return state.decks.filter((deck) => deck != action.payload)
+		}
 		case Types.SetDecks: {
 			return action.payload
 		}
+		case Types.UpdateDeck: {
+			const newDecks = state.decks.map((deck) => {
+				if (deck === action.payload.oldDeck) {
+					return action.payload.newDeck
+				} else {
+					return deck
+				}
+			})
+			return newDecks
+		}
 		default:
 			return state.decks
+	}
+}
+
+export const activeDeckReducer = (
+	state: AppStateType,
+	action: ActiveDeckActions
+): null | Deck => {
+	switch (action.type) {
+		case Types.PickDeck:
+			return action.payload
+		default:
+			return state.activeDeck
 	}
 }

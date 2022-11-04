@@ -65,14 +65,16 @@ const CardCarousel = ({
 
 	return (
 		<div className='max-w-xl w-full'>
-			<Card
-				activeCardInputRef={activeCardInputRef}
-				setCards={setCards}
-				editing={editing}
-				flipCard={flipCard}
-				cardIdx={activeCardIdx}
-				cards={cards}
-			/>
+			{cards.length > 0 && (
+				<Card
+					activeCardInputRef={activeCardInputRef}
+					setCards={setCards}
+					editing={editing}
+					flipCard={flipCard}
+					cardIdx={activeCardIdx}
+					cards={cards}
+				/>
+			)}
 			<Toolbar
 				nextCard={next}
 				newCard={newCard}

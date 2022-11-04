@@ -1,11 +1,17 @@
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import CardCarousel from '../components/CardCarousel'
 import Layout from '../components/Layout'
+import { AppContext } from '../context/app'
 import { testDeck1 } from '../test/data/testDecks'
 
 const Dojo = () => {
-	const [cards, setCards] = useState(testDeck1.cards)
+	const { state } = useContext(AppContext)
+	const [cards, setCards] = useState(
+		state.activeDeck ? state.activeDeck.cards : []
+	)
+
+	console.log('test', state)
 
 	return (
 		<>

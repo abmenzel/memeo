@@ -7,6 +7,9 @@ import React, {
 } from 'react'
 import User from '../models/User'
 import {
+	Actions,
+	ActiveDeckActions,
+	activeDeckReducer,
 	DeckActions,
 	deckReducer,
 	Types,
@@ -14,30 +17,28 @@ import {
 	userReducer,
 } from '../reducers/reducers'
 import { createClient } from '@supabase/supabase-js'
-import { supabase } from '../lib/api'
+import { getDecksByUser, supabase } from '../lib/api'
 import { useRouter } from 'next/router'
 import Deck from '../models/Deck'
 
 export type AppStateType = {
 	user: null | User
 	decks: Deck[]
+	activeDeck: null | Deck
 }
 
 const initialAppState: AppStateType = {
 	user: null,
 	decks: [],
+	activeDeck: null,
 }
 
 const AppContext = createContext<{
 	state: AppStateType
-	dispatch: Dispatch<UserActions | DeckActions>
+	dispatch: Dispatch<Actions>
 }>({ state: initialAppState, dispatch: (_: any) => {} })
 
-const mainReducer = (
-	state: AppStateType,
-	action: UserActions | DeckActions
-) => {
-	console.log('main reducer')
+const mainReducer = (state: AppStateType, action: Actions) => {
 	switch (action.type) {
 		case Types.SignIn:
 		case Types.SignOut:
@@ -46,9 +47,17 @@ const mainReducer = (
 				user: userReducer(state, action),
 			}
 		case Types.AddDeck:
+		case Types.SetDecks:
+		case Types.UpdateDeck:
+		case Types.DeleteDeck:
 			return {
 				...state,
 				decks: deckReducer(state, action),
+			}
+		case Types.PickDeck:
+			return {
+				...state,
+				activeDeck: activeDeckReducer(state, action),
 			}
 		default:
 			return state
@@ -67,7 +76,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
 		const { data } = await supabase.auth.getSession()
 		if (data?.session?.user) {
 			const user = data.session.user
-			console.log('user', user)
 			if (user.identities) {
 				const identity = user.identities[0]
 				dispatch({
@@ -78,9 +86,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
 					},
 				})
 			}
-
-			const { data: userDecks } = await supabase.from('decks').select()
-			console.log('decks', userDecks)
 		} else {
 			dispatch({
 				type: Types.SignOut,
@@ -89,9 +94,23 @@ const AppProvider = ({ children }: AppProviderProps) => {
 		}
 	}
 
+	const tryFindUserDecks = async (user: User) => {
+		const userDecks = await getDecksByUser(user)
+		if (userDecks && userDecks.length > 0) {
+			dispatch({
+				type: Types.SetDecks,
+				payload: userDecks,
+			})
+		}
+	}
+
 	useEffect(() => {
 		if (!state.user) {
 			tryFindUserFromSession()
+		}
+
+		if (state.user) {
+			tryFindUserDecks(state.user)
 		}
 	}, [state.user])
 
