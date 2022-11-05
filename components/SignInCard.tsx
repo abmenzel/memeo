@@ -11,7 +11,7 @@ const SignInCard = () => {
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider,
 			options: {
-				redirectTo: 'http://localhost:3000/dashboard',
+				redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`,
 			},
 		})
 		if (error) console.log('Error: ', error.message)

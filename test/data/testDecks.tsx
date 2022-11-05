@@ -1,18 +1,18 @@
 import Deck from '../../models/Deck'
-import { testCards1 } from './testCards'
+import { testCards1, testCards2 } from './testCards'
 
 export const testDeck1: Deck = {
-	id: null,
+	id: 'testDeck1',
 	created_by: 'alex',
 	title: 'This is a test deck',
 	cards: testCards1,
 }
 
 export const testDeck2: Deck = {
-	id: null,
+	id: 'testDeck2',
 	created_by: 'alex',
 	title: 'Just another deck',
-	cards: testCards1,
+	cards: testCards2,
 }
 
 export const testDecks = [testDeck1, testDeck2]
