@@ -9,7 +9,7 @@ const Layout = ({
 	hideNavBar?: boolean
 }) => {
 	return (
-		<div className='bg-orange-100 text-black min-h-screen flex flex-col items-center'>
+		<div className='overflow-y-auto bg-orange-100 text-black h-screen flex flex-col items-center'>
 			<div className='max-w-xl w-full flex flex-col justify-center items-center grow px-4'>
 				{children}
 			</div>

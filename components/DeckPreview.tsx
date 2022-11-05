@@ -113,18 +113,22 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		<div
 			onClick={handlePick}
 			className='group btn-primary py-2 flex justify-between items-center gap-x-8 w-full'>
-			<input
-				ref={titleRef}
-				onBlur={handleBlur}
-				onKeyDown={handleKey}
-				readOnly={!(editing?.id == deck.id)}
-				className={`font-bold text-lg flex items-center bg-transparent outline-none ${
-					!(editing?.id == deck.id) && 'pointer-events-none'
-				}`}
-				onChange={handleChange}
-				value={title}
-				placeholder='Deck Title'
-			/>
+			<div className='flex flex-col min-w-0'>
+				<input
+					ref={titleRef}
+					onBlur={handleBlur}
+					onKeyDown={handleKey}
+					readOnly={!(editing?.id == deck.id)}
+					className={`min-w-0 font-bold text-lg flex bg-transparent outline-none ${
+						!(editing?.id == deck.id) && 'pointer-events-none'
+					}`}
+					onChange={handleChange}
+					value={title}
+					placeholder='Deck Title'
+				/>
+				<p className='text-xs'>{deck.cards.length} cards</p>
+			</div>
+
 			<DeckPreviewToolbar
 				deck={deck}
 				deleting={deleting}

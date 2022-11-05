@@ -4,8 +4,8 @@ import NavItem from './NavItem'
 
 const Navbar = () => {
 	return (
-		<div className='flex justify-center py-1'>
-			<nav className='max-w-lg w-full'>
+		<div className='w-full flex justify-center'>
+			<nav className='mx-8 py-2 border-t border-black border-opacity-10 max-w-lg w-full'>
 				<ul className='w-full flex justify-center gap-x-2'>
 					<NavItem
 						route='/dashboard'

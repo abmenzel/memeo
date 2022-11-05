@@ -1,5 +1,11 @@
-import { ArrowRight } from 'lucide-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { ArrowRight, PlusCircle } from 'lucide-react'
+import React, {
+	KeyboardEventHandler,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import Card from './Card'
 import ICard from '../models/Card'
 import Toolbar from './Toolbar'
@@ -12,6 +18,7 @@ const CardCarousel = () => {
 	const { state, dispatch } = useContext(AppContext)
 	const { activeDeck } = state
 	const [activeCard, setActiveCard] = useState<ICard | null>(null)
+	const [clicks, setClicks] = useState<number>(0)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
 	const [flipCard, setFlipCard] = useState(false)
 	const [editing, setEditing] = useState<ICard | null>(null)
@@ -19,30 +26,70 @@ const CardCarousel = () => {
 
 	const [cards, setCards] = useState<ICard[]>([])
 
+	const handleGlobalKey = (event: KeyboardEvent) => {
+		if (document.activeElement != document.body) return
+		console.log(event.code)
+		switch (event.code) {
+			case 'ArrowRight':
+				next()
+				return
+			case 'ArrowLeft':
+				prev()
+				return
+			case 'Space':
+				setFlipCard(!flipCard)
+				return
+			case 'KeyE':
+				setEditing(activeCard)
+			case 'KeyN':
+				handleNewCard()
+		}
+	}
+
+	useEffect(() => {
+		document.addEventListener('keyup', handleGlobalKey)
+		return () => {
+			document.removeEventListener('keyup', handleGlobalKey)
+		}
+	})
+
 	useEffect(() => {
 		if (!activeDeck) return
 		setCards(activeDeck.cards)
 	}, [activeDeck])
 
 	useEffect(() => {
+		// Always start at the latest added card
+		setActiveCardIdx(cards.length - 1)
+	}, [cards.length])
+
+	useEffect(() => {
 		const newActiveCard = cards[activeCardIdx]
 		setActiveCard(newActiveCard)
 	}, [activeCardIdx, cards])
 
+	useEffect(() => {
+		// If we arrive at an empty card start editing
+		if (activeCard?.front === '') {
+			setEditing(activeCard)
+		}
+	}, [activeCard])
+
 	const next = () => {
+		const newCardIdx = (activeCardIdx + 1) % cards.length
+		setFlipCard(false)
+		setActiveCardIdx(newCardIdx)
+	}
+	const prev = () => {
 		const newCardIdx =
-			activeCardIdx + 1 >= cards.length ? 0 : activeCardIdx + 1
+			activeCardIdx - 1 < 0
+				? cards.length - 1
+				: (activeCardIdx - 1) % cards.length
 		setFlipCard(false)
 		setActiveCardIdx(newCardIdx)
 	}
 
-	useEffect(() => {
-		// New card was added
-		//setActiveCardIdx(cards.length - 1)
-		//setEditing(cards[cards.length - 1])
-	}, [cards.length])
-
-	const handleNewCard = () => {
+	const handleNewCard = async () => {
 		if (!state.activeDeck || !state.activeDeck.id) return
 
 		const newCard = {
@@ -122,25 +169,52 @@ const CardCarousel = () => {
 		}
 	}, [editing])
 
+	useEffect(() => {
+		if (clicks > 1) {
+			setEditing(activeCard)
+			setClicks(0)
+		}
+	}, [clicks])
+
 	return (
-		<div className='max-w-xl w-full'>
-			{cards.length > 0 && activeCard && (
-				<Card
-					card={activeCard}
-					activeCardInputRef={activeCardInputRef}
-					setEditing={setEditing}
-					editing={editing}
-					flipCard={flipCard}
-				/>
+		<div className='flex-grow flex flex-col max-w-xl w-full'>
+			{cards.length > 0 ? (
+				<>
+					<div
+						onClick={() => setClicks(clicks + 1)}
+						className='flex-grow flex flex-col justify-center'>
+						{cards.length > 0 && activeCard && (
+							<Card
+								card={activeCard}
+								setFlipCard={setFlipCard}
+								activeCardInputRef={activeCardInputRef}
+								setEditing={setEditing}
+								editing={editing}
+								flipCard={flipCard}
+							/>
+						)}
+					</div>
+					<Toolbar
+						activeCard={cards[activeCardIdx]}
+						nextCard={next}
+						prevCard={prev}
+						handleNewCard={handleNewCard}
+						setFlipCard={() => setFlipCard(!flipCard)}
+						handleEdit={handleEdit}
+						editing={editing}
+					/>
+				</>
+			) : (
+				<div className='flex flex-col gap-y-4 text-center flex-grow items-center justify-center'>
+					<p>This deck is empty.</p>
+					<button
+						className='btn-primary items-center flex gap-x-2'
+						onClick={handleNewCard}>
+						<PlusCircle />
+						Add card
+					</button>
+				</div>
 			)}
-			<Toolbar
-				activeCard={cards[activeCardIdx]}
-				nextCard={next}
-				handleNewCard={handleNewCard}
-				setFlipCard={() => setFlipCard(!flipCard)}
-				handleEdit={handleEdit}
-				editing={editing}
-			/>
 		</div>
 	)
 }

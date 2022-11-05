@@ -61,6 +61,7 @@ const mainReducer = (state: AppStateType, action: Actions) => {
 			}
 		case Types.AddCard:
 		case Types.UpdateCard:
+		case Types.DeleteCard:
 			return {
 				...state,
 				decks: deckReducer(state, action),

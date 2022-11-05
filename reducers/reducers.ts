@@ -24,6 +24,7 @@ export enum Types {
 	SetDecks = 'DECKS_SET',
 	PickDeck = 'DECK_PICK',
 	AddCard = 'CARD_ADD',
+	DeleteCard = 'CARD_DELETE',
 	UpdateCard = 'CARD_UPDATE',
 }
 
@@ -51,6 +52,7 @@ type ActiveDeckPayload = {
 
 type CardPayload = {
 	[Types.AddCard]: Card
+	[Types.DeleteCard]: Card
 	[Types.UpdateCard]: {
 		oldCard: Card
 		newCard: Card
@@ -138,6 +140,19 @@ export const deckReducer = (
 			})
 			return newDecks
 		}
+		case Types.DeleteCard: {
+			const newDecks = state.decks.map((deck) => {
+				if (deck.id === action.payload.deck_id) {
+					return {
+						...deck,
+						cards: deck.cards.filter(
+							(card) => card.id !== action.payload.id
+						),
+					}
+				} else return deck
+			})
+			return newDecks
+		}
 		default:
 			return state.decks
 	}
@@ -169,6 +184,16 @@ export const activeDeckReducer = (
 				}),
 			}
 
+			return newActiveDeck
+		}
+		case Types.DeleteCard: {
+			if (!state.activeDeck) return state.activeDeck
+			const newActiveDeck = {
+				...state.activeDeck,
+				cards: state.activeDeck.cards.filter(
+					(card) => card.id !== action.payload.id
+				),
+			}
 			return newActiveDeck
 		}
 		default:
