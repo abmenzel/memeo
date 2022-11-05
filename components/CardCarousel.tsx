@@ -41,8 +41,10 @@ const CardCarousel = () => {
 				return
 			case 'KeyE':
 				setEditing(activeCard)
+				return
 			case 'KeyN':
 				handleNewCard()
+				return
 		}
 	}
 
@@ -90,6 +92,7 @@ const CardCarousel = () => {
 	}
 
 	const handleNewCard = async () => {
+		console.log('new card')
 		if (!state.activeDeck || !state.activeDeck.id) return
 
 		const newCard = {
@@ -202,7 +205,7 @@ const CardCarousel = () => {
 				<>
 					<div
 						onClick={() => setClicks(clicks + 1)}
-						className='flex-grow flex flex-col justify-center'>
+						className='flex-grow flex flex-col items-center justify-center'>
 						{cards.length > 0 && activeCard && (
 							<Card
 								card={activeCard}

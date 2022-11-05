@@ -26,7 +26,7 @@ const Dojo = () => {
 							</a>
 						</Link>
 						<div className='flex flex-col'>
-							<h2 className='text-xl font-bold'>
+							<h2 className='font-serif text-xl font-bold'>
 								{state.activeDeck?.title}
 							</h2>
 							<p className='text-xs'>

@@ -78,17 +78,17 @@ const Card = ({
 	}
 
 	return (
-		<div className='relative flex text-center w-full'>
-			<div className='w-2xfull flex items-center overflow-x-hidden'>
+		<div className='relative flex text-center w-full max-w-md'>
+			<div className='font-ser w-full flex items-center overflow-visible'>
 				<div
 					onClick={handleClick}
 					className={`${
 						flipCard && 'opacity-0 pointer-events-none'
-					} w-full shrink-0 transition-all`}>
+					} w-full shrink-0 transition-all cursor-pointer`}>
 					<div
 						className={`${
-							flipCard && 'opacity-0 rotate-x-180'
-						} max-h-96 overflow-y-auto transition-all duration-300`}>
+							flipCard && 'opacity-0 rotate-xy-180'
+						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={!flipCard ? activeCardInputRef : null}
 							disabled={!(editing?.id === card.id)}
@@ -105,11 +105,11 @@ const Card = ({
 					onClick={handleClick}
 					className={`${
 						!flipCard && 'opacity-0 pointer-events-none'
-					} w-full shrink-0 -translate-x-full transition-all`}>
+					} w-full shrink-0 -translate-x-full transition-all cursor-pointer`}>
 					<div
 						className={`${
-							!flipCard && 'opacity-0 -rotate-x-180'
-						} max-h-96 overflow-y-auto transition-all duration-300`}>
+							!flipCard && 'opacity-0 -rotate-xy-180'
+						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={flipCard ? activeCardInputRef : null}
 							disabled={!(editing?.id === card.id)}

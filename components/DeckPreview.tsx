@@ -123,7 +123,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 					onBlur={handleBlur}
 					onKeyDown={handleKey}
 					readOnly={!(editing?.id == deck.id)}
-					className={`min-w-0 font-bold text-lg flex bg-transparent outline-none ${
+					className={`font-serif font-extrabold min-w-0 text-lg flex bg-transparent outline-none ${
 						!(editing?.id == deck.id) && 'pointer-events-none'
 					}`}
 					onChange={handleChange}

@@ -7,10 +7,19 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				serif: 'Nunito, sans-serif',
+				body: 'Nunito Sans, sans-serif',
+			},
 			spacing: {
 				'2xfull': '200%',
 			},
 			colors: {
+				orange: {
+					75: '#fff0db',
+					150: '#f8e6cd',
+					175: '#ebd8bf',
+				},
 				theme: {
 					purple: '#4d2c56',
 					'light-orange': '#e9ac8d',

@@ -2,24 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
 @layer base {
-	.rotate-x-180 {
-		transform: rotateX(180deg);
+	.rotate-xy-180 {
+		transform: rotateY(10deg) rotateX(90deg);
 	}
-	.-rotate-x-180 {
-		transform: rotateX(-180deg);
-	}
-	.rotate-x-90 {
-		transform: rotateX(45deg);
-	}
-	.-rotate-x-90 {
-		transform: rotateX(-45deg);
-	}
-	.big-title {
-		@apply text-5xl font-bold;
-	}
-	.sub-title {
-		@apply text-base;
+	.-rotate-xy-180 {
+		transform: rotateY(10deg) rotateX(-90deg);
 	}
 	.btn-primary {
 		@apply cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
