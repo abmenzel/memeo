@@ -15,18 +15,21 @@ export interface Database {
           front: string
           id: string
           back: string
+          rating: number
         }
         Insert: {
           deck_id: string
           front: string
           id?: string
           back?: string
+          rating?: number
         }
         Update: {
           deck_id?: string
           front?: string
           id?: string
           back?: string
+          rating?: number
         }
       }
       decks: {

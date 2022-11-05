@@ -113,6 +113,26 @@ const CardCarousel = () => {
 		}
 	}
 
+	const handleNewRating = (newRating: number) => {
+		const ratingRelative = (newRating - 0) / (5 - 0)
+		if (!activeCard) return
+		if (newRating !== activeCard.rating) {
+			const newCard = {
+				...activeCard,
+				rating: ratingRelative,
+			}
+			dispatch({
+				type: Types.UpdateCard,
+				payload: {
+					oldCard: activeCard,
+					newCard: newCard,
+				},
+			})
+
+			updateCard(newCard)
+		}
+	}
+
 	useEffect(() => {
 		if (!activeCardInputRef.current || !activeCard || !activeDeck) return
 		if (!editing) activeCardInputRef.current.blur()
@@ -196,6 +216,7 @@ const CardCarousel = () => {
 					</div>
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
+						handleNewRating={handleNewRating}
 						nextCard={next}
 						prevCard={prev}
 						handleNewCard={handleNewCard}

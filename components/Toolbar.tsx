@@ -17,6 +17,7 @@ import { AppContext } from '../context/app'
 import { deleteCard } from '../lib/api'
 import Card from '../models/Card'
 import { Types } from '../reducers/reducers'
+import Stars from './Stars'
 import ToolbarItem from './ToolbarItem'
 
 const Toolbar = ({
@@ -24,6 +25,7 @@ const Toolbar = ({
 	nextCard,
 	prevCard,
 	handleNewCard,
+	handleNewRating,
 	setFlipCard,
 	handleEdit,
 	editing,
@@ -31,6 +33,7 @@ const Toolbar = ({
 	activeCard: Card
 	nextCard: () => void
 	prevCard: () => void
+	handleNewRating: Function
 	handleNewCard: () => void
 	setFlipCard: () => void
 	handleEdit: (event: React.MouseEvent) => void
@@ -57,7 +60,17 @@ const Toolbar = ({
 	}
 
 	return (
-		<div className='h-20 flex items-center justify-center'>
+		<div className='flex flex-col items-center justify-center'>
+			<div className='py-12 flex flex-col items-center'>
+				<p className='text-xs mb-4'>Confidence</p>
+				{activeCard && (
+					<Stars
+						rating={activeCard.rating}
+						size={26}
+						callback={handleNewRating}
+					/>
+				)}
+			</div>
 			{deleting ? (
 				<div className='py-4 flex gap-x-4 justify-center'>
 					<p className='font-bold'>Delete ? </p>

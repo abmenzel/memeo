@@ -36,7 +36,7 @@ export const getDecksByUser = async (user: User): Promise<Deck[]> => {
 						...deck,
 						cards: cardsData
 							? cardsData.map((card) => {
-									return { ...card, rating: 0 }
+									return { ...card }
 							  })
 							: [],
 					}
@@ -123,6 +123,7 @@ export const updateCard = async (card: Card) => {
 			.update({
 				front: card.front,
 				back: card.back,
+				rating: card.rating,
 			})
 			.eq('id', card.id)
 	} catch (error) {

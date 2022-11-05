@@ -1,13 +1,11 @@
-import { Plus, PlusCircle } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
-import { storeCard, storeDeck, supabase } from '../lib/api'
+import { storeDeck } from '../lib/api'
 import { createNewCard } from '../lib/api.utils'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
-import DeckType from '../models/Deck'
 import { Types } from '../reducers/reducers'
-import { testCards1 } from '../test/data/testCards'
 import DeckPreview from './DeckPreview'
 
 const DeckList = () => {
@@ -68,7 +66,7 @@ const DeckList = () => {
 				<button
 					onClick={handleNewDeck}
 					className='btn-primary inline-flex gap-x-2 items-center'>
-					<Plus /> Add deck
+					<PlusCircle /> Add deck
 				</button>
 			</div>
 		</div>

@@ -14,6 +14,7 @@ create table cards (
   deck_id uuid references public.decks NOT NULL,
   front TEXT NOT NULL,
   back TEXT NOT NULL,
+  rating REAL NOT NULL,
 );
 
 ALTER TABLE public.decks

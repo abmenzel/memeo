@@ -109,6 +109,10 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		router.push('/dojo')
 	}
 
+	const averageRating =
+		deck.cards.reduce((acc, card) => acc + card.rating, 0) /
+		deck.cards.length
+
 	return (
 		<div
 			onClick={handlePick}
@@ -137,7 +141,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 				handleDelete={handleDelete}
 				handleDeleting={handleDeleting}
 			/>
-			<Stars rating={0.55} />
+			<Stars rating={averageRating} />
 		</div>
 	)
 }
