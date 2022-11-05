@@ -12,7 +12,6 @@ const getOpacity = (idx: number, length: number, rating: number) => {
 	if (rating >= upper) return 1
 	else {
 		const rel = (rating - lower) / (upper - lower)
-		console.log(rel)
 		return rel
 	}
 }
@@ -25,6 +24,7 @@ const Stars = ({ rating }: StarsProps) => {
 			{stars.map((star, idx) => {
 				return (
 					<Star
+						key={idx}
 						size={18}
 						fill='black'
 						fillOpacity={getOpacity(idx, stars.length, rating)}

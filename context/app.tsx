@@ -103,6 +103,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
 	const tryFindUserDecks = async (user: User) => {
 		const userDecks = await getDecksByUser(user)
+		console.log('Found decks', userDecks)
 		if (userDecks && userDecks.length > 0) {
 			dispatch({
 				type: Types.SetDecks,

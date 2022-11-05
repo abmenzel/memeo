@@ -2,6 +2,7 @@ import { Plus, PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
 import { storeCard, storeDeck, supabase } from '../lib/api'
+import { createNewCard } from '../lib/api.utils'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
 import DeckType from '../models/Deck'
@@ -40,7 +41,7 @@ const DeckList = () => {
 			},
 		})
 
-		const createdCard: Card = {
+		const newCard: Card = {
 			deck_id: newDeck.id,
 			front: '',
 			back: '',
@@ -48,21 +49,7 @@ const DeckList = () => {
 			id: null,
 		}
 
-		dispatch({
-			type: Types.AddCard,
-			payload: createdCard,
-		})
-
-		const newCardId = await storeCard(createdCard)
-		const newCard = { ...createdCard, id: newCardId }
-
-		dispatch({
-			type: Types.UpdateCard,
-			payload: {
-				oldCard: createdCard,
-				newCard: newCard,
-			},
-		})
+		createNewCard(dispatch, newCard)
 
 		setEditing(newDeck)
 	}

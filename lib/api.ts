@@ -17,21 +17,39 @@ export const supabase = createClient<Database>(
 export const getDecksByUser = async (user: User): Promise<Deck[]> => {
 	try {
 		console.log('finding decks for user', user.id)
-		const { data } = await supabase
+		const { data: decksData } = await supabase
 			.from('decks')
 			.select()
 			.eq('created_by', user.id)
 
-		if (!data) return []
+		if (!decksData) return []
 
-		const decks = data.reduce((acc: Deck[], deck) => {
-			const deckWithCards = {
-				...deck,
-				cards: [],
-			}
-			acc.push(deckWithCards)
-			return acc
-		}, [])
+		const decks = await Promise.all(
+			decksData.map(async (deck) => {
+				try {
+					const { data: cardsData } = await supabase
+						.from('cards')
+						.select()
+						.eq('deck_id', deck.id)
+
+					const deckWithCards: Deck = {
+						...deck,
+						cards: cardsData
+							? cardsData.map((card) => {
+									return { ...card, rating: 0 }
+							  })
+							: [],
+					}
+					return deckWithCards
+				} catch (error) {
+					console.error()
+				}
+				return {
+					...deck,
+					cards: [],
+				}
+			})
+		)
 		return decks
 	} catch (error) {
 		console.error(error)
@@ -59,6 +77,7 @@ export const storeDeck = async (deck: Deck) => {
 
 export const deleteDeck = async (deck: Deck) => {
 	try {
+		await supabase.from('cards').delete().eq('deck_id', deck.id)
 		await supabase.from('decks').delete().eq('id', deck.id)
 	} catch (error) {
 		console.error(error)
@@ -95,4 +114,26 @@ export const storeCard = async (card: Card) => {
 		console.error(error)
 	}
 	return null
+}
+
+export const updateCard = async (card: Card) => {
+	try {
+		await supabase
+			.from('cards')
+			.update({
+				front: card.front,
+				back: card.back,
+			})
+			.eq('id', card.id)
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+export const deleteCard = async (card: Card) => {
+	try {
+		await supabase.from('cards').delete().eq('id', card.id)
+	} catch (error) {
+		console.error(error)
+	}
 }

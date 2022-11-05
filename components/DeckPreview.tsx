@@ -38,6 +38,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 	const router = useRouter()
 
 	const titleRef = useRef<HTMLInputElement>(null)
+
 	const handleEdit = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		if (editing) {
@@ -49,7 +50,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 
 	useEffect(() => {
 		if (!titleRef.current) return
-		if (editing == deck) {
+		if (editing?.id == deck.id) {
 			titleRef.current.focus()
 		} else if (deck.title !== titleRef.current.value) {
 			const newDeck = { ...deck, title: titleRef.current.value }
@@ -63,7 +64,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 
 			updateDeck(newDeck)
 		}
-	}, [editing])
+	}, [editing, deck])
 
 	const handleKey = (event: KeyboardEvent): void => {
 		if (!editing) return
@@ -116,15 +117,16 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 				ref={titleRef}
 				onBlur={handleBlur}
 				onKeyDown={handleKey}
-				readOnly={!(editing == deck)}
+				readOnly={!(editing?.id == deck.id)}
 				className={`font-bold text-lg flex items-center bg-transparent outline-none ${
-					!(editing == deck) && 'pointer-events-none'
+					!(editing?.id == deck.id) && 'pointer-events-none'
 				}`}
 				onChange={handleChange}
 				value={title}
 				placeholder='Deck Title'
 			/>
 			<DeckPreviewToolbar
+				deck={deck}
 				deleting={deleting}
 				editing={editing}
 				handleEdit={handleEdit}

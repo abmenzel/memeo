@@ -5,10 +5,10 @@ const ToolbarItem = ({
 	callback,
 }: {
 	icon: ReactNode
-	callback: Function
+	callback: (event: React.MouseEvent) => void
 }) => {
 	return (
-		<button className='btn' onClick={() => callback()}>
+		<button className='btn' onClick={callback}>
 			{icon}
 		</button>
 	)

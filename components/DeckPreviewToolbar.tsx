@@ -3,6 +3,7 @@ import React from 'react'
 import Deck from '../models/Deck'
 
 type DeckPreviewToolbarProps = {
+	deck: Deck
 	deleting: boolean
 	editing: null | Deck
 	handleDelete: (event: React.MouseEvent) => void
@@ -11,6 +12,7 @@ type DeckPreviewToolbarProps = {
 }
 
 const DeckPreviewToolbar = ({
+	deck,
 	deleting,
 	handleDelete,
 	handleDeleting,
@@ -32,7 +34,11 @@ const DeckPreviewToolbar = ({
 			) : (
 				<div className='flex flex-grow justify-end gap-x-2 opacity-0 group-hover:opacity-100 transition-opacity'>
 					<button className='btn-primary' onClick={handleEdit}>
-						{editing ? <Check size={18} /> : <Edit3 size={18} />}
+						{editing?.id == deck.id ? (
+							<Check size={18} />
+						) : (
+							<Edit3 size={18} />
+						)}
 					</button>
 					<button className='btn-primary' onClick={handleDeleting}>
 						<Trash2 size={18} />

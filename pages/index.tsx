@@ -10,7 +10,6 @@ import SignInCard from '../components/SignInCard'
 
 const Home: NextPage = () => {
 	const { state, dispatch } = useContext(AppContext)
-	console.log('state', state)
 	return (
 		<>
 			<Head>
