@@ -13,40 +13,40 @@ export interface Database {
         Row: {
           deck_id: string
           front: string
-          id: string
           back: string
           rating: number
+          id: string
         }
         Insert: {
           deck_id: string
           front: string
+          back: string
+          rating: number
           id?: string
-          back?: string
-          rating?: number
         }
         Update: {
           deck_id?: string
           front?: string
-          id?: string
           back?: string
           rating?: number
+          id?: string
         }
       }
       decks: {
         Row: {
           created_by: string
-          id: string
           title: string
+          id: string
         }
         Insert: {
           created_by: string
-          id?: string
           title: string
+          id?: string
         }
         Update: {
           created_by?: string
-          id?: string
           title?: string
+          id?: string
         }
       }
       profiles: {

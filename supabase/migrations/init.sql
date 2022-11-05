@@ -14,23 +14,41 @@ create table cards (
   deck_id uuid references public.decks NOT NULL,
   front TEXT NOT NULL,
   back TEXT NOT NULL,
-  rating REAL NOT NULL,
+  rating REAL NOT NULL
 );
 
 ALTER TABLE public.decks
   ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY
+  "Only authenticated users can add decks"
+  ON public.decks
+  FOR INSERT 
+  TO authenticated 
+  WITH CHECK (true);
+
+CREATE POLICY
   "Can only view own card decks."
   ON public.decks
-  FOR SELECT
-  USING ( auth.uid() = created_by );
+  FOR SELECT USING (
+    auth.uid() = created_by
+  );
 
 CREATE POLICY
   "Can only update own card decks."
   ON public.decks
-  FOR UPDATE
-  USING ( auth.uid() = created_by );
+  FOR UPDATE USING (
+    auth.uid() = created_by
+  ) WITH CHECK (
+    auth.uid() = created_by
+  );
+
+CREATE POLICY
+  "Can only delete own card decks."
+  ON public.decks
+  FOR DELETE USING (
+    auth.uid() = created_by
+  );
 
 ALTER TABLE public.profiles
   ENABLE ROW LEVEL SECURITY;

@@ -14,7 +14,7 @@ const getOpacity = (idx: number, length: number, rating: number) => {
 	if (rating >= upper) return 1
 	else {
 		const rel = (rating - lower) / (upper - lower)
-		return rel
+		return rel ? rel : 0
 	}
 }
 

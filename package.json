@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev & npx localtunnel --port 54321 --subdomain memeo",
+		"db:reset": "supabase stop && supabase start",
 		"db:stop": "supabase stop --backup",
 		"db:start": "supabase start",
 		"db:gen-types": "supabase gen types typescript --local > ./models/Database.ts",

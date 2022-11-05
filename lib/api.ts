@@ -105,6 +105,7 @@ export const storeCard = async (card: Card) => {
 				front: card.front,
 				back: card.back,
 				deck_id: card.deck_id,
+				rating: card.rating,
 			})
 			.select()
 		if (cardsAdded) {

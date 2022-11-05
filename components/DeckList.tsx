@@ -27,7 +27,9 @@ const DeckList = () => {
 			payload: createdDeck,
 		})
 
+		console.log('storing deck for user', state.user.id)
 		const newDeckId = await storeDeck(createdDeck)
+		console.log('new deck id', newDeckId)
 		if (!newDeckId) return
 
 		const newDeck = { ...createdDeck, id: newDeckId }
