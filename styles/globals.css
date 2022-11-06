@@ -32,6 +32,7 @@
 
 html,
 body {
+	font-size: 18px;
 	height: var(--doc-height);
 	padding: 0;
 	margin: 0;

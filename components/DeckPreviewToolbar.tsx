@@ -25,23 +25,23 @@ const DeckPreviewToolbar = ({
 				<div className='flex items-center gap-x-2 flex-grow justify-end'>
 					<p className='font-bold'>Delete ? </p>
 					<button className='btn-primary' onClick={handleDelete}>
-						<Check size={18} />
+						<Check size={'1rem'} />
 					</button>
 					<button className='btn-primary' onClick={handleDeleting}>
-						<X size={18} />
+						<X size={'1rem'} />
 					</button>
 				</div>
 			) : (
 				<div className='flex flex-grow justify-end gap-x-2 opacity-0 group-hover:opacity-100 transition-opacity'>
 					<button className='btn-primary' onClick={handleEdit}>
 						{editing?.id == deck.id ? (
-							<Check size={18} />
+							<Check size={'1rem'} />
 						) : (
-							<Edit3 size={18} />
+							<Edit3 size={'1rem'} />
 						)}
 					</button>
 					<button className='btn-primary' onClick={handleDeleting}>
-						<Trash2 size={18} />
+						<Trash2 size={'1rem'} />
 					</button>
 				</div>
 			)}

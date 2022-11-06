@@ -66,7 +66,7 @@ const Toolbar = ({
 				{activeCard && (
 					<Stars
 						rating={activeCard.rating}
-						size={26}
+						size={'1.75rem'}
 						callback={handleNewRating}
 					/>
 				)}
@@ -75,42 +75,42 @@ const Toolbar = ({
 				<div className='py-4 flex gap-x-4 justify-center'>
 					<p className='font-bold'>Delete ? </p>
 					<button className='btn-primary' onClick={handleDelete}>
-						<Check size={18} />
+						<Check size={'1rem'} />
 					</button>
 					<button className='btn-primary' onClick={handleDeleting}>
-						<X size={18} />
+						<X size={'1rem'} />
 					</button>{' '}
 				</div>
 			) : (
 				<div className='py-4 flex gap-x-4 justify-center'>
 					<ToolbarItem
-						icon={<ArrowLeft size={18} />}
+						icon={<ArrowLeft size={'1rem'} />}
 						callback={prevCard}
 					/>
 					<ToolbarItem
 						icon={
 							editing?.id === activeCard?.id ? (
-								<Check size={18} />
+								<Check size={'1rem'} />
 							) : (
-								<Edit size={18} />
+								<Edit size={'1rem'} />
 							)
 						}
 						callback={handleEdit}
 					/>
 					<ToolbarItem
-						icon={<RotateCw size={18} />}
+						icon={<RotateCw size={'1rem'} />}
 						callback={setFlipCard}
 					/>
 					<ToolbarItem
-						icon={<PlusCircle size={18} />}
+						icon={<PlusCircle size={'1rem'} />}
 						callback={handleNewCard}
 					/>
 					<ToolbarItem
-						icon={<Trash2 size={18} />}
+						icon={<Trash2 size={'1rem'} />}
 						callback={handleDeleting}
 					/>
 					<ToolbarItem
-						icon={<ArrowRight size={18} />}
+						icon={<ArrowRight size={'1rem'} />}
 						callback={nextCard}
 					/>
 				</div>

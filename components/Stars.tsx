@@ -7,7 +7,7 @@ type StarsProps = {
 	activeCard?: Card
 	rating: number
 	callback?: Function
-	size?: number
+	size?: string
 }
 
 const getOpacity = (idx: number, length: number, rating: number) => {
@@ -21,7 +21,7 @@ const getOpacity = (idx: number, length: number, rating: number) => {
 	}
 }
 
-const Stars = ({ rating, size = 18, callback, activeCard }: StarsProps) => {
+const Stars = ({ rating, size = '1rem', callback, activeCard }: StarsProps) => {
 	const stars = [1, 2, 3, 4, 5]
 	const [hovering, setHovering] = useState<number>(0)
 	const [confetti, setConfetti] = useState<boolean>(false)
