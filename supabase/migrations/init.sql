@@ -1,3 +1,6 @@
+drop table cards;
+drop table decks;
+drop table profiles;
 create table profiles (
   id uuid references auth.users not null primary key,
   display_name TEXT NULL
@@ -65,6 +68,8 @@ CREATE POLICY
   FOR UPDATE
   USING ( auth.uid() = id );
 
+DROP TRIGGER create_profile_on_signup ON auth.users;
+DROP FUNCTION public.create_profile_for_new_user();
 CREATE FUNCTION
   public.create_profile_for_new_user()
   RETURNS TRIGGER AS
