@@ -28,7 +28,7 @@ const CardCarousel = () => {
 
 	const handleGlobalKey = (event: KeyboardEvent) => {
 		if (document.activeElement != document.body) return
-		console.log(event.code)
+		//console.log(event.code)
 		switch (event.code) {
 			case 'ArrowRight':
 				next()
