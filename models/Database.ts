@@ -16,6 +16,8 @@ export interface Database {
           back: string
           rating: number
           id: string
+          created_at: string | null
+          updated_at: string | null
         }
         Insert: {
           deck_id: string
@@ -23,6 +25,8 @@ export interface Database {
           back: string
           rating: number
           id?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           deck_id?: string
@@ -30,6 +34,8 @@ export interface Database {
           back?: string
           rating?: number
           id?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
       }
       decks: {
@@ -37,30 +43,42 @@ export interface Database {
           created_by: string
           title: string
           id: string
+          created_at: string | null
+          updated_at: string | null
         }
         Insert: {
           created_by: string
           title: string
           id?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           created_by?: string
           title?: string
           id?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
       }
       profiles: {
         Row: {
           id: string
           display_name: string | null
+          created_at: string | null
+          updated_at: string | null
         }
         Insert: {
           id: string
           display_name?: string | null
+          created_at?: string | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
           display_name?: string | null
+          created_at?: string | null
+          updated_at?: string | null
         }
       }
     }

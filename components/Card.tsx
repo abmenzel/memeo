@@ -92,7 +92,7 @@ const Card = ({
 						<TextareaAutosize
 							ref={!flipCard ? activeCardInputRef : null}
 							disabled={!(editing?.id === card.id)}
-							className={`outline-none transition-none text-center bg-transparent font-bold text-3xl resize-none`}
+							className={`font-serif outline-none transition-none text-center bg-transparent font-bold text-3xl resize-none`}
 							value={front}
 							placeholder={'Card front'}
 							onChange={changeFront}

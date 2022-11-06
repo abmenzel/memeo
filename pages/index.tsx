@@ -18,10 +18,18 @@ const Home: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout hideNavBar={true}>
-				<h1 className='font-bold text-3xl mb-4'>Welcome</h1>
+				<div className='text-center max-w-xs mb-12'>
+					<h1 className='font-extrabold text-3xl font-serif mb-4'>
+						Memeo
+					</h1>
+					<p className='text-lg'>
+						Become a master at memorizing anything you would like.
+					</p>
+				</div>
+
 				<Link href={'/login'}>
 					<a className='btn-primary flex items-center gap-x-2'>
-						<LogIn /> Login
+						<LogIn /> Get started
 					</a>
 				</Link>
 			</Layout>

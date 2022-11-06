@@ -55,16 +55,24 @@ const DeckList = () => {
 	}
 
 	return (
-		<div className='flex flex-col gap-y-2 my-4 mb-16 w-full'>
-			{state.decks.map((deck, idx) => (
-				<DeckPreview
-					key={idx}
-					deck={deck}
-					editing={editing}
-					setEditing={setEditing}
-				/>
-			))}
-			<div>
+		<div className='flex flex-col items-center gap-y-2 my-4 mb-16 w-full'>
+			{state.decks.length > 0 ? (
+				state.decks.map((deck, idx) => (
+					<DeckPreview
+						key={idx}
+						deck={deck}
+						editing={editing}
+						setEditing={setEditing}
+					/>
+				))
+			) : (
+				<p className='max-w-sm text-center'>
+					A card deck is a collection of cards used to practice a
+					certain topic.
+				</p>
+			)}
+
+			<div className='mt-4'>
 				<button
 					onClick={handleNewDeck}
 					className='btn-primary inline-flex gap-x-2 items-center'>

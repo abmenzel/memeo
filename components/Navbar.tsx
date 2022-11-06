@@ -13,11 +13,6 @@ const Navbar = () => {
 						icon={<LayoutGrid />}
 						label='Cards'
 					/>
-					<NavItem
-						route='/settings'
-						icon={<Settings />}
-						label='Settings'
-					/>
 				</ul>
 			</nav>
 		</div>

@@ -1,20 +1,26 @@
-drop table cards;
-drop table decks;
-drop table profiles;
+drop table if exists cards;
+drop table if exists decks;
+drop table if exists profiles ;
 create table profiles (
   id uuid references auth.users not null primary key,
+  created_at timestamp default now(),
+  updated_at timestamp default now(),
   display_name TEXT NULL
 );
 
 create table decks (
   id uuid default uuid_generate_v4() primary key,
   created_by uuid references auth.users not null,
+  created_at timestamp default now(),
+  updated_at timestamp default now(),
   title TEXT NOT NULL
 );
 
 create table cards (
   id uuid default uuid_generate_v4() primary key,
   deck_id uuid references public.decks NOT NULL,
+  created_at timestamp default now(),
+  updated_at timestamp default now(),
   front TEXT NOT NULL,
   back TEXT NOT NULL,
   rating REAL NOT NULL
@@ -68,8 +74,8 @@ CREATE POLICY
   FOR UPDATE
   USING ( auth.uid() = id );
 
-DROP TRIGGER create_profile_on_signup ON auth.users;
-DROP FUNCTION public.create_profile_for_new_user();
+DROP TRIGGER if exists create_profile_on_signup ON auth.users;
+DROP FUNCTION if exists public.create_profile_for_new_user();
 CREATE FUNCTION
   public.create_profile_for_new_user()
   RETURNS TRIGGER AS

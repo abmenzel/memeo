@@ -17,7 +17,10 @@ const Dashboard: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout>
-				<h1 className='text-3xl mb-4 font-serif font-extrabold'>
+				{state.user && (
+					<p className='text-xs mb-1'>{state.user.name}'s</p>
+				)}
+				<h1 className='text-3xl mb-0 font-serif font-extrabold'>
 					Card Decks
 				</h1>
 				<DeckList />

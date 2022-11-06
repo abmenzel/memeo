@@ -90,6 +90,7 @@ export const updateDeck = async (deck: Deck) => {
 			.from('decks')
 			.update({
 				title: deck.title,
+				updated_at: new Date().toUTCString(),
 			})
 			.eq('id', deck.id)
 	} catch (error) {
@@ -125,6 +126,7 @@ export const updateCard = async (card: Card) => {
 				front: card.front,
 				back: card.back,
 				rating: card.rating,
+				updated_at: new Date().toUTCString(),
 			})
 			.eq('id', card.id)
 	} catch (error) {
