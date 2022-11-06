@@ -92,7 +92,14 @@ const Card = ({
 						<TextareaAutosize
 							ref={!flipCard ? activeCardInputRef : null}
 							disabled={!(editing?.id === card.id)}
-							className={`font-serif outline-none transition-none text-center bg-transparent font-bold text-3xl resize-none`}
+							className={`font-serif outline-none transition-none text-center bg-transparent font-bold resize-none ${
+								(front.length > 80 && 'text-md') ||
+								(front.length > 60 && 'text-lg') ||
+								(front.length > 40 && 'text-xl') ||
+								(front.length > 10 && 'text-2xl') ||
+								(front.length > 4 && 'text-3xl') ||
+								'text-4xl'
+							}`}
 							value={front}
 							placeholder={'Card front'}
 							onChange={changeFront}
@@ -113,7 +120,14 @@ const Card = ({
 						<TextareaAutosize
 							ref={flipCard ? activeCardInputRef : null}
 							disabled={!(editing?.id === card.id)}
-							className={`text-2xl transition-none outline-none text-center bg-transparent resize-none`}
+							className={`transition-none outline-none text-center bg-transparent resize-none ${
+								(back.length > 80 && 'text-sm') ||
+								(back.length > 60 && 'text-md') ||
+								(back.length > 40 && 'text-lg') ||
+								(back.length > 10 && 'text-xl') ||
+								(back.length > 4 && 'text-2xl') ||
+								'text-3xl'
+							}`}
 							value={back}
 							placeholder={'Card back'}
 							onKeyDown={handleKey}
