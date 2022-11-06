@@ -26,6 +26,10 @@
 	}
 }
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
 html,
 body {
 	height: var(--doc-height);
