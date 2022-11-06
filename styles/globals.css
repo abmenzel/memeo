@@ -4,6 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
+:root {
+	--doc-height: 100%;
+}
+
 @layer base {
 	.rotate-xy-180 {
 		transform: rotateY(10deg) rotateX(90deg);
@@ -17,15 +21,22 @@
 	.btn {
 		@apply rounded-md transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1 cursor-pointer;
 	}
+	.height-actual-screen {
+		height: var(--doc-height);
+	}
 }
 
 html,
 body {
+	height: var(--doc-height);
 	padding: 0;
 	margin: 0;
 	outline: none;
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+#__next {
+	height: var(--doc-height);
 }
 
 a {

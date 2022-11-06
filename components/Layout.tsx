@@ -18,8 +18,9 @@ const Layout = ({
 					href='https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@400;700;800&display=swap'
 					rel='stylesheet'
 				/>
+				<meta name='theme-color' content='#ffedd5' />
 			</Head>
-			<div className='font-body overflow-y-auto bg-orange-100 text-black h-screen flex flex-col items-center'>
+			<div className='font-body overflow-y-auto bg-orange-100 text-black height-actual-screen flex flex-col items-center'>
 				<div className='max-w-xl w-full flex flex-col justify-center items-center grow px-4'>
 					{children}
 				</div>
