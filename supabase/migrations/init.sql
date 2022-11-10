@@ -1,14 +1,11 @@
-drop table if exists cards;
-drop table if exists decks;
-drop table if exists profiles ;
-create table profiles (
+create table if not exists profiles (
   id uuid references auth.users not null primary key,
   created_at timestamp default now(),
   updated_at timestamp default now(),
   display_name TEXT NULL
 );
 
-create table decks (
+create table if not exists decks (
   id uuid default uuid_generate_v4() primary key,
   created_by uuid references auth.users not null,
   created_at timestamp default now(),
@@ -16,7 +13,7 @@ create table decks (
   title TEXT NOT NULL
 );
 
-create table cards (
+create table if not exists cards (
   id uuid default uuid_generate_v4() primary key,
   deck_id uuid references public.decks NOT NULL,
   created_at timestamp default now(),
@@ -74,8 +71,7 @@ CREATE POLICY
   FOR UPDATE
   USING ( auth.uid() = id );
 
-DROP TRIGGER if exists create_profile_on_signup ON auth.users;
-DROP FUNCTION if exists public.create_profile_for_new_user();
+DROP FUNCTION if not exists exists public.create_profile_for_new_user();
 CREATE FUNCTION
   public.create_profile_for_new_user()
   RETURNS TRIGGER AS
