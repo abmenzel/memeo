@@ -71,7 +71,7 @@ const DeckPreviewToolbar = ({
 							<MoreVertical size={'1rem'} />
 						</span>
 					</Menu.Button>
-					<Menu.Items className='bg-orange-100 absolute right-0 border border-black rounded-md'>
+					<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md'>
 						<Menu.Item>
 							<button
 								className='btn-primary p-2 pr-4'
