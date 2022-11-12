@@ -38,10 +38,15 @@ module.exports = {
 				scaleUp: 'scaleUp 0.5s ease-in-out forwards',
 				bounceIn: 'bounceIn 0.2s ease-out forwards',
 				moveUp: 'moveUp 5s ease-in-out forwards',
+				moveInFromRight: 'moveInFromRight 100ms ease-in-out forwards',
 				moveAllRight: 'moveAllRight 3s ease-in-out forwards',
 				grain: 'grain 8s steps(8) infinite',
 			},
 			keyframes: {
+				moveInFromRight: {
+					'0%': { transform: 'translateX(1%)' },
+					'100%': { transform: 'translateX(0)' },
+				},
 				grain: {
 					'0%': { transform: 'translate(0, 0)' },
 					'5%': { transform: 'translate(10%, -5%)' },

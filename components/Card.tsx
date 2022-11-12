@@ -7,6 +7,7 @@ import React, {
 	useState,
 	ChangeEventHandler,
 	MouseEventHandler,
+	useRef,
 } from 'react'
 import Card from '../models/Card'
 import { useDoubleTap } from 'use-double-tap'
@@ -29,6 +30,8 @@ const Card = ({
 	const [front, setFront] = useState<string>(card.front)
 	const [back, setBack] = useState<string>(card.back)
 
+	const wrapperRef = useRef<HTMLDivElement>(null)
+
 	const bind = useDoubleTap((event) => {
 		// Your action here
 		console.log('Double tapped')
@@ -36,8 +39,14 @@ const Card = ({
 	})
 
 	useEffect(() => {
+		console.log('test')
 		setFront(card.front)
 		setBack(card.back)
+		if (wrapperRef.current) {
+			wrapperRef.current.style.animation = 'none'
+			wrapperRef.current.offsetHeight
+			wrapperRef.current.style.animation = ''
+		}
 	}, [card])
 
 	const changeFront: ChangeEventHandler<HTMLTextAreaElement> = (
@@ -76,7 +85,9 @@ const Card = ({
 	}
 
 	return (
-		<div className='relative flex text-center w-full max-w-md'>
+		<div
+			ref={wrapperRef}
+			className='relative flex text-center w-full max-w-md animate-moveInFromRight'>
 			<div
 				{...bind}
 				className='font-serif w-full flex items-center overflow-visible'>
