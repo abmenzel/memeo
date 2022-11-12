@@ -63,13 +63,23 @@ const Toolbar = ({
 		<div className='flex flex-col items-center justify-center'>
 			<div className='py-12 flex flex-col items-center'>
 				<p className='text-xs mb-4'>Confidence</p>
-				{activeCard && (
-					<Stars
-						rating={activeCard.rating}
-						size={'1.75rem'}
-						callback={handleNewRating}
+				<div className='flex items-center gap-x-4'>
+					<ToolbarItem
+						icon={<ArrowLeft size={'1.75rem'} />}
+						callback={prevCard}
 					/>
-				)}
+					{activeCard && (
+						<Stars
+							rating={activeCard.rating}
+							size={'1.75rem'}
+							callback={handleNewRating}
+						/>
+					)}
+					<ToolbarItem
+						icon={<ArrowRight size={'1.75rem'} />}
+						callback={nextCard}
+					/>
+				</div>
 			</div>
 			{deleting ? (
 				<div className='py-4 flex gap-x-4 justify-center'>
@@ -84,34 +94,26 @@ const Toolbar = ({
 			) : (
 				<div className='py-4 flex gap-x-4 justify-center'>
 					<ToolbarItem
-						icon={<ArrowLeft size={'1rem'} />}
-						callback={prevCard}
-					/>
-					<ToolbarItem
 						icon={
 							editing?.id === activeCard?.id ? (
-								<Check size={'1rem'} />
+								<Check size={'1.25rem'} />
 							) : (
-								<Edit size={'1rem'} />
+								<Edit size={'1.25rem'} />
 							)
 						}
 						callback={handleEdit}
 					/>
 					<ToolbarItem
-						icon={<RotateCw size={'1rem'} />}
+						icon={<RotateCw size={'1.25rem'} />}
 						callback={setFlipCard}
 					/>
 					<ToolbarItem
-						icon={<PlusCircle size={'1rem'} />}
+						icon={<PlusCircle size={'1.25rem'} />}
 						callback={handleNewCard}
 					/>
 					<ToolbarItem
-						icon={<Trash2 size={'1rem'} />}
+						icon={<Trash2 size={'1.25rem'} />}
 						callback={handleDeleting}
-					/>
-					<ToolbarItem
-						icon={<ArrowRight size={'1rem'} />}
-						callback={nextCard}
 					/>
 				</div>
 			)}

@@ -16,7 +16,7 @@
 		transform: rotateY(10deg) rotateX(-90deg);
 	}
 	.btn-primary {
-		@apply cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
+		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
 	}
 	.btn {
 		@apply rounded-md transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1 cursor-pointer;

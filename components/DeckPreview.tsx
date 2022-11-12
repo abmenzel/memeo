@@ -114,10 +114,8 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		deck.cards.length
 
 	return (
-		<div
-			onClick={handlePick}
-			className='group btn-primary py-2 flex justify-between items-center gap-x-8 w-full'>
-			<div className='flex flex-col min-w-0'>
+		<div className='group btn-primary py-2 flex justify-between items-center gap-x-8 w-full'>
+			<div onClick={handlePick} className='flex flex-col min-w-0'>
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
@@ -132,16 +130,17 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 				/>
 				<p className='text-xs'>{deck.cards.length} cards</p>
 			</div>
-
-			<DeckPreviewToolbar
-				deck={deck}
-				deleting={deleting}
-				editing={editing}
-				handleEdit={handleEdit}
-				handleDelete={handleDelete}
-				handleDeleting={handleDeleting}
-			/>
-			<Stars rating={averageRating} />
+			<div className='flex items-center gap-x-1'>
+				<Stars rating={averageRating} />
+				<DeckPreviewToolbar
+					deck={deck}
+					deleting={deleting}
+					editing={editing}
+					handleEdit={handleEdit}
+					handleDelete={handleDelete}
+					setDeleting={setDeleting}
+				/>
+			</div>
 		</div>
 	)
 }

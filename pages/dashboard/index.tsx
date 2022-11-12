@@ -24,7 +24,6 @@ const Dashboard: NextPage = () => {
 					Card Decks
 				</h1>
 				<DeckList />
-				<SignOutButton />
 			</Layout>
 		</>
 	)

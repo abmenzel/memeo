@@ -8,8 +8,8 @@ import React, {
 	ChangeEventHandler,
 	MouseEventHandler,
 } from 'react'
-import { CSSTransition } from 'react-transition-group'
 import Card from '../models/Card'
+import { useDoubleTap } from 'use-double-tap'
 
 const Card = ({
 	card,
@@ -28,7 +28,12 @@ const Card = ({
 }) => {
 	const [front, setFront] = useState<string>(card.front)
 	const [back, setBack] = useState<string>(card.back)
-	const [clicks, setClicks] = useState<number>(0)
+
+	const bind = useDoubleTap((event) => {
+		// Your action here
+		console.log('Double tapped')
+		setEditing(card)
+	})
 
 	useEffect(() => {
 		setFront(card.front)
@@ -49,21 +54,14 @@ const Card = ({
 	const handleBlur = () => {
 		if (!editing) return
 		setEditing(null)
-		setClicks(0)
 	}
 
 	const handleClick: MouseEventHandler<Element> = (event) => {
-		event.stopPropagation()
+		//event.stopPropagation()
 		if (!editing) {
 			setFlipCard(!flipCard)
 		}
 	}
-
-	useEffect(() => {}, [clicks])
-
-	useEffect(() => {
-		setClicks(0)
-	}, [flipCard])
 
 	const handleKey: KeyboardEventHandler<HTMLTextAreaElement> = (
 		event: KeyboardEvent
@@ -79,7 +77,9 @@ const Card = ({
 
 	return (
 		<div className='relative flex text-center w-full max-w-md'>
-			<div className='font-ser w-full flex items-center overflow-visible'>
+			<div
+				{...bind}
+				className='font-serif w-full flex items-center overflow-visible'>
 				<div
 					onClick={handleClick}
 					className={`${

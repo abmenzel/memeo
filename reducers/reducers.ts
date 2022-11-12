@@ -79,7 +79,6 @@ export const userReducer = (
 		case Types.SignIn:
 			return action.payload
 		case Types.SignOut:
-			localStorage.clear()
 			return null
 		default:
 			return state.user

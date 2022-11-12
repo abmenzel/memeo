@@ -18,7 +18,6 @@ const CardCarousel = () => {
 	const { state, dispatch } = useContext(AppContext)
 	const { activeDeck } = state
 	const [activeCard, setActiveCard] = useState<ICard | null>(null)
-	const [clicks, setClicks] = useState<number>(0)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
 	const [flipCard, setFlipCard] = useState(false)
 	const [editing, setEditing] = useState<ICard | null>(null)
@@ -192,20 +191,15 @@ const CardCarousel = () => {
 		}
 	}, [editing])
 
-	useEffect(() => {
-		if (clicks > 1) {
-			setEditing(activeCard)
-			setClicks(0)
-		}
-	}, [clicks])
-
 	return (
 		<div className='flex-grow flex flex-col max-w-xl w-full'>
 			{cards.length > 0 ? (
 				<>
-					<div
-						onClick={() => setClicks(clicks + 1)}
-						className='flex-grow flex flex-col items-center justify-center'>
+					<div className='relative flex-grow flex flex-col items-center justify-center'>
+						<div
+							onClick={prev}
+							className='w-10 h-full absolute left-0 z-10'
+						/>
 						{cards.length > 0 && activeCard && (
 							<Card
 								card={activeCard}
@@ -216,6 +210,10 @@ const CardCarousel = () => {
 								flipCard={flipCard}
 							/>
 						)}
+						<div
+							onClick={next}
+							className='w-10 h-full absolute right-0 z-10'
+						/>
 					</div>
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
