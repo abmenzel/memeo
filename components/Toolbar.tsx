@@ -84,10 +84,10 @@ const Toolbar = ({
 			{deleting ? (
 				<div className='py-4 flex gap-x-4 justify-center'>
 					<p className='font-bold'>Delete ? </p>
-					<button className='btn-primary' onClick={handleDelete}>
+					<button className='btn-secondary' onClick={handleDelete}>
 						<Check size={'1rem'} />
 					</button>
-					<button className='btn-primary' onClick={handleDeleting}>
+					<button className='btn-secondary' onClick={handleDeleting}>
 						<X size={'1rem'} />
 					</button>{' '}
 				</div>

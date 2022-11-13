@@ -20,7 +20,7 @@ const SignInCard = () => {
 	return (
 		<button
 			onClick={() => handleOAuthLogin('google')}
-			className='btn-primary flex items-center gap-x-2'>
+			className='btn-secondary flex items-center gap-x-2'>
 			<LogIn /> Sign in with Google
 		</button>
 	)

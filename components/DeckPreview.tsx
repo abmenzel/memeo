@@ -114,7 +114,7 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		deck.cards.length
 
 	return (
-		<div className='group btn-primary py-2 flex justify-between items-center gap-x-8 w-full'>
+		<div className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
 			<div onClick={handlePick} className='flex flex-col min-w-0'>
 				<input
 					ref={titleRef}

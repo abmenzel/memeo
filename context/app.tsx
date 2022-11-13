@@ -10,6 +10,7 @@ import {
 	Actions,
 	ActiveDeckActions,
 	activeDeckReducer,
+	consentReducer,
 	DeckActions,
 	deckReducer,
 	Types,
@@ -25,12 +26,18 @@ export type AppStateType = {
 	user: null | User
 	decks: Deck[]
 	activeDeck: null | Deck
+	consent:
+		| Types.ConsentAll
+		| Types.ConsentSome
+		| Types.ConsentAwait
+		| Types.ConsentLoading
 }
 
 const initialAppState: AppStateType = {
 	user: null,
 	decks: [],
 	activeDeck: null,
+	consent: Types.ConsentLoading,
 }
 
 const AppContext = createContext<{
@@ -66,6 +73,11 @@ const mainReducer = (state: AppStateType, action: Actions) => {
 				...state,
 				decks: deckReducer(state, action),
 				activeDeck: activeDeckReducer(state, action),
+			}
+		case Types.ConsentSet:
+			return {
+				...state,
+				consent: consentReducer(state, action),
 			}
 		default:
 			return state

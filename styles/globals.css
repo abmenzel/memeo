@@ -15,11 +15,14 @@
 	.-rotate-xy-180 {
 		transform: rotateY(10deg) rotateX(-90deg);
 	}
-	.btn-primary {
-		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1;
-	}
 	.btn {
-		@apply rounded-md transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1 cursor-pointer;
+		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1.5;
+	}
+	.btn-secondary {
+		@apply btn;
+	}
+	.btn-primary {
+		@apply btn bg-theme-dark font-bold text-orange-100 hover:bg-theme-dark hover:bg-opacity-95;
 	}
 	.height-actual-screen {
 		height: var(--doc-height);

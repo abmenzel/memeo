@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 				</div>
 
 				<Link href={'/login'}>
-					<a className='btn-primary flex items-center gap-x-2'>
+					<a className='btn-secondary flex items-center gap-x-2'>
 						<LogIn /> Get started
 					</a>
 				</Link>

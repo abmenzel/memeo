@@ -26,6 +26,11 @@ export enum Types {
 	AddCard = 'CARD_ADD',
 	DeleteCard = 'CARD_DELETE',
 	UpdateCard = 'CARD_UPDATE',
+	ConsentLoading = 'CONSENT_LOADING',
+	ConsentAwait = 'CONSENT_AWAITING',
+	ConsentSome = 'CONSENT_SOME',
+	ConsentAll = 'CONSENT_ALL',
+	ConsentSet = 'CONSENT_SET',
 }
 
 type UserPayload = {
@@ -59,17 +64,28 @@ type CardPayload = {
 	}
 }
 
+type ConsentPayload = {
+	[Types.ConsentAwait]: Types.ConsentAwait
+	[Types.ConsentSome]: Types.ConsentSome
+	[Types.ConsentAll]: Types.ConsentAll
+	[Types.ConsentLoading]: Types.ConsentLoading
+	[Types.ConsentSet]: Types.ConsentSome | Types.ConsentAll
+}
+
 export type DeckActions = ActionMap<DeckPayload>[keyof ActionMap<DeckPayload>]
 export type ActiveDeckActions =
 	ActionMap<ActiveDeckPayload>[keyof ActionMap<ActiveDeckPayload>]
 export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>]
 export type CardActions = ActionMap<CardPayload>[keyof ActionMap<CardPayload>]
+export type ConsentActions =
+	ActionMap<ConsentPayload>[keyof ActionMap<ConsentPayload>]
 
 export type Actions =
 	| DeckActions
 	| UserActions
 	| ActiveDeckActions
 	| CardActions
+	| ConsentActions
 
 export const userReducer = (
 	state: AppStateType,
@@ -197,5 +213,19 @@ export const activeDeckReducer = (
 		}
 		default:
 			return state.activeDeck
+	}
+}
+
+export const consentReducer = (state: AppStateType, action: ConsentActions) => {
+	switch (action.type) {
+		case Types.ConsentAwait:
+		case Types.ConsentAll:
+		case Types.ConsentLoading:
+		case Types.ConsentSet:
+		case Types.ConsentSome: {
+			return action.payload
+		}
+		default:
+			return Types.ConsentLoading
 	}
 }

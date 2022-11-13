@@ -18,7 +18,7 @@ const SignOutButton = () => {
 				})
 				router.push('/login')
 			}}
-			className='btn-primary flex items-center gap-x-2'>
+			className='btn-secondary flex items-center gap-x-2'>
 			<LogOut /> Sign out
 		</button>
 	)

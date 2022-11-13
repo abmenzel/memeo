@@ -35,7 +35,7 @@ const DeckPreviewToolbar = ({
 							leave='ease-in duration-200'
 							leaveFrom='opacity-100 scale-100'
 							leaveTo='opacity-0 scale-95'>
-							<Dialog.Panel className='w-full flex flex-col items-center max-w-sm rounded bg-orange-100 border border-black text-black p-4 text-center'>
+							<Dialog.Panel className='w-full flex flex-col items-center max-w-sm rounded-md bg-orange-100 border border-black text-black p-4 text-center'>
 								<Dialog.Title className='text-xl font-bold font-serif mb-2'>
 									Delete {deck.title}?
 								</Dialog.Title>
@@ -43,7 +43,7 @@ const DeckPreviewToolbar = ({
 									This will permanently delete this card deck.
 								</Dialog.Description>
 								<div className='flex gap-x-2'>
-									<button className='btn-primary'>
+									<button className='btn-secondary'>
 										<Trash2
 											size={'1rem'}
 											onClick={(e) => {
@@ -53,7 +53,7 @@ const DeckPreviewToolbar = ({
 										Delete
 									</button>
 									<button
-										className='btn-primary'
+										className='btn-secondary'
 										onClick={() => setDeleting(false)}>
 										<X size={'1rem'} />
 										Cancel
@@ -67,21 +67,21 @@ const DeckPreviewToolbar = ({
 			<Menu>
 				<div className='relative'>
 					<Menu.Button>
-						<span className='btn-primary'>
+						<span className='btn-secondary'>
 							<MoreVertical size={'1rem'} />
 						</span>
 					</Menu.Button>
 					<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md'>
 						<Menu.Item>
 							<button
-								className='btn-primary p-2 pr-4'
+								className='btn-secondary p-2 pr-4'
 								onClick={handleEdit}>
 								<Edit3 size={'1rem'} /> Rename
 							</button>
 						</Menu.Item>
 						<Menu.Item>
 							<button
-								className='btn-primary p-2 pr-4'
+								className='btn-secondary p-2 pr-4'
 								onClick={() => setDeleting(true)}>
 								<Trash2 size={'1rem'} /> Delete
 							</button>

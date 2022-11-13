@@ -21,7 +21,7 @@ const Dojo = () => {
 				<div className='relative w-full flex-grow flex flex-col'>
 					<div className='text-center relative py-4 flex items-center justify-center'>
 						<Link href='/dashboard'>
-							<a className='btn-primary absolute left-0'>
+							<a className='btn-secondary absolute left-0'>
 								<ArrowLeft />
 							</a>
 						</Link>

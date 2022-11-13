@@ -231,7 +231,7 @@ const CardCarousel = () => {
 				<div className='flex flex-col gap-y-4 text-center flex-grow items-center justify-center'>
 					<p>This deck is empty.</p>
 					<button
-						className='btn-primary items-center flex gap-x-2'
+						className='btn-secondary items-center flex gap-x-2'
 						onClick={handleNewCard}>
 						<PlusCircle />
 						Add card

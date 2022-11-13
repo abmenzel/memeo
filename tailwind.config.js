@@ -21,6 +21,7 @@ module.exports = {
 					175: '#ebd8bf',
 				},
 				theme: {
+					dark: '#0e1428',
 					purple: '#4d2c56',
 					'light-orange': '#e9ac8d',
 					'dark-blue': '#3600e8',
@@ -38,6 +39,7 @@ module.exports = {
 				scaleUp: 'scaleUp 0.5s ease-in-out forwards',
 				bounceIn: 'bounceIn 0.2s ease-out forwards',
 				moveUp: 'moveUp 5s ease-in-out forwards',
+				moveUpSlight: 'moveUpSlight 0.1s ease-out forwards',
 				moveInFromRight: 'moveInFromRight 100ms ease-in-out forwards',
 				moveAllRight: 'moveAllRight 3s ease-in-out forwards',
 				grain: 'grain 8s steps(8) infinite',
@@ -76,6 +78,16 @@ module.exports = {
 					},
 					'100%': {
 						width: '100%',
+					},
+				},
+				moveUpSlight: {
+					'0%': {
+						transform: 'translateY(4px)',
+						opacity: '0',
+					},
+					'100%': {
+						transform: 'translateY(0)',
+						opacity: '1',
 					},
 				},
 				moveAllRight: {

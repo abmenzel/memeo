@@ -75,7 +75,7 @@ const DeckList = () => {
 			<div className='mt-4'>
 				<button
 					onClick={handleNewDeck}
-					className='btn-primary inline-flex gap-x-2 items-center'>
+					className='btn-secondary inline-flex gap-x-2 items-center'>
 					<PlusCircle /> Add deck
 				</button>
 			</div>
