@@ -43,17 +43,16 @@ const DeckPreviewToolbar = ({
 									This will permanently delete this card deck.
 								</Dialog.Description>
 								<div className='flex gap-x-2'>
-									<button className='btn-secondary'>
-										<Trash2
-											size={'1rem'}
-											onClick={(e) => {
-												handleDelete(e)
-											}}
-										/>{' '}
+									<button
+										onClick={(e) => {
+											handleDelete(e)
+										}}
+										className='btn-secondary'>
+										<Trash2 size={'1rem'} />
 										Delete
 									</button>
 									<button
-										className='btn-secondary'
+										className='btn-primary font-base'
 										onClick={() => setDeleting(false)}>
 										<X size={'1rem'} />
 										Cancel
@@ -66,23 +65,31 @@ const DeckPreviewToolbar = ({
 			</Transition>
 			<Menu>
 				<div className='relative'>
-					<Menu.Button>
+					<Menu.Button
+						onClick={(event: React.MouseEvent) =>
+							event.stopPropagation()
+						}>
 						<span className='btn-secondary'>
 							<MoreVertical size={'1rem'} />
 						</span>
 					</Menu.Button>
-					<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md'>
+					<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md flex flex-col'>
 						<Menu.Item>
 							<button
-								className='btn-secondary p-2 pr-4'
-								onClick={handleEdit}>
+								className='btn-secondary p-2 pr-4 rounded-none'
+								onClick={(event) => {
+									handleEdit(event)
+								}}>
 								<Edit3 size={'1rem'} /> Rename
 							</button>
 						</Menu.Item>
 						<Menu.Item>
 							<button
-								className='btn-secondary p-2 pr-4'
-								onClick={() => setDeleting(true)}>
+								className='btn-secondary p-2 pr-4 rounded-none'
+								onClick={(event) => {
+									event.stopPropagation()
+									setDeleting(true)
+								}}>
 								<Trash2 size={'1rem'} /> Delete
 							</button>
 						</Menu.Item>

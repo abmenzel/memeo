@@ -8,16 +8,12 @@ import React, {
 import User from '../models/User'
 import {
 	Actions,
-	ActiveDeckActions,
 	activeDeckReducer,
 	consentReducer,
-	DeckActions,
 	deckReducer,
 	Types,
-	UserActions,
 	userReducer,
 } from '../reducers/reducers'
-import { createClient } from '@supabase/supabase-js'
 import { getDecksByUser, supabase } from '../lib/api'
 import { useRouter } from 'next/router'
 import Deck from '../models/Deck'

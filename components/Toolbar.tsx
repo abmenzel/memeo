@@ -9,6 +9,7 @@ import {
 	PlusCircle,
 	PlusSquare,
 	RotateCw,
+	Shuffle,
 	Trash2,
 	X,
 } from 'lucide-react'
@@ -29,6 +30,7 @@ const Toolbar = ({
 	setFlipCard,
 	handleEdit,
 	editing,
+	handleShuffle,
 }: {
 	activeCard: Card
 	nextCard: () => void
@@ -38,6 +40,7 @@ const Toolbar = ({
 	setFlipCard: () => void
 	handleEdit: (event: React.MouseEvent) => void
 	editing: Card | null
+	handleShuffle: () => void
 }) => {
 	const [deleting, setDeleting] = useState<boolean>(false)
 	const { dispatch } = useContext(AppContext)
@@ -102,6 +105,10 @@ const Toolbar = ({
 							)
 						}
 						callback={handleEdit}
+					/>
+					<ToolbarItem
+						icon={<Shuffle size={'1.25rem'} />}
+						callback={handleShuffle}
 					/>
 					<ToolbarItem
 						icon={<RotateCw size={'1.25rem'} />}

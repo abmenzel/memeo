@@ -16,13 +16,13 @@
 		transform: rotateY(10deg) rotateX(-90deg);
 	}
 	.btn {
-		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1.5;
+		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 p-1.5 px-2;
 	}
 	.btn-secondary {
 		@apply btn;
 	}
 	.btn-primary {
-		@apply btn bg-theme-dark font-bold text-orange-100 hover:bg-theme-dark hover:bg-opacity-95;
+		@apply btn bg-theme-dark text-orange-100 hover:bg-theme-dark hover:bg-opacity-80;
 	}
 	.height-actual-screen {
 		height: var(--doc-height);

@@ -33,13 +33,10 @@ const Card = ({
 	const wrapperRef = useRef<HTMLDivElement>(null)
 
 	const bind = useDoubleTap((event) => {
-		// Your action here
-		console.log('Double tapped')
 		setEditing(card)
 	})
 
 	useEffect(() => {
-		console.log('test')
 		setFront(card.front)
 		setBack(card.back)
 		if (wrapperRef.current) {

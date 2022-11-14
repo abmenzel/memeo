@@ -1,10 +1,7 @@
 import { Provider } from '@supabase/supabase-js'
-import { LogIn, LogOut } from 'lucide-react'
-import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
-import { AppContext } from '../context/app'
 import { supabase } from '../lib/api'
-import { Types } from '../reducers/reducers'
+import { RiGoogleFill } from 'react-icons/ri'
 
 const SignInCard = () => {
 	const handleOAuthLogin = async (provider: Provider) => {
@@ -20,8 +17,8 @@ const SignInCard = () => {
 	return (
 		<button
 			onClick={() => handleOAuthLogin('google')}
-			className='btn-secondary flex items-center gap-x-2'>
-			<LogIn /> Sign in with Google
+			className='btn-primary'>
+			<RiGoogleFill size='1rem' /> Sign in with Google
 		</button>
 	)
 }

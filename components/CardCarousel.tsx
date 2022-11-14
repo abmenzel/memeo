@@ -1,11 +1,5 @@
-import { ArrowRight, PlusCircle } from 'lucide-react'
-import React, {
-	KeyboardEventHandler,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react'
+import { PlusCircle } from 'lucide-react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Card from './Card'
 import ICard from '../models/Card'
 import Toolbar from './Toolbar'
@@ -13,7 +7,7 @@ import { AppContext } from '../context/app'
 import { Types } from '../reducers/reducers'
 import { createNewCard } from '../lib/api.utils'
 import { updateCard } from '../lib/api'
-import { Transition } from '@headlessui/react'
+import arrayShuffle from 'array-shuffle'
 
 const CardCarousel = () => {
 	const { state, dispatch } = useContext(AppContext)
@@ -28,7 +22,6 @@ const CardCarousel = () => {
 
 	const handleGlobalKey = (event: KeyboardEvent) => {
 		if (document.activeElement != document.body) return
-		//console.log(event.code)
 		switch (event.code) {
 			case 'ArrowRight':
 				next()
@@ -57,7 +50,8 @@ const CardCarousel = () => {
 
 	useEffect(() => {
 		if (!activeDeck) return
-		setCards(activeDeck.cards)
+		const shuffledCards = arrayShuffle(activeDeck.cards)
+		setCards(shuffledCards)
 	}, [activeDeck])
 
 	useEffect(() => {
@@ -92,7 +86,6 @@ const CardCarousel = () => {
 	}
 
 	const handleNewCard = async () => {
-		console.log('new card')
 		if (!state.activeDeck || !state.activeDeck.id) return
 
 		const newCard = {
@@ -106,12 +99,16 @@ const CardCarousel = () => {
 		createNewCard(dispatch, newCard)
 	}
 
+	const handleShuffle = () => {
+		const shuffledCards = arrayShuffle(cards)
+		setCards(shuffledCards)
+	}
+
 	const handleEdit = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		if (editing) {
 			setEditing(null)
 		} else {
-			console.log(cards[activeCardIdx])
 			setEditing(cards[activeCardIdx])
 		}
 	}
@@ -196,6 +193,12 @@ const CardCarousel = () => {
 		<div className='flex-grow flex flex-col max-w-xl w-full'>
 			{cards.length > 0 ? (
 				<>
+					{activeDeck && (
+						<div className='text-center text-xs'>
+							{activeCardIdx + 1} / {activeDeck.cards.length}{' '}
+							cards
+						</div>
+					)}
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
 						<div
 							onClick={prev}
@@ -224,15 +227,14 @@ const CardCarousel = () => {
 						handleNewCard={handleNewCard}
 						setFlipCard={() => setFlipCard(!flipCard)}
 						handleEdit={handleEdit}
+						handleShuffle={handleShuffle}
 						editing={editing}
 					/>
 				</>
 			) : (
 				<div className='flex flex-col gap-y-4 text-center flex-grow items-center justify-center'>
 					<p>This deck is empty.</p>
-					<button
-						className='btn-secondary items-center flex gap-x-2'
-						onClick={handleNewCard}>
+					<button className='btn-primary' onClick={handleNewCard}>
 						<PlusCircle />
 						Add card
 					</button>

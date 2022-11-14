@@ -3,13 +3,8 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import Link from 'next/link'
 import { LogIn } from 'lucide-react'
-import { useContext } from 'react'
-import { AppContext } from '../context/app'
-import { Types } from '../reducers/reducers'
-import SignInCard from '../components/SignInCard'
 
 const Home: NextPage = () => {
-	const { state, dispatch } = useContext(AppContext)
 	return (
 		<>
 			<Head>
@@ -28,7 +23,7 @@ const Home: NextPage = () => {
 				</div>
 
 				<Link href={'/login'}>
-					<a className='btn-secondary flex items-center gap-x-2'>
+					<a className='btn-primary'>
 						<LogIn /> Get started
 					</a>
 				</Link>

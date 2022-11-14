@@ -27,9 +27,7 @@ const DeckList = () => {
 			payload: createdDeck,
 		})
 
-		console.log('storing deck for user', state.user.id)
 		const newDeckId = await storeDeck(createdDeck)
-		console.log('new deck id', newDeckId)
 		if (!newDeckId) return
 
 		const newDeck = { ...createdDeck, id: newDeckId }
@@ -73,9 +71,7 @@ const DeckList = () => {
 			)}
 
 			<div className='mt-4'>
-				<button
-					onClick={handleNewDeck}
-					className='btn-secondary inline-flex gap-x-2 items-center'>
+				<button onClick={handleNewDeck} className='btn-primary'>
 					<PlusCircle /> Add deck
 				</button>
 			</div>

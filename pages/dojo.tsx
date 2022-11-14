@@ -19,7 +19,7 @@ const Dojo = () => {
 			</Head>
 			<Layout>
 				<div className='relative w-full flex-grow flex flex-col'>
-					<div className='text-center relative py-4 flex items-center justify-center'>
+					<div className='text-center relative pt-4 flex items-center justify-center'>
 						<Link href='/dashboard'>
 							<a className='btn-secondary absolute left-0'>
 								<ArrowLeft />
@@ -29,9 +29,6 @@ const Dojo = () => {
 							<h2 className='font-serif text-xl font-bold'>
 								{state.activeDeck?.title}
 							</h2>
-							<p className='text-xs'>
-								{state.activeDeck?.cards.length} cards
-							</p>
 						</div>
 					</div>
 					<CardCarousel />

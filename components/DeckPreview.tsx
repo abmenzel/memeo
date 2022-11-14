@@ -82,15 +82,6 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		setEditing(false)
 	}
 
-	const handleDeleting = (event: React.MouseEvent) => {
-		event.stopPropagation()
-		if (deleting) {
-			setDeleting(false)
-		} else {
-			setDeleting(true)
-		}
-	}
-
 	const handleDelete = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		dispatch({
@@ -114,8 +105,10 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 		deck.cards.length
 
 	return (
-		<div className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
-			<div onClick={handlePick} className='flex flex-col min-w-0'>
+		<div
+			onClick={handlePick}
+			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
+			<div className='flex flex-col min-w-0'>
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
