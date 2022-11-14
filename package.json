@@ -1,7 +1,9 @@
 {
-	"name": "messenger-wrapped",
-	"version": "0.1.0",
-	"private": true,
+	"name": "memeo",
+	"version": "1.0.0",
+	"private": false,
+	"author": "Alexander Menzel",
+	"license": "The MIT License (MIT)",
 	"scripts": {
 		"dev": "next dev & ~/telebit http 54321",
 		"db:reset": "supabase stop && supabase start",

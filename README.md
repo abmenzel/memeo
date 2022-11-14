@@ -20,6 +20,7 @@ The demo reflects the **main branch**.
 -   Tailwind CSS
 -   Typescript
 -   Supabase
+-   Next PWA
 
 ## Getting Started
 
