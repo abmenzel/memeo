@@ -50,8 +50,7 @@ const CardCarousel = () => {
 
 	useEffect(() => {
 		if (!activeDeck) return
-		const shuffledCards = arrayShuffle(activeDeck.cards)
-		setCards(shuffledCards)
+		setCards(activeDeck.cards)
 	}, [activeDeck])
 
 	useEffect(() => {
