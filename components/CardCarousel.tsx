@@ -199,10 +199,17 @@ const CardCarousel = () => {
 						</div>
 					)}
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						<div
-							onClick={prev}
-							className='w-10 h-full absolute left-0 z-10'
-						/>
+						<div className='absolute max-w-md w-full mx-auto h-full'>
+							<div
+								onClick={prev}
+								className='w-10 md:w-16 h-full absolute left-0 z-10'
+							/>
+							<div
+								onClick={next}
+								className='w-10 md:w-16 h-full absolute right-0 z-10'
+							/>
+						</div>
+
 						{cards.length > 0 && activeCard && (
 							<Card
 								card={activeCard}
@@ -213,10 +220,6 @@ const CardCarousel = () => {
 								flipCard={flipCard}
 							/>
 						)}
-						<div
-							onClick={next}
-							className='w-10 h-full absolute right-0 z-10'
-						/>
 					</div>
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
