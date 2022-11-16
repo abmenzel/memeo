@@ -54,21 +54,9 @@ const CardCarousel = () => {
 	}, [activeDeck])
 
 	useEffect(() => {
-		// Always start at the latest added card
-		setActiveCardIdx(cards.length - 1)
-	}, [cards.length])
-
-	useEffect(() => {
 		const newActiveCard = cards[activeCardIdx]
 		setActiveCard(newActiveCard)
 	}, [activeCardIdx, cards])
-
-	useEffect(() => {
-		// If we arrive at an empty card start editing
-		if (activeCard?.front === '') {
-			setEditing(activeCard)
-		}
-	}, [activeCard])
 
 	const next = () => {
 		const newCardIdx = (activeCardIdx + 1) % cards.length
@@ -223,6 +211,7 @@ const CardCarousel = () => {
 					</div>
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
+						activeCardIdx={activeCardIdx}
 						handleNewRating={handleNewRating}
 						nextCard={next}
 						prevCard={prev}
@@ -231,6 +220,7 @@ const CardCarousel = () => {
 						handleEdit={handleEdit}
 						handleShuffle={handleShuffle}
 						editing={editing}
+						setActiveCardIdx={setActiveCardIdx}
 					/>
 				</>
 			) : (

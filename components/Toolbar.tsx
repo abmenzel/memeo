@@ -23,6 +23,7 @@ import ToolbarItem from './ToolbarItem'
 
 const Toolbar = ({
 	activeCard,
+	activeCardIdx,
 	nextCard,
 	prevCard,
 	handleNewCard,
@@ -31,8 +32,10 @@ const Toolbar = ({
 	handleEdit,
 	editing,
 	handleShuffle,
+	setActiveCardIdx,
 }: {
 	activeCard: Card
+	activeCardIdx: number
 	nextCard: () => void
 	prevCard: () => void
 	handleNewRating: Function
@@ -41,6 +44,7 @@ const Toolbar = ({
 	handleEdit: (event: React.MouseEvent) => void
 	editing: Card | null
 	handleShuffle: () => void
+	setActiveCardIdx: (idx: number) => void
 }) => {
 	const [deleting, setDeleting] = useState<boolean>(false)
 	const { dispatch } = useContext(AppContext)
@@ -60,6 +64,7 @@ const Toolbar = ({
 		})
 		deleteCard(activeCard)
 		setDeleting(false)
+		setActiveCardIdx(activeCardIdx - 1)
 	}
 
 	return (
@@ -86,12 +91,11 @@ const Toolbar = ({
 			</div>
 			{deleting ? (
 				<div className='py-4 flex gap-x-4 justify-center'>
-					<p className='font-bold'>Delete ? </p>
 					<button className='btn-secondary' onClick={handleDelete}>
-						<Check size={'1rem'} />
+						<Trash2 size={'1.25rem'} /> Delete
 					</button>
-					<button className='btn-secondary' onClick={handleDeleting}>
-						<X size={'1rem'} />
+					<button className='btn-primary' onClick={handleDeleting}>
+						<X size={'1.25rem'} /> Cancel
 					</button>{' '}
 				</div>
 			) : (
