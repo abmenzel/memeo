@@ -1,13 +1,16 @@
 import { PlusCircle } from 'lucide-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import Card from './Card'
 import ICard from '../models/Card'
 import Toolbar from './Toolbar'
 import { AppContext } from '../context/app'
 import { Types } from '../reducers/reducers'
 import { createNewCard } from '../lib/api.utils'
-import { updateCard } from '../lib/api'
+import { deleteCard, updateCard } from '../lib/api'
 import arrayShuffle from 'array-shuffle'
+import { Dialog, Transition } from '@headlessui/react'
+import { cardIsEmpty } from '../lib/utils'
+import { usePrevious } from '../hooks/usePrevious'
 
 const CardCarousel = () => {
 	const { state, dispatch } = useContext(AppContext)
@@ -17,6 +20,8 @@ const CardCarousel = () => {
 	const [flipCard, setFlipCard] = useState(false)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const activeCardInputRef = useRef<any>()
+
+	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
 	const [cards, setCards] = useState<ICard[]>([])
 
@@ -54,9 +59,37 @@ const CardCarousel = () => {
 	}, [activeDeck])
 
 	useEffect(() => {
+		const lastCard = cards[cards.length - 1]
+		if (!lastCard) return
+		if (cardIsEmpty(lastCard)) {
+			setActiveCardIdx(cards.length - 1)
+		}
+	}, [cards.length])
+
+	useEffect(() => {
 		const newActiveCard = cards[activeCardIdx]
 		setActiveCard(newActiveCard)
 	}, [activeCardIdx, cards])
+
+	useEffect(() => {
+		console.log('new active card', activeCard)
+		console.log('previously active', prevActiveCard)
+		if (!prevActiveCard || !activeCard) return
+		if (
+			cardIsEmpty(prevActiveCard) &&
+			prevActiveCard.id !== activeCard.id
+		) {
+			console.log('will delete', prevActiveCard)
+			dispatch({
+				type: Types.DeleteCard,
+				payload: prevActiveCard,
+			})
+			deleteCard(prevActiveCard)
+		}
+		if (cardIsEmpty(activeCard)) {
+			setEditing(activeCard)
+		}
+	}, [activeCard])
 
 	const next = () => {
 		const newCardIdx = (activeCardIdx + 1) % cards.length
@@ -74,7 +107,10 @@ const CardCarousel = () => {
 
 	const handleNewCard = async () => {
 		if (!state.activeDeck || !state.activeDeck.id) return
-
+		const lastCard = cards[cards.length - 1]
+		console.log(lastCard)
+		if (!lastCard) return
+		if (cardIsEmpty(lastCard)) return
 		const newCard = {
 			id: null,
 			deck_id: state.activeDeck.id,

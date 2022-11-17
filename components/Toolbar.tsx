@@ -1,3 +1,4 @@
+import { Dialog, Transition } from '@headlessui/react'
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -13,11 +14,12 @@ import {
 	Trash2,
 	X,
 } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
 import { deleteCard } from '../lib/api'
-import Card from '../models/Card'
+import ICard from '../models/Card'
 import { Types } from '../reducers/reducers'
+import Card from './Card'
 import Stars from './Stars'
 import ToolbarItem from './ToolbarItem'
 
@@ -34,7 +36,7 @@ const Toolbar = ({
 	handleShuffle,
 	setActiveCardIdx,
 }: {
-	activeCard: Card
+	activeCard: ICard
 	activeCardIdx: number
 	nextCard: () => void
 	prevCard: () => void
@@ -42,7 +44,7 @@ const Toolbar = ({
 	handleNewCard: () => void
 	setFlipCard: () => void
 	handleEdit: (event: React.MouseEvent) => void
-	editing: Card | null
+	editing: ICard | null
 	handleShuffle: () => void
 	setActiveCardIdx: (idx: number) => void
 }) => {
