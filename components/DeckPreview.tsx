@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router'
 import React, {
 	ChangeEvent,
+	forwardRef,
 	KeyboardEvent,
 	useContext,
 	useEffect,
@@ -29,9 +30,11 @@ type DeckPreviewProps = {
 	deck: Deck
 	editing: Deck | null
 	setEditing: Function
+	handleProps: any
 }
 
-const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
+const DeckPreview = forwardRef((props: DeckPreviewProps) => {
+	const { deck, editing, setEditing } = props
 	const { dispatch } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
 	const [deleting, setDeleting] = useState<boolean>(false)
@@ -103,9 +106,9 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 	const averageRating =
 		deck.cards.reduce((acc, card) => acc + card.rating, 0) /
 		deck.cards.length
-
 	return (
 		<div
+			{...props}
 			onClick={handlePick}
 			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
@@ -132,10 +135,11 @@ const DeckPreview = ({ deck, editing, setEditing }: DeckPreviewProps) => {
 					handleEdit={handleEdit}
 					handleDelete={handleDelete}
 					setDeleting={setDeleting}
+					handleProps={props.handleProps}
 				/>
 			</div>
 		</div>
 	)
-}
+})
 
 export default DeckPreview
