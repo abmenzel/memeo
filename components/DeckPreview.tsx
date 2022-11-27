@@ -1,18 +1,6 @@
-import {
-	Check,
-	Cross,
-	Edit,
-	Edit2,
-	Edit3,
-	Star,
-	Trash,
-	Trash2,
-	X,
-} from 'lucide-react'
 import { useRouter } from 'next/router'
 import React, {
 	ChangeEvent,
-	forwardRef,
 	KeyboardEvent,
 	useContext,
 	useEffect,
@@ -33,7 +21,7 @@ type DeckPreviewProps = {
 	handleProps: any
 }
 
-const DeckPreview = forwardRef((props: DeckPreviewProps) => {
+const DeckPreview = (props: DeckPreviewProps) => {
 	const { deck, editing, setEditing } = props
 	const { dispatch } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
@@ -56,18 +44,22 @@ const DeckPreview = forwardRef((props: DeckPreviewProps) => {
 		if (editing?.id == deck.id) {
 			titleRef.current.focus()
 		} else if (deck.title !== titleRef.current.value) {
-			const newDeck = { ...deck, title: titleRef.current.value }
-			dispatch({
-				type: Types.UpdateDeck,
-				payload: {
-					oldDeck: deck,
-					newDeck: { ...deck, title: titleRef.current.value },
-				},
-			})
-
-			updateDeck(newDeck)
+			setTitle(deck.title)
 		}
 	}, [editing, deck])
+
+	useEffect(() => {
+		if (!titleRef.current) return
+		const newDeck = { ...deck, title: titleRef.current.value }
+		dispatch({
+			type: Types.UpdateDeck,
+			payload: {
+				oldDeck: deck,
+				newDeck: { ...deck, title: titleRef.current.value },
+			},
+		})
+		updateDeck(newDeck)
+	}, [title])
 
 	const handleKey = (event: KeyboardEvent): void => {
 		if (!editing) return
@@ -108,16 +100,15 @@ const DeckPreview = forwardRef((props: DeckPreviewProps) => {
 		deck.cards.length
 	return (
 		<div
-			{...props}
 			onClick={handlePick}
-			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
+			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
 			<div className='flex flex-col min-w-0'>
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
 					onKeyDown={handleKey}
 					readOnly={!(editing?.id == deck.id)}
-					className={`font-serif font-extrabold min-w-0 text-lg flex bg-transparent outline-none ${
+					className={`font-serif font-extrabold min-w-0 text-sm md:text-lg flex bg-transparent outline-none text-ellipsis ${
 						!(editing?.id == deck.id) && 'pointer-events-none'
 					}`}
 					onChange={handleChange}
@@ -140,6 +131,6 @@ const DeckPreview = forwardRef((props: DeckPreviewProps) => {
 			</div>
 		</div>
 	)
-})
+}
 
 export default DeckPreview

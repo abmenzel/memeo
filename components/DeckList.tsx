@@ -7,7 +7,7 @@ import Card from '../models/Card'
 import Deck from '../models/Deck'
 import { Types } from '../reducers/reducers'
 import DeckPreview from './DeckPreview'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
@@ -20,6 +20,7 @@ const DeckList = () => {
 			id: null,
 			title: '',
 			cards: [],
+			order: state.decks.length,
 			created_by: state.user.id,
 		}
 
@@ -72,6 +73,7 @@ const DeckList = () => {
 											ref={pr.innerRef}
 											{...pr.draggableProps}>
 											<DeckPreview
+												key={idx}
 												deck={deck}
 												editing={editing}
 												setEditing={setEditing}

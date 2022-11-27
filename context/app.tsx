@@ -112,11 +112,13 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
 	const tryFindUserDecks = async (user: User) => {
 		const userDecks = await getDecksByUser(user)
-		console.log('Found decks', userDecks)
 		if (userDecks && userDecks.length > 0) {
+			const decksSortedByOrder = userDecks.sort(
+				(deckA, deckB) => deckA.order - deckB.order
+			)
 			dispatch({
 				type: Types.SetDecks,
-				payload: userDecks,
+				payload: decksSortedByOrder,
 			})
 		}
 	}

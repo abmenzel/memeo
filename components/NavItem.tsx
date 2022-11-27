@@ -11,7 +11,6 @@ type NaviItemProps = {
 
 const NavItem = ({ icon, route, label, callback }: NaviItemProps) => {
 	const router = useRouter()
-	console.log(router.pathname)
 	return (
 		<li
 			onClick={callback}
