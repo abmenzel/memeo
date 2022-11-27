@@ -10,6 +10,7 @@ create table if not exists decks (
   created_by uuid references auth.users not null,
   created_at timestamp default now(),
   updated_at timestamp default now(),
+  order INTEGER NOT NULL,
   title TEXT NOT NULL
 );
 

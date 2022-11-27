@@ -119,7 +119,7 @@ export const deckReducer = (
 		}
 		case Types.UpdateDeck: {
 			const newDecks = state.decks.map((deck) => {
-				if (deck === action.payload.oldDeck) {
+				if (deck.id === action.payload.oldDeck.id) {
 					return action.payload.newDeck
 				} else {
 					return deck

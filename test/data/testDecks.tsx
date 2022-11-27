@@ -6,6 +6,7 @@ export const testDeck1: Deck = {
 	created_by: 'alex',
 	title: 'This is a test deck',
 	cards: testCards1,
+	order: 0,
 }
 
 export const testDeck2: Deck = {
@@ -13,6 +14,7 @@ export const testDeck2: Deck = {
 	created_by: 'alex',
 	title: 'Just another deck',
 	cards: testCards2,
+	order: 1,
 }
 
 export const testDecks = [testDeck1, testDeck2]

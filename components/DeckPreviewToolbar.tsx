@@ -1,4 +1,11 @@
-import { Check, Edit3, MoreVertical, Trash2, X } from 'lucide-react'
+import {
+	Check,
+	Edit3,
+	GripVertical,
+	MoreVertical,
+	Trash2,
+	X,
+} from 'lucide-react'
 import { Menu, Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useEffect } from 'react'
 import Deck from '../models/Deck'
@@ -10,6 +17,7 @@ type DeckPreviewToolbarProps = {
 	handleDelete: (event: React.MouseEvent) => void
 	setDeleting: Function
 	handleEdit: (event: React.MouseEvent) => void
+	handleProps: any
 }
 
 const DeckPreviewToolbar = ({
@@ -19,6 +27,7 @@ const DeckPreviewToolbar = ({
 	setDeleting,
 	handleEdit,
 	editing,
+	handleProps,
 }: DeckPreviewToolbarProps) => {
 	return (
 		<>
@@ -96,6 +105,9 @@ const DeckPreviewToolbar = ({
 					</Menu.Items>
 				</div>
 			</Menu>
+			<button {...handleProps} className='btn-secondary'>
+				<GripVertical size='1rem' />
+			</button>
 		</>
 	)
 }

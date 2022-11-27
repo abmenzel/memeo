@@ -64,6 +64,7 @@ export const storeDeck = async (deck: Deck) => {
 			.insert({
 				title: deck.title,
 				created_by: deck.created_by,
+				order: deck.order,
 			})
 			.select()
 		if (decksAdded) {
@@ -91,6 +92,7 @@ export const updateDeck = async (deck: Deck) => {
 			.update({
 				title: deck.title,
 				updated_at: new Date().toUTCString(),
+				order: deck.order,
 			})
 			.eq('id', deck.id)
 	} catch (error) {

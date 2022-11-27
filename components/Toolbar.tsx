@@ -1,3 +1,4 @@
+import { Dialog, Transition } from '@headlessui/react'
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -13,16 +14,18 @@ import {
 	Trash2,
 	X,
 } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
 import { deleteCard } from '../lib/api'
-import Card from '../models/Card'
+import ICard from '../models/Card'
 import { Types } from '../reducers/reducers'
+import Card from './Card'
 import Stars from './Stars'
 import ToolbarItem from './ToolbarItem'
 
 const Toolbar = ({
 	activeCard,
+	activeCardIdx,
 	nextCard,
 	prevCard,
 	handleNewCard,
@@ -31,16 +34,19 @@ const Toolbar = ({
 	handleEdit,
 	editing,
 	handleShuffle,
+	setActiveCardIdx,
 }: {
-	activeCard: Card
+	activeCard: ICard
+	activeCardIdx: number
 	nextCard: () => void
 	prevCard: () => void
 	handleNewRating: Function
 	handleNewCard: () => void
 	setFlipCard: () => void
 	handleEdit: (event: React.MouseEvent) => void
-	editing: Card | null
+	editing: ICard | null
 	handleShuffle: () => void
+	setActiveCardIdx: (idx: number) => void
 }) => {
 	const [deleting, setDeleting] = useState<boolean>(false)
 	const { dispatch } = useContext(AppContext)
@@ -60,6 +66,7 @@ const Toolbar = ({
 		})
 		deleteCard(activeCard)
 		setDeleting(false)
+		setActiveCardIdx(activeCardIdx - 1)
 	}
 
 	return (
@@ -86,12 +93,11 @@ const Toolbar = ({
 			</div>
 			{deleting ? (
 				<div className='py-4 flex gap-x-4 justify-center'>
-					<p className='font-bold'>Delete ? </p>
 					<button className='btn-secondary' onClick={handleDelete}>
-						<Check size={'1rem'} />
+						<Trash2 size={'1.25rem'} /> Delete
 					</button>
-					<button className='btn-secondary' onClick={handleDeleting}>
-						<X size={'1rem'} />
+					<button className='btn-primary' onClick={handleDeleting}>
+						<X size={'1.25rem'} /> Cancel
 					</button>{' '}
 				</div>
 			) : (

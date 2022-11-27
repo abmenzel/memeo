@@ -1,13 +1,16 @@
 import { PlusCircle } from 'lucide-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import Card from './Card'
 import ICard from '../models/Card'
 import Toolbar from './Toolbar'
 import { AppContext } from '../context/app'
 import { Types } from '../reducers/reducers'
 import { createNewCard } from '../lib/api.utils'
-import { updateCard } from '../lib/api'
+import { deleteCard, updateCard } from '../lib/api'
 import arrayShuffle from 'array-shuffle'
+import { Dialog, Transition } from '@headlessui/react'
+import { cardIsEmpty } from '../lib/utils'
+import { usePrevious } from '../hooks/usePrevious'
 
 const CardCarousel = () => {
 	const { state, dispatch } = useContext(AppContext)
@@ -17,6 +20,8 @@ const CardCarousel = () => {
 	const [flipCard, setFlipCard] = useState(false)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const activeCardInputRef = useRef<any>()
+
+	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
 	const [cards, setCards] = useState<ICard[]>([])
 
@@ -54,8 +59,11 @@ const CardCarousel = () => {
 	}, [activeDeck])
 
 	useEffect(() => {
-		// Always start at the latest added card
-		setActiveCardIdx(cards.length - 1)
+		const lastCard = cards[cards.length - 1]
+		if (!lastCard) return
+		if (cardIsEmpty(lastCard)) {
+			setActiveCardIdx(cards.length - 1)
+		}
 	}, [cards.length])
 
 	useEffect(() => {
@@ -64,8 +72,21 @@ const CardCarousel = () => {
 	}, [activeCardIdx, cards])
 
 	useEffect(() => {
-		// If we arrive at an empty card start editing
-		if (activeCard?.front === '') {
+		console.log('new active card', activeCard)
+		console.log('previously active', prevActiveCard)
+		if (!prevActiveCard || !activeCard) return
+		if (
+			cardIsEmpty(prevActiveCard) &&
+			prevActiveCard.id !== activeCard.id
+		) {
+			console.log('will delete', prevActiveCard)
+			dispatch({
+				type: Types.DeleteCard,
+				payload: prevActiveCard,
+			})
+			deleteCard(prevActiveCard)
+		}
+		if (cardIsEmpty(activeCard)) {
 			setEditing(activeCard)
 		}
 	}, [activeCard])
@@ -86,7 +107,10 @@ const CardCarousel = () => {
 
 	const handleNewCard = async () => {
 		if (!state.activeDeck || !state.activeDeck.id) return
-
+		const lastCard = cards[cards.length - 1]
+		console.log(lastCard)
+		if (!lastCard) return
+		if (cardIsEmpty(lastCard)) return
 		const newCard = {
 			id: null,
 			deck_id: state.activeDeck.id,
@@ -199,10 +223,17 @@ const CardCarousel = () => {
 						</div>
 					)}
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						<div
-							onClick={prev}
-							className='w-10 h-full absolute left-0 z-10'
-						/>
+						<div className='absolute max-w-md w-full mx-auto h-full'>
+							<div
+								onClick={prev}
+								className='w-10 md:w-16 h-full absolute left-0 z-10'
+							/>
+							<div
+								onClick={next}
+								className='w-10 md:w-16 h-full absolute right-0 z-10'
+							/>
+						</div>
+
 						{cards.length > 0 && activeCard && (
 							<Card
 								card={activeCard}
@@ -213,13 +244,10 @@ const CardCarousel = () => {
 								flipCard={flipCard}
 							/>
 						)}
-						<div
-							onClick={next}
-							className='w-10 h-full absolute right-0 z-10'
-						/>
 					</div>
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
+						activeCardIdx={activeCardIdx}
 						handleNewRating={handleNewRating}
 						nextCard={next}
 						prevCard={prev}
@@ -228,6 +256,7 @@ const CardCarousel = () => {
 						handleEdit={handleEdit}
 						handleShuffle={handleShuffle}
 						editing={editing}
+						setActiveCardIdx={setActiveCardIdx}
 					/>
 				</>
 			) : (

@@ -5,6 +5,7 @@ interface Deck {
 	title: string
 	cards: Card[]
 	created_by: string
+	order: number
 }
 
 export default Deck
