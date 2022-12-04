@@ -2,6 +2,7 @@ import { AppStateType } from '../context/app'
 import { supabase } from '../lib/api'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
+import Options from '../models/Options'
 import User from '../models/User'
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -18,19 +19,24 @@ type ActionMap<M extends { [index: string]: any }> = {
 export enum Types {
 	SignIn = 'SIGN_IN',
 	SignOut = 'SIGN_OUT',
+
 	AddDeck = 'DECK_ADD',
 	DeleteDeck = 'DECK_DELETE',
 	UpdateDeck = 'DECK_UPDATE',
 	SetDecks = 'DECKS_SET',
 	PickDeck = 'DECK_PICK',
+
 	AddCard = 'CARD_ADD',
 	DeleteCard = 'CARD_DELETE',
 	UpdateCard = 'CARD_UPDATE',
+
 	ConsentLoading = 'CONSENT_LOADING',
 	ConsentAwait = 'CONSENT_AWAITING',
 	ConsentSome = 'CONSENT_SOME',
 	ConsentAll = 'CONSENT_ALL',
 	ConsentSet = 'CONSENT_SET',
+
+	OptionsSet = 'OPTIONS_SET',
 }
 
 type UserPayload = {
@@ -72,6 +78,10 @@ type ConsentPayload = {
 	[Types.ConsentSet]: Types.ConsentSome | Types.ConsentAll
 }
 
+type OptionPayload = {
+	[Types.OptionsSet]: Options
+}
+
 export type DeckActions = ActionMap<DeckPayload>[keyof ActionMap<DeckPayload>]
 export type ActiveDeckActions =
 	ActionMap<ActiveDeckPayload>[keyof ActionMap<ActiveDeckPayload>]
@@ -79,6 +89,8 @@ export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>]
 export type CardActions = ActionMap<CardPayload>[keyof ActionMap<CardPayload>]
 export type ConsentActions =
 	ActionMap<ConsentPayload>[keyof ActionMap<ConsentPayload>]
+export type OptionsActions =
+	ActionMap<OptionPayload>[keyof ActionMap<OptionPayload>]
 
 export type Actions =
 	| DeckActions
@@ -86,6 +98,7 @@ export type Actions =
 	| ActiveDeckActions
 	| CardActions
 	| ConsentActions
+	| OptionsActions
 
 export const userReducer = (
 	state: AppStateType,
@@ -227,5 +240,13 @@ export const consentReducer = (state: AppStateType, action: ConsentActions) => {
 		}
 		default:
 			return Types.ConsentLoading
+	}
+}
+
+export const optionsReducer = (state: AppStateType, action: OptionsActions) => {
+	switch (action.type) {
+		case Types.OptionsSet:
+		default:
+			return action.payload
 	}
 }

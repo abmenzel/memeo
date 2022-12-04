@@ -11,12 +11,14 @@ import {
 	activeDeckReducer,
 	consentReducer,
 	deckReducer,
+	optionsReducer,
 	Types,
 	userReducer,
 } from '../reducers/reducers'
 import { getDecksByUser, supabase } from '../lib/api'
 import { useRouter } from 'next/router'
 import Deck from '../models/Deck'
+import Options from '../models/Options'
 
 export type AppStateType = {
 	user: null | User
@@ -27,6 +29,7 @@ export type AppStateType = {
 		| Types.ConsentSome
 		| Types.ConsentAwait
 		| Types.ConsentLoading
+	options: Options
 }
 
 const initialAppState: AppStateType = {
@@ -34,6 +37,9 @@ const initialAppState: AppStateType = {
 	decks: [],
 	activeDeck: null,
 	consent: Types.ConsentLoading,
+	options: {
+		initialFlipState: false,
+	},
 }
 
 const AppContext = createContext<{
@@ -74,6 +80,11 @@ const mainReducer = (state: AppStateType, action: Actions) => {
 			return {
 				...state,
 				consent: consentReducer(state, action),
+			}
+		case Types.OptionsSet:
+			return {
+				...state,
+				options: optionsReducer(state, action),
 			}
 		default:
 			return state

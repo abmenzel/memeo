@@ -17,13 +17,17 @@ const CardCarousel = () => {
 	const { activeDeck } = state
 	const [activeCard, setActiveCard] = useState<ICard | null>(null)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
-	const [flipCard, setFlipCard] = useState(false)
+	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const activeCardInputRef = useRef<any>()
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
 	const [cards, setCards] = useState<ICard[]>([])
+
+	useEffect(() => {
+		setFlipCard(state.options.initialFlipState)
+	}, [state.options.initialFlipState])
 
 	const handleGlobalKey = (event: KeyboardEvent) => {
 		if (document.activeElement != document.body) return
@@ -72,14 +76,11 @@ const CardCarousel = () => {
 	}, [activeCardIdx, cards])
 
 	useEffect(() => {
-		console.log('new active card', activeCard)
-		console.log('previously active', prevActiveCard)
 		if (!prevActiveCard || !activeCard) return
 		if (
 			cardIsEmpty(prevActiveCard) &&
 			prevActiveCard.id !== activeCard.id
 		) {
-			console.log('will delete', prevActiveCard)
 			dispatch({
 				type: Types.DeleteCard,
 				payload: prevActiveCard,
@@ -93,7 +94,7 @@ const CardCarousel = () => {
 
 	const next = () => {
 		const newCardIdx = (activeCardIdx + 1) % cards.length
-		setFlipCard(false)
+		setFlipCard(state.options.initialFlipState)
 		setActiveCardIdx(newCardIdx)
 	}
 	const prev = () => {
@@ -101,7 +102,7 @@ const CardCarousel = () => {
 			activeCardIdx - 1 < 0
 				? cards.length - 1
 				: (activeCardIdx - 1) % cards.length
-		setFlipCard(false)
+		setFlipCard(state.options.initialFlipState)
 		setActiveCardIdx(newCardIdx)
 	}
 

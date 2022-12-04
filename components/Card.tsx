@@ -32,7 +32,7 @@ const Card = ({
 
 	const wrapperRef = useRef<HTMLDivElement>(null)
 
-	const bind = useDoubleTap((event) => {
+	const bind = useDoubleTap(() => {
 		setEditing(card)
 	})
 
