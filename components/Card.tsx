@@ -36,6 +36,9 @@ const Card = ({
 		setEditing(card)
 	})
 
+	const disableFront = !(front.length === 0 || editing?.id === card.id)
+	const disableBack = !(back.length === 0 || editing?.id === card.id)
+
 	useEffect(() => {
 		setFront(card.front)
 		setBack(card.back)
@@ -62,10 +65,16 @@ const Card = ({
 		setEditing(null)
 	}
 
-	const handleClick: MouseEventHandler<Element> = (event) => {
-		//event.stopPropagation()
+	const handleCardClick: MouseEventHandler<Element> = (event) => {
 		if (!editing) {
 			setFlipCard(!flipCard)
+		}
+	}
+
+	const handleTextClick = (event: any, disabled: boolean) => {
+		if (!disabled) {
+			event.stopPropagation()
+			setEditing(card)
 		}
 	}
 
@@ -89,7 +98,7 @@ const Card = ({
 				{...bind}
 				className='font-serif w-full flex items-center overflow-visible'>
 				<div
-					onClick={handleClick}
+					onClick={handleCardClick}
 					className={`${
 						flipCard && 'opacity-0 pointer-events-none'
 					} w-full shrink-0 transition-all cursor-pointer`}>
@@ -99,7 +108,7 @@ const Card = ({
 						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={!flipCard ? activeCardInputRef : null}
-							disabled={!(editing?.id === card.id)}
+							disabled={disableFront}
 							className={`font-serif outline-none transition-none text-center bg-transparent font-bold resize-none ${
 								(front.length > 80 && 'text-md') ||
 								(front.length > 60 && 'text-lg') ||
@@ -110,6 +119,9 @@ const Card = ({
 							}`}
 							value={front}
 							placeholder={'Card front'}
+							onClick={(event) =>
+								handleTextClick(event, disableFront)
+							}
 							onChange={changeFront}
 							onKeyDown={handleKey}
 							onBlur={handleBlur}
@@ -117,7 +129,7 @@ const Card = ({
 					</div>
 				</div>
 				<div
-					onClick={handleClick}
+					onClick={handleCardClick}
 					className={`${
 						!flipCard && 'opacity-0 pointer-events-none'
 					} w-full shrink-0 -translate-x-full transition-all cursor-pointer`}>
@@ -127,7 +139,7 @@ const Card = ({
 						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={flipCard ? activeCardInputRef : null}
-							disabled={!(editing?.id === card.id)}
+							disabled={disableBack}
 							className={`transition-none outline-none text-center bg-transparent resize-none ${
 								(back.length > 80 && 'text-sm') ||
 								(back.length > 60 && 'text-md') ||
@@ -138,6 +150,9 @@ const Card = ({
 							}`}
 							value={back}
 							placeholder={'Card back'}
+							onClick={(event) =>
+								handleTextClick(event, disableBack)
+							}
 							onKeyDown={handleKey}
 							onChange={changeBack}
 							onBlur={handleBlur}
