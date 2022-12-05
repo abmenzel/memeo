@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useContext, useState } from 'react'
 import CardCarousel from '../components/CardCarousel'
 import Layout from '../components/Layout'
+import ToggleFlip from '../components/ToggleFlip'
 import { AppContext } from '../context/app'
 import { testDeck1 } from '../test/data/testDecks'
 
@@ -29,6 +30,9 @@ const Dojo = () => {
 							<h2 className='font-serif text-xl font-bold'>
 								{state.activeDeck?.title}
 							</h2>
+						</div>
+						<div className='absolute right-0'>
+							<ToggleFlip />
 						</div>
 					</div>
 					<CardCarousel />
