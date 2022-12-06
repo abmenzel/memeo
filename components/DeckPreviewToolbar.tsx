@@ -3,12 +3,15 @@ import {
 	Edit3,
 	GripVertical,
 	MoreVertical,
+	Tag,
 	Trash2,
 	X,
 } from 'lucide-react'
 import { Menu, Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Deck from '../models/Deck'
+import DeleteModal from './DeleteModal'
+import TagModal from './TagModal'
 
 type DeckPreviewToolbarProps = {
 	deck: Deck
@@ -29,49 +32,17 @@ const DeckPreviewToolbar = ({
 	editing,
 	handleProps,
 }: DeckPreviewToolbarProps) => {
+	const [tagging, setTagging] = useState(false)
+
 	return (
 		<>
-			<Transition as={Fragment} show={deleting}>
-				<Dialog
-					onClose={(e) => setDeleting(false)}
-					className='relative z-50'>
-					<div className='fixed inset-0 flex items-center justify-center p-4 backdrop-blur-sm'>
-						<Transition.Child
-							as={Fragment}
-							enter='ease-out duration-300'
-							enterFrom='opacity-0 scale-95'
-							enterTo='opacity-100 scale-100'
-							leave='ease-in duration-200'
-							leaveFrom='opacity-100 scale-100'
-							leaveTo='opacity-0 scale-95'>
-							<Dialog.Panel className='w-full flex flex-col items-center max-w-sm rounded-md bg-orange-100 border border-black text-black p-4 text-center'>
-								<Dialog.Title className='text-xl font-bold font-serif mb-2'>
-									Delete {deck.title}?
-								</Dialog.Title>
-								<Dialog.Description className='text-sm mb-4 w-56'>
-									This will permanently delete this card deck.
-								</Dialog.Description>
-								<div className='flex gap-x-2'>
-									<button
-										onClick={(e) => {
-											handleDelete(e)
-										}}
-										className='btn-secondary'>
-										<Trash2 size={'1rem'} />
-										Delete
-									</button>
-									<button
-										className='btn-primary font-base'
-										onClick={() => setDeleting(false)}>
-										<X size={'1rem'} />
-										Cancel
-									</button>
-								</div>
-							</Dialog.Panel>
-						</Transition.Child>
-					</div>
-				</Dialog>
-			</Transition>
+			<DeleteModal
+				setDeleting={setDeleting}
+				deleting={deleting}
+				handleDelete={handleDelete}
+				deck={deck}
+			/>
+			<TagModal tagging={tagging} setTagging={setTagging} deck={deck} />
 			<Menu>
 				<div className='relative'>
 					<Menu.Button
@@ -100,6 +71,16 @@ const DeckPreviewToolbar = ({
 									setDeleting(true)
 								}}>
 								<Trash2 size={'1rem'} /> Delete
+							</button>
+						</Menu.Item>
+						<Menu.Item>
+							<button
+								className='btn-secondary p-2 pr-4 rounded-none'
+								onClick={(event) => {
+									event.stopPropagation()
+									setTagging(true)
+								}}>
+								<Tag size={'1rem'} /> Tag
 							</button>
 						</Menu.Item>
 					</Menu.Items>

@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import React, {
 	ChangeEvent,
@@ -103,6 +104,21 @@ const DeckPreview = (props: DeckPreviewProps) => {
 			onClick={handlePick}
 			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
 			<div className='flex flex-col min-w-0'>
+				{deck.tag && (
+					<p
+						className={classNames(
+							'text-[10px]',
+							'px-1',
+							'py-0',
+							'leading-normal',
+							'rounded-sm',
+							'shrink',
+							'w-fit',
+							deck.tag.color
+						)}>
+						{deck.tag.name}
+					</p>
+				)}
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
