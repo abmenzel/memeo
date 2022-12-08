@@ -12,6 +12,7 @@ create table if not exists decks (
   updated_at timestamp default now(),
   order INTEGER NOT NULL,
   title TEXT NOT NULL
+  tag TEXT NULL
 );
 
 create table if not exists cards (

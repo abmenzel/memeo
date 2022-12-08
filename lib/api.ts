@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import Card from '../models/Card'
 import { Database } from '../models/Database'
 import Deck from '../models/Deck'
+import Tag from '../models/Tag'
 import User from '../models/User'
 
 const config = {
@@ -32,6 +33,11 @@ export const getDecksByUser = async (user: User): Promise<Deck[]> => {
 						.select()
 						.eq('deck_id', deck.id)
 
+					const { data: tagData } = await supabase
+						.from('tags')
+						.select()
+						.eq('id', deck.tag_id)
+
 					const deckWithCards: Deck = {
 						...deck,
 						cards: cardsData
@@ -39,6 +45,11 @@ export const getDecksByUser = async (user: User): Promise<Deck[]> => {
 									return { ...card }
 							  })
 							: [],
+						tag: tagData?.[0]
+							? {
+									...tagData[0],
+							  }
+							: undefined,
 					}
 					return deckWithCards
 				} catch (error) {
@@ -76,6 +87,25 @@ export const storeDeck = async (deck: Deck) => {
 	return null
 }
 
+export const storeTag = async (tag: Tag) => {
+	try {
+		const { data: tagsAdded } = await supabase
+			.from('tags')
+			.insert({
+				name: tag.name,
+				color: tag.color,
+				created_by: tag.created_by,
+			})
+			.select()
+		if (tagsAdded) {
+			return tagsAdded[0].id
+		}
+	} catch (error) {
+		console.error(error)
+	}
+	return null
+}
+
 export const deleteDeck = async (deck: Deck) => {
 	try {
 		await supabase.from('cards').delete().eq('deck_id', deck.id)
@@ -93,6 +123,7 @@ export const updateDeck = async (deck: Deck) => {
 				title: deck.title,
 				updated_at: new Date().toUTCString(),
 				order: deck.order,
+				tag_id: deck.tag_id,
 			})
 			.eq('id', deck.id)
 	} catch (error) {

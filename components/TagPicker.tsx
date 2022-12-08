@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Menu, X } from 'lucide-react'
 import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../context/app'
+import { storeTag, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
 import Tag from '../models/Tag'
 import { Types } from '../reducers/reducers'
@@ -29,7 +30,10 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 	useEffect(() => {
 		let existingTags: Tag[] = []
 		state.decks.forEach((deck) => {
-			if (deck.tag) {
+			if (
+				deck.tag &&
+				!existingTags.some((tag) => tag.name === deck.tag?.name)
+			) {
 				existingTags.push(deck.tag)
 			}
 		})
@@ -51,12 +55,24 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 		setSelectedTag(tag)
 	}
 
-	const handleNewTag = (name: string) => {
-		const newTag = {
+	const handleNewTag = async (name: string) => {
+		if (!state.user) return
+
+		const createdTag: Tag = {
+			created_by: state.user.id,
+			id: null,
 			name: name,
 			color: tagColors[Math.floor(Math.random() * tagColors.length)],
 		}
-		setTags([...tags, newTag])
+
+		setTags([...tags, createdTag])
+		setSelectedTag(createdTag)
+
+		const newTagId = await storeTag(createdTag)
+		if (!newTagId) return
+
+		const newTag = { ...createdTag, id: newTagId }
+		setTags([...tags.filter((tag) => tag.name === newTag.name), newTag])
 		setSelectedTag(newTag)
 	}
 
@@ -71,6 +87,11 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 				},
 			},
 		})
+		if (selectedTag === null) {
+			updateDeck({ ...deck, tag_id: null })
+		} else if (selectedTag && selectedTag.id) {
+			updateDeck({ ...deck, tag_id: selectedTag.id })
+		}
 	}, [selectedTag])
 
 	return (
@@ -100,9 +121,9 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 							'absolute top-10 bg-orange-100 w-full rounded-md border-black',
 							{ border: filteredTags.length > 0 }
 						)}>
-						{filteredTags.map((tag) => (
+						{filteredTags.map((tag, index) => (
 							<Combobox.Option
-								key={tag.name}
+								key={tag.name + index}
 								value={tag}
 								as={Fragment}>
 								{({ active, selected }) => (

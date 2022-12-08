@@ -12,7 +12,6 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
 	const { dispatch, state } = useContext(AppContext)
-
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
@@ -22,6 +21,7 @@ const DeckList = () => {
 			cards: [],
 			order: state.decks.length,
 			created_by: state.user.id,
+			tag_id: null,
 		}
 
 		dispatch({

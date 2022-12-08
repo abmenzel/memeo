@@ -51,15 +51,17 @@ const DeckPreview = (props: DeckPreviewProps) => {
 
 	useEffect(() => {
 		if (!titleRef.current) return
-		const newDeck = { ...deck, title: titleRef.current.value }
-		dispatch({
-			type: Types.UpdateDeck,
-			payload: {
-				oldDeck: deck,
-				newDeck: { ...deck, title: titleRef.current.value },
-			},
-		})
-		updateDeck(newDeck)
+		if (titleRef.current.value !== deck.title) {
+			const newDeck = { ...deck, title: titleRef.current.value }
+			dispatch({
+				type: Types.UpdateDeck,
+				payload: {
+					oldDeck: deck,
+					newDeck: { ...deck, title: titleRef.current.value },
+				},
+			})
+			updateDeck(newDeck)
+		}
 	}, [title])
 
 	const handleKey = (event: KeyboardEvent): void => {
