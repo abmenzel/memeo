@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { AppContext } from '../context/app'
 import classNames from 'classnames'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 const ToggleFlip = () => {
 	const { state, dispatch } = useContext(AppContext)

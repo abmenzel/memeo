@@ -5,7 +5,7 @@ import { storeDeck } from '../lib/api'
 import { createNewCard } from '../lib/api.utils'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 import DeckPreview from './DeckPreview'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 
@@ -60,7 +60,7 @@ const DeckList = () => {
 				<Droppable droppableId='droppable-1' type='PERSON'>
 					{(provided) => (
 						<div
-							className='w-full'
+							className='w-full flex flex-col'
 							ref={provided.innerRef}
 							{...provided.droppableProps}>
 							{state.decks.map((deck, idx) => (

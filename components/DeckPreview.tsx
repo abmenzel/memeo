@@ -11,9 +11,10 @@ import React, {
 import { AppContext } from '../context/app'
 import { deleteDeck, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 import DeckPreviewToolbar from './DeckPreviewToolbar'
 import Stars from './Stars'
+import Tag from './Tag'
 
 type DeckPreviewProps = {
 	deck: Deck
@@ -104,23 +105,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	return (
 		<div
 			onClick={handlePick}
-			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
+			className='group mb-0.5 border border-orange-150 btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
 			<div className='flex flex-col min-w-0'>
-				{deck.tag && (
-					<p
-						className={classNames(
-							'text-[10px]',
-							'px-1',
-							'py-0',
-							'leading-normal',
-							'rounded-sm',
-							'shrink',
-							'w-fit',
-							deck.tag.color
-						)}>
-						{deck.tag.name}
-					</p>
-				)}
+				{deck.tag && <Tag tag={deck.tag} />}
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
@@ -133,7 +120,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 					value={title}
 					placeholder='Deck Title'
 				/>
-				<p className='text-xs'>{deck.cards.length} cards</p>
+				<p className='text-[11px]'>{deck.cards.length} cards</p>
 			</div>
 			<div className='flex items-center gap-x-1'>
 				<Stars rating={averageRating} />

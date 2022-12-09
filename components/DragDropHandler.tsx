@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 type DragDropHandlerProps = {
 	children: ReactNode

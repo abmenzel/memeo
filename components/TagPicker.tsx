@@ -6,7 +6,7 @@ import { AppContext } from '../context/app'
 import { storeTag, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
 import Tag from '../models/Tag'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 const tagColors = [
 	'bg-red-200',

@@ -14,7 +14,7 @@ import {
 	optionsReducer,
 	Types,
 	userReducer,
-} from '../reducers/reducers'
+} from './reducers'
 import { getDecksByUser, supabase } from '../lib/api'
 import { useRouter } from 'next/router'
 import Deck from '../models/Deck'

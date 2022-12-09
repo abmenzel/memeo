@@ -2,7 +2,7 @@ import { Transition } from '@headlessui/react'
 import { Check, Cookie, X } from 'lucide-react'
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../context/app'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 const Cookies = () => {
 	const { state, dispatch } = useContext(AppContext)

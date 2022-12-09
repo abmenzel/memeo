@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 import { AppContext } from '../context/app'
 import { supabase } from '../lib/api'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 const SignOutButton = () => {
 	const { dispatch } = useContext(AppContext)

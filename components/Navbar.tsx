@@ -1,9 +1,9 @@
-import { LayoutGrid, LogOut, Settings } from 'lucide-react'
+import { LayoutGrid, LogOut, Settings, Settings2 } from 'lucide-react'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 import { AppContext } from '../context/app'
 import { supabase } from '../lib/api'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 import NavItem from './NavItem'
 
 const Navbar = () => {
@@ -18,6 +18,12 @@ const Navbar = () => {
 						callback={() => router.push('/dashboard')}
 						icon={<LayoutGrid />}
 						label='Cards'
+					/>
+					<NavItem
+						route='/settings'
+						callback={() => router.push('/settings')}
+						icon={<Settings />}
+						label='Settings'
 					/>
 					<NavItem
 						icon={<LogOut />}

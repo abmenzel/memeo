@@ -1,5 +1,4 @@
-import { AppStateType } from '../context/app'
-import { supabase } from '../lib/api'
+import { AppStateType } from './app'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
 import Options from '../models/Options'

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Script from 'next/script'
 import { AppContext } from '../context/app'
-import { Types } from '../reducers/reducers'
+import { Types } from '../context/reducers'
 
 const GoogleAnalytics = () => {
 	const { state } = useContext(AppContext)

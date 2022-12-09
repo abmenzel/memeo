@@ -1,6 +1,6 @@
 import { Dispatch } from 'react'
 import Card from '../models/Card'
-import { Actions, Types } from '../reducers/reducers'
+import { Actions, Types } from '../context/reducers'
 import { storeCard } from './api'
 
 export const createNewCard = async (
