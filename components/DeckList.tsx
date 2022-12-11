@@ -1,55 +1,21 @@
 import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
-import { storeDeck } from '../lib/api'
-import { createNewCard } from '../lib/api.utils'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
-import { Types } from '../context/reducers'
 import DeckPreview from './DeckPreview'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { template } from '../lib/utils'
 
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
-	const { dispatch, state } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
-		const createdDeck: Deck = {
-			id: null,
-			title: '',
-			cards: [],
-			order: state.decks.length,
-			created_by: state.user.id,
-			tag_id: null,
-		}
-
-		dispatch({
-			type: Types.AddDeck,
-			payload: createdDeck,
-		})
-
-		const newDeckId = await storeDeck(createdDeck)
-		if (!newDeckId) return
-
-		const newDeck = { ...createdDeck, id: newDeckId }
-		dispatch({
-			type: Types.UpdateDeck,
-			payload: {
-				oldDeck: createdDeck,
-				newDeck: newDeck,
-			},
-		})
-
-		const newCard: Card = {
-			deck_id: newDeck.id,
-			front: '',
-			back: '',
-			rating: 0,
-			id: null,
-		}
-
-		createNewCard(dispatch, newCard)
+		const newDeck = await actions.addDeck(
+			template.newDeck(state.decks.length, state.user.id)
+		)
 
 		setEditing(newDeck)
 	}

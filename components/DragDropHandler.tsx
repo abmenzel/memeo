@@ -1,14 +1,13 @@
 import React, { ReactNode, useContext } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
-import { Types } from '../context/reducers'
 
 type DragDropHandlerProps = {
 	children: ReactNode
 }
 
 const DragDropHandler = ({ children }: DragDropHandlerProps) => {
-	const { state, dispatch } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 
 	const handleDragEnd = (result: any) => {
 		if (!result.destination) return
@@ -24,10 +23,7 @@ const DragDropHandler = ({ children }: DragDropHandlerProps) => {
 				order: idx,
 			}
 		})
-		dispatch({
-			type: Types.SetDecks,
-			payload: decksWithUpdatedOrder,
-		})
+		actions.setDecks(decksWithUpdatedOrder)
 	}
 
 	return (

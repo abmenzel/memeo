@@ -6,7 +6,6 @@ import { AppContext } from '../context/app'
 import { storeTag, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
 import Tag from '../models/Tag'
-import { Types } from '../context/reducers'
 
 const tagColors = [
 	'bg-red-200',
@@ -22,23 +21,10 @@ type TagPickerProps = {
 }
 
 const TagPicker = ({ deck }: TagPickerProps) => {
-	const { state, dispatch } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 	const [query, setQuery] = useState('')
-	const [tags, setTags] = useState<Tag[]>([])
+	const [tags, setTags] = useState<Tag[]>(state.tags)
 	const [selectedTag, setSelectedTag] = useState<Tag | undefined>(deck.tag)
-
-	useEffect(() => {
-		let existingTags: Tag[] = []
-		state.decks.forEach((deck) => {
-			if (
-				deck.tag &&
-				!existingTags.some((tag) => tag.name === deck.tag?.name)
-			) {
-				existingTags.push(deck.tag)
-			}
-		})
-		setTags(existingTags)
-	}, [])
 
 	const filteredTags =
 		query === ''
@@ -76,7 +62,7 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 		setSelectedTag(newTag)
 	}
 
-	useEffect(() => {
+	/*useEffect(() => {
 		dispatch({
 			type: Types.UpdateDeck,
 			payload: {
@@ -92,7 +78,7 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 		} else if (selectedTag && selectedTag.id) {
 			updateDeck({ ...deck, tag_id: selectedTag.id })
 		}
-	}, [selectedTag])
+	}, [selectedTag])*/
 
 	return (
 		<Combobox

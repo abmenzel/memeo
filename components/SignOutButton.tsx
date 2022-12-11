@@ -3,20 +3,14 @@ import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 import { AppContext } from '../context/app'
 import { supabase } from '../lib/api'
-import { Types } from '../context/reducers'
 
 const SignOutButton = () => {
-	const { dispatch } = useContext(AppContext)
-	const router = useRouter()
+	const { actions } = useContext(AppContext)
 	return (
 		<button
 			onClick={async () => {
 				const { error } = await supabase.auth.signOut()
-				dispatch({
-					type: Types.SignOut,
-					payload: null,
-				})
-				router.push('/login')
+				actions.signOut()
 			}}
 			className='btn-secondary flex items-center gap-x-2'>
 			<LogOut /> Sign out

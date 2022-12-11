@@ -1,25 +1,17 @@
-import { Dialog, Transition } from '@headlessui/react'
 import {
 	ArrowLeft,
 	ArrowRight,
 	Check,
 	Edit,
-	Edit2,
-	Edit3,
-	Plus,
 	PlusCircle,
-	PlusSquare,
 	RotateCw,
 	Shuffle,
 	Trash2,
 	X,
 } from 'lucide-react'
-import React, { Fragment, useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/app'
-import { deleteCard } from '../lib/api'
 import ICard from '../models/Card'
-import { Types } from '../context/reducers'
-import Card from './Card'
 import Stars from './Stars'
 import ToolbarItem from './ToolbarItem'
 
@@ -49,7 +41,7 @@ const Toolbar = ({
 	setActiveCardIdx: (idx: number) => void
 }) => {
 	const [deleting, setDeleting] = useState<boolean>(false)
-	const { dispatch } = useContext(AppContext)
+	const { actions } = useContext(AppContext)
 
 	const handleDeleting = () => {
 		if (deleting) {
@@ -60,11 +52,7 @@ const Toolbar = ({
 	}
 
 	const handleDelete = () => {
-		dispatch({
-			type: Types.DeleteCard,
-			payload: activeCard,
-		})
-		deleteCard(activeCard)
+		actions.deleteCard(activeCard)
 		setDeleting(false)
 		setActiveCardIdx(activeCardIdx - 1)
 	}

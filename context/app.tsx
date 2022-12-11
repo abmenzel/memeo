@@ -1,146 +1,36 @@
-import React, {
-	createContext,
-	Dispatch,
-	ReactNode,
-	useEffect,
-	useReducer,
-} from 'react'
-import User from '../models/User'
-import {
-	Actions,
-	activeDeckReducer,
-	consentReducer,
-	deckReducer,
-	optionsReducer,
-	Types,
-	userReducer,
-} from './reducers'
-import { getDecksByUser, supabase } from '../lib/api'
+import React, { createContext, ReactNode, useEffect, useReducer } from 'react'
+
 import { useRouter } from 'next/router'
-import Deck from '../models/Deck'
-import Options from '../models/Options'
-
-export type AppStateType = {
-	user: null | User
-	decks: Deck[]
-	activeDeck: null | Deck
-	consent:
-		| Types.ConsentAll
-		| Types.ConsentSome
-		| Types.ConsentAwait
-		| Types.ConsentLoading
-	options: Options
-}
-
-const initialAppState: AppStateType = {
-	user: null,
-	decks: [],
-	activeDeck: null,
-	consent: Types.ConsentLoading,
-	options: {
-		initialFlipState: false,
-	},
-}
+import initialAppState from './initialState'
+import AppState from '../models/AppState'
+import { reducer } from './reducers'
+import { IActions, useActions } from './actions'
 
 const AppContext = createContext<{
-	state: AppStateType
-	dispatch: Dispatch<Actions>
-}>({ state: initialAppState, dispatch: (_: any) => {} })
-
-const mainReducer = (state: AppStateType, action: Actions) => {
-	switch (action.type) {
-		case Types.SignIn:
-		case Types.SignOut:
-			return {
-				...state,
-				user: userReducer(state, action),
-			}
-		case Types.AddDeck:
-		case Types.SetDecks:
-		case Types.UpdateDeck:
-		case Types.DeleteDeck:
-			return {
-				...state,
-				decks: deckReducer(state, action),
-			}
-		case Types.PickDeck:
-			return {
-				...state,
-				activeDeck: activeDeckReducer(state, action),
-			}
-		case Types.AddCard:
-		case Types.UpdateCard:
-		case Types.DeleteCard:
-			return {
-				...state,
-				decks: deckReducer(state, action),
-				activeDeck: activeDeckReducer(state, action),
-			}
-		case Types.ConsentSet:
-			return {
-				...state,
-				consent: consentReducer(state, action),
-			}
-		case Types.OptionsSet:
-			return {
-				...state,
-				options: optionsReducer(state, action),
-			}
-		default:
-			return state
-	}
-}
+	state: AppState
+	actions: IActions
+}>({ state: initialAppState, actions: {} as IActions })
 
 type AppProviderProps = {
 	children: ReactNode
 }
 
 const AppProvider = ({ children }: AppProviderProps) => {
-	const [state, dispatch] = useReducer(mainReducer, initialAppState)
+	const [state, dispatch] = useReducer(reducer, initialAppState)
+	const actions = useActions(state, dispatch)
 	const router = useRouter()
-
-	const tryFindUserFromSession = async () => {
-		const { data } = await supabase.auth.getSession()
-		if (data?.session?.user) {
-			const user = data.session.user
-			if (user.identities) {
-				const identity = user.identities[0]
-				dispatch({
-					type: Types.SignIn,
-					payload: {
-						id: user.id,
-						name: identity.identity_data.full_name,
-					},
-				})
-			}
-		} else {
-			dispatch({
-				type: Types.SignOut,
-				payload: null,
-			})
-		}
-	}
-
-	const tryFindUserDecks = async (user: User) => {
-		const userDecks = await getDecksByUser(user)
-		if (userDecks && userDecks.length > 0) {
-			const decksSortedByOrder = userDecks.sort(
-				(deckA, deckB) => deckA.order - deckB.order
-			)
-			dispatch({
-				type: Types.SetDecks,
-				payload: decksSortedByOrder,
-			})
-		}
-	}
 
 	useEffect(() => {
 		if (!state.user) {
-			tryFindUserFromSession()
+			actions.syncUserFromSession()
 		}
 
 		if (state.user) {
-			tryFindUserDecks(state.user)
+			actions.syncUserDecks(state.user)
+		}
+
+		if (state.user) {
+			actions.syncUserTags(state.user)
 		}
 	}, [state.user])
 
@@ -150,7 +40,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, [state.user, router.pathname])
 
 	return (
-		<AppContext.Provider value={{ state, dispatch }}>
+		<AppContext.Provider value={{ state, actions }}>
 			{children}
 		</AppContext.Provider>
 	)

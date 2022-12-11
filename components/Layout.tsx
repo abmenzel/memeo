@@ -10,7 +10,7 @@ const Layout = ({
 	hideNavBar?: boolean
 }) => {
 	return (
-		<div className='font-body bg-orange-100 text-black height-actual-screen flex flex-col justify-between'>
+		<div className='font-body bg-orange-100 text-black height-actual-screen flex flex-col items-center justify-between'>
 			<Cookies />
 			<div className='max-w-xl overflow-y-auto w-full flex flex-col justify-center items-center px-4 flex-grow'>
 				{children}

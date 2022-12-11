@@ -1,22 +1,14 @@
 import { useContext } from 'react'
 import { AppContext } from '../context/app'
 import classNames from 'classnames'
-import { Types } from '../context/reducers'
 
 const ToggleFlip = () => {
-	const { state, dispatch } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 
 	return (
 		<div className='rounded-lg backdrop-brightness-95 p-0.5 text-xs flex gap-1 items-center'>
 			<button
-				onClick={() => {
-					dispatch({
-						type: Types.OptionsSet,
-						payload: {
-							initialFlipState: false,
-						},
-					})
-				}}
+				onClick={() => actions.setOptions({ initialFlipState: false })}
 				className={classNames(
 					'p-1.5 py-0.5 text-xs',
 					{
@@ -29,14 +21,7 @@ const ToggleFlip = () => {
 				Front
 			</button>
 			<button
-				onClick={() => {
-					dispatch({
-						type: Types.OptionsSet,
-						payload: {
-							initialFlipState: true,
-						},
-					})
-				}}
+				onClick={() => actions.setOptions({ initialFlipState: true })}
 				className={classNames(
 					'p-1.5 py-0.5 text-xs',
 					{

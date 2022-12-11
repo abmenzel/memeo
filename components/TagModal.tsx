@@ -29,9 +29,9 @@ const TagModal = (props: TagModalProps) => {
 						leaveTo='opacity-0 scale-95'>
 						<Dialog.Panel className='w-full flex flex-col items-center max-w-sm rounded-md bg-orange-100 border border-black text-black p-4 text-center'>
 							<Dialog.Title className='text-xl font-bold font-serif mb-2'>
-								Add tag to {props.deck.title}
+								Add tag to {deck.title}
 							</Dialog.Title>
-							<TagPicker deck={props.deck} />
+							<TagPicker deck={deck} />
 						</Dialog.Panel>
 					</Transition.Child>
 				</div>

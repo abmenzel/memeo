@@ -4,16 +4,12 @@ import Card from './Card'
 import ICard from '../models/Card'
 import Toolbar from './Toolbar'
 import { AppContext } from '../context/app'
-import { Types } from '../context/reducers'
-import { createNewCard } from '../lib/api.utils'
-import { deleteCard, updateCard } from '../lib/api'
 import arrayShuffle from 'array-shuffle'
-import { Dialog, Transition } from '@headlessui/react'
-import { cardIsEmpty } from '../lib/utils'
+import { cardIsEmpty, template } from '../lib/utils'
 import { usePrevious } from '../hooks/usePrevious'
 
 const CardCarousel = () => {
-	const { state, dispatch } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 	const { activeDeck } = state
 	const [activeCard, setActiveCard] = useState<ICard | null>(null)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
@@ -81,11 +77,7 @@ const CardCarousel = () => {
 			cardIsEmpty(prevActiveCard) &&
 			prevActiveCard.id !== activeCard.id
 		) {
-			dispatch({
-				type: Types.DeleteCard,
-				payload: prevActiveCard,
-			})
-			deleteCard(prevActiveCard)
+			actions.deleteCard(prevActiveCard)
 		}
 		if (cardIsEmpty(activeCard)) {
 			setEditing(activeCard)
@@ -109,18 +101,9 @@ const CardCarousel = () => {
 	const handleNewCard = async () => {
 		if (!state.activeDeck || !state.activeDeck.id) return
 		const lastCard = cards[cards.length - 1]
-		console.log(lastCard)
 		if (!lastCard) return
 		if (cardIsEmpty(lastCard)) return
-		const newCard = {
-			id: null,
-			deck_id: state.activeDeck.id,
-			front: '',
-			back: '',
-			rating: 0,
-		}
-
-		createNewCard(dispatch, newCard)
+		actions.addCard(template.newCard(state.activeDeck.id))
 	}
 
 	const handleShuffle = () => {
@@ -145,15 +128,7 @@ const CardCarousel = () => {
 				...activeCard,
 				rating: ratingRelative,
 			}
-			dispatch({
-				type: Types.UpdateCard,
-				payload: {
-					oldCard: activeCard,
-					newCard: newCard,
-				},
-			})
-
-			updateCard(newCard)
+			actions.updateCard(newCard)
 		}
 	}
 
@@ -169,22 +144,10 @@ const CardCarousel = () => {
 		) {
 			// Front was updated
 			console.log('front was updated')
-
-			const oldCard = activeDeck.cards[activeCardIdx]
-			const newCard: ICard = {
-				...oldCard,
+			actions.updateCard({
+				...activeCard,
 				front: activeCardInputRef.current.value,
-			}
-
-			dispatch({
-				type: Types.UpdateCard,
-				payload: {
-					oldCard: oldCard,
-					newCard: newCard,
-				},
 			})
-
-			updateCard(newCard)
 
 			return activeCardInputRef.current.blur()
 		} else if (
@@ -193,21 +156,10 @@ const CardCarousel = () => {
 		) {
 			// Back was updated
 			console.log('back was updated')
-			const oldCard = activeDeck.cards[activeCardIdx]
-			const newCard: ICard = {
-				...oldCard,
+			actions.updateCard({
+				...activeCard,
 				back: activeCardInputRef.current.value,
-			}
-
-			dispatch({
-				type: Types.UpdateCard,
-				payload: {
-					oldCard: oldCard,
-					newCard: newCard,
-				},
 			})
-
-			updateCard(newCard)
 
 			return activeCardInputRef.current.blur()
 		}

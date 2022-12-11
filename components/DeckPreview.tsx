@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-import { useRouter } from 'next/router'
 import React, {
 	ChangeEvent,
 	KeyboardEvent,
@@ -9,9 +7,7 @@ import React, {
 	useState,
 } from 'react'
 import { AppContext } from '../context/app'
-import { deleteDeck, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
-import { Types } from '../context/reducers'
 import DeckPreviewToolbar from './DeckPreviewToolbar'
 import Stars from './Stars'
 import Tag from './Tag'
@@ -25,10 +21,9 @@ type DeckPreviewProps = {
 
 const DeckPreview = (props: DeckPreviewProps) => {
 	const { deck, editing, setEditing } = props
-	const { dispatch } = useContext(AppContext)
+	const { actions } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
 	const [deleting, setDeleting] = useState<boolean>(false)
-	const router = useRouter()
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -53,15 +48,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	useEffect(() => {
 		if (!titleRef.current) return
 		if (titleRef.current.value !== deck.title) {
-			const newDeck = { ...deck, title: titleRef.current.value }
-			dispatch({
-				type: Types.UpdateDeck,
-				payload: {
-					oldDeck: deck,
-					newDeck: { ...deck, title: titleRef.current.value },
-				},
-			})
-			updateDeck(newDeck)
+			actions.updateDeck({ ...deck, title: titleRef.current.value })
 		}
 	}, [title])
 
@@ -83,20 +70,12 @@ const DeckPreview = (props: DeckPreviewProps) => {
 
 	const handleDelete = (event: React.MouseEvent) => {
 		event.stopPropagation()
-		dispatch({
-			type: Types.DeleteDeck,
-			payload: deck,
-		})
-		deleteDeck(deck)
+		actions.deleteDeck(deck)
 		setDeleting(false)
 	}
 
 	const handlePick = (event: React.MouseEvent) => {
-		dispatch({
-			type: Types.PickDeck,
-			payload: deck,
-		})
-		router.push('/dojo')
+		actions.pickDeck(deck)
 	}
 
 	const averageRating =
