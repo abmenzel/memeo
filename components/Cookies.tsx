@@ -6,7 +6,6 @@ import Consent from '../models/Consent'
 const Cookies = () => {
 	const { state, actions } = useContext(AppContext)
 	useEffect(() => {
-		console.log('s', state.consent)
 		if (state.consent === 'LOADING') {
 			actions.setConsent(
 				window.localStorage.getItem('CONSENT') as Consent

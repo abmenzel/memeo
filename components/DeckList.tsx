@@ -10,26 +10,45 @@ import { template } from '../lib/utils'
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
 	const { state, actions } = useContext(AppContext)
+	const [filteredDecks, setFilteredDecks] = useState<Deck[]>([])
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
 		const newDeck = await actions.addDeck(
-			template.newDeck(state.decks.length, state.user.id)
+			template.newDeck(
+				state.decks.length,
+				state.user.id,
+				state.activeTag ? state.activeTag : undefined
+			)
 		)
 
 		setEditing(newDeck)
 	}
 
+	useEffect(() => {
+		if (state.activeTag === null) {
+			setFilteredDecks(
+				state.decks.sort((deckA, deckB) => deckA.order - deckB.order)
+			)
+		} else {
+			setFilteredDecks(
+				state.decks
+					.filter((deck) => deck.tag_id === state.activeTag?.id)
+					.sort((deckA, deckB) => deckA.order - deckB.order)
+			)
+		}
+	}, [state.decks, state.activeTag])
+
 	return (
-		<div className='flex flex-col items-center gap-y-2 my-4 mb-16 w-full'>
-			{state.decks.length > 0 ? (
+		<div className='overflow-y-auto flex-grow flex flex-col items-center gap-y-2 w-full'>
+			{filteredDecks.length > 0 ? (
 				<Droppable droppableId='droppable-1' type='PERSON'>
 					{(provided) => (
 						<div
 							className='w-full flex flex-col'
 							ref={provided.innerRef}
 							{...provided.droppableProps}>
-							{state.decks.map((deck, idx) => (
+							{filteredDecks.map((deck, idx) => (
 								<Draggable
 									draggableId={`draggable-${idx}`}
 									key={idx}

@@ -71,6 +71,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	const handleDelete = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		actions.deleteDeck(deck)
+		actions.deleteUnusedTags()
 		setDeleting(false)
 	}
 
@@ -86,7 +87,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 			onClick={handlePick}
 			className='group mb-0.5 border border-orange-150 btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
 			<div className='flex flex-col min-w-0'>
-				{deck.tag && <Tag tag={deck.tag} />}
+				{deck.tag && <Tag className='text-[11px]' tag={deck.tag} />}
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}

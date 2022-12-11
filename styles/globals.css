@@ -24,6 +24,9 @@
 	.btn-primary {
 		@apply btn bg-theme-dark text-orange-100 hover:bg-theme-dark hover:bg-opacity-80;
 	}
+	.btn-tag {
+		@apply px-1 py-0 leading-normal rounded-sm shrink w-fit;
+	}
 	.height-actual-screen {
 		height: var(--doc-height);
 	}

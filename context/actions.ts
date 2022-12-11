@@ -31,6 +31,7 @@ enum types {
 	SET_TAGS = 'SET_TAGS',
 	ADD_TAG = 'ADD_TAG',
 	DELETE_TAG = 'DELETE_TAG',
+	SET_ACTIVE_TAG = 'SET_ACTIVE_TAG',
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -65,6 +66,7 @@ type Payloads = {
 	[types.SET_TAGS]: Tag[]
 	[types.ADD_TAG]: Tag
 	[types.DELETE_TAG]: Tag
+	[types.SET_ACTIVE_TAG]: Tag | null
 }
 
 export type Actions = ActionMap<Payloads>[keyof ActionMap<Payloads>]
@@ -80,8 +82,10 @@ export type IActions = {
 	addCard: (card: Card) => void
 	deleteCard: (card: Card) => void
 	updateCard: (card: Card) => void
-	addTag: (tag: Tag) => Promise<string>
+	addTag: (tag: Tag) => Promise<Tag>
 	deleteTag: (tag: Tag) => Promise<void>
+	setActiveTag: (tag: Tag | null) => Promise<void>
+	deleteUnusedTags: () => Promise<void>
 	setOptions: (options: Options) => void
 	setConsent: (consent: Consent) => void
 	syncUserDecks: (user: User) => Promise<void>
@@ -182,19 +186,34 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	const addTag = async (tag: Tag) => {
 		const tagId = await database.storeTag(tag)
 		if (!tagId) throw new Error('Error generating tag ID')
-		const newTag = { ...tag, id: tag }
+		const newTag: Tag = { ...tag, id: tagId }
 		dispatch({
 			type: types.ADD_TAG,
 			payload: newTag,
 		})
-		return tag
+		return newTag
 	}
 
 	const deleteTag = async (tag: Tag) => {
-		const tagId = await database.deleteTag(tag)
+		database.deleteTag(tag)
 		dispatch({
 			type: types.DELETE_TAG,
 			payload: tag,
+		})
+	}
+
+	const setActiveTag = async (tag: Tag | null) => {
+		dispatch({
+			type: types.SET_ACTIVE_TAG,
+			payload: tag,
+		})
+	}
+
+	const deleteUnusedTags = async () => {
+		state.tags.map((tag) => {
+			if (!state.decks.some((deck) => deck.tag_id === tag.id)) {
+				deleteTag(tag)
+			}
 		})
 	}
 
@@ -216,12 +235,9 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	const syncUserDecks = async (user: User) => {
 		const userDecks = await database.getDecksByUser(user)
 		if (userDecks?.length > 0) {
-			const decksSortedByOrder = userDecks.sort(
-				(deckA, deckB) => deckA.order - deckB.order
-			)
 			dispatch({
 				type: types.SET_DECKS,
-				payload: decksSortedByOrder,
+				payload: userDecks,
 			})
 		}
 	}
@@ -269,6 +285,8 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		updateCard,
 		addTag,
 		deleteTag,
+		deleteUnusedTags,
+		setActiveTag,
 		setOptions,
 		setConsent,
 		syncUserDecks,

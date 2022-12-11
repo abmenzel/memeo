@@ -28,7 +28,10 @@ const Dojo = () => {
 						</Link>
 						<div className='flex flex-col items-center'>
 							{state.activeDeck?.tag && (
-								<Tag tag={state.activeDeck.tag} />
+								<Tag
+									className='text-[11px]'
+									tag={state.activeDeck.tag}
+								/>
 							)}
 							<h2 className='font-serif text-xl font-bold'>
 								{state.activeDeck?.title}

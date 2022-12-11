@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { Menu, X } from 'lucide-react'
 import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../context/app'
-import { storeTag, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
 import Tag from '../models/Tag'
 
@@ -24,7 +23,9 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 	const { state, actions } = useContext(AppContext)
 	const [query, setQuery] = useState('')
 	const [tags, setTags] = useState<Tag[]>(state.tags)
-	const [selectedTag, setSelectedTag] = useState<Tag | undefined>(deck.tag)
+	const [selectedTag, setSelectedTag] = useState<Tag | null>(
+		deck.tag ? deck.tag : null
+	)
 
 	const filteredTags =
 		query === ''
@@ -44,41 +45,30 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 	const handleNewTag = async (name: string) => {
 		if (!state.user) return
 
-		const createdTag: Tag = {
+		const newTagTemplate: Tag = {
 			created_by: state.user.id,
 			id: null,
 			name: name,
 			color: tagColors[Math.floor(Math.random() * tagColors.length)],
 		}
+		const newTag = await actions.addTag(newTagTemplate)
 
-		setTags([...tags, createdTag])
-		setSelectedTag(createdTag)
-
-		const newTagId = await storeTag(createdTag)
-		if (!newTagId) return
-
-		const newTag = { ...createdTag, id: newTagId }
-		setTags([...tags.filter((tag) => tag.name === newTag.name), newTag])
+		setTags([...tags, newTag])
 		setSelectedTag(newTag)
 	}
 
-	/*useEffect(() => {
-		dispatch({
-			type: Types.UpdateDeck,
-			payload: {
-				oldDeck: deck,
-				newDeck: {
-					...deck,
-					tag: selectedTag,
-				},
-			},
-		})
-		if (selectedTag === null) {
-			updateDeck({ ...deck, tag_id: null })
-		} else if (selectedTag && selectedTag.id) {
-			updateDeck({ ...deck, tag_id: selectedTag.id })
+	useEffect(() => {
+		console.log('selected tag changed')
+		if (selectedTag === null || !selectedTag?.id) {
+			actions.updateDeck({ ...deck, tag_id: null, tag: undefined })
+		} else {
+			actions.updateDeck({
+				...deck,
+				tag_id: selectedTag.id,
+				tag: selectedTag,
+			})
 		}
-	}, [selectedTag])*/
+	}, [selectedTag])
 
 	return (
 		<Combobox
@@ -94,7 +84,7 @@ const TagPicker = ({ deck }: TagPickerProps) => {
 						onChange={(event) => setQuery(event.target.value)}
 						className='rounded-md bg-transparent p-1.5 placeholder:text-black'
 						displayValue={(selectedTag: Tag) => selectedTag?.name}
-						value={selectedTag?.name}
+						value={query}
 						placeholder={
 							tags.length > 0 ? 'Select tag' : 'Create a tag'
 						}

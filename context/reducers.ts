@@ -36,6 +36,10 @@ const reducer = (state: AppState, action: Actions) => {
 					),
 					action.payload,
 				],
+				activeDeck:
+					state.activeDeck?.id === action.payload.id
+						? action.payload
+						: state.activeDeck,
 			}
 		case types.SET_DECKS:
 			return {
@@ -131,8 +135,31 @@ const reducer = (state: AppState, action: Actions) => {
 				...state,
 				consent: action.payload,
 			}
+		case types.SET_TAGS:
+			return {
+				...state,
+				tags: action.payload,
+			}
+		case types.ADD_TAG:
+			return {
+				...state,
+				tags: [...state.tags, action.payload],
+			}
+		case types.DELETE_TAG:
+			return {
+				...state,
+				tags: [
+					...state.tags.filter((tag) => tag.id === action.payload.id),
+				],
+			}
+		case types.SET_ACTIVE_TAG:
+			return {
+				...state,
+				activeTag: action.payload,
+			}
 		default:
-			throw new Error()
+			console.error('Error with action', action)
+			throw new Error('Error with action')
 	}
 }
 

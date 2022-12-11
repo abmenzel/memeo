@@ -12,7 +12,7 @@ const Layout = ({
 	return (
 		<div className='font-body bg-orange-100 text-black height-actual-screen flex flex-col items-center justify-between'>
 			<Cookies />
-			<div className='max-w-xl overflow-y-auto w-full flex flex-col justify-center items-center px-4 flex-grow'>
+			<div className='overflow-y-auto scrollbar-none max-w-xl w-full flex flex-col items-center px-4 flex-grow'>
 				{children}
 			</div>
 			{!hideNavBar && <Navbar />}
