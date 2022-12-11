@@ -13,20 +13,19 @@ const Home: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout hideNavBar={true}>
-				<div className='text-center max-w-xs mb-12'>
-					<h1 className='font-extrabold text-3xl font-serif mb-4'>
+				<div className='h-full flex flex-col items-center justify-center text-center max-w-xs mb-12 gap-2'>
+					<h1 className='font-extrabold text-3xl font-serif mb-0'>
 						Memeo
 					</h1>
-					<p className='text-lg'>
+					<p className='text-lg mb-4'>
 						Become a master at memorizing anything you would like.
 					</p>
+					<Link href={'/login'}>
+						<a className='btn-primary'>
+							<LogIn /> Get started
+						</a>
+					</Link>
 				</div>
-
-				<Link href={'/login'}>
-					<a className='btn-primary'>
-						<LogIn /> Get started
-					</a>
-				</Link>
 			</Layout>
 		</>
 	)

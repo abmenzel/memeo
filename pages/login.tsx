@@ -12,16 +12,16 @@ const Login: NextPage = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Layout hideNavBar={true}>
-				<div className='mb-8 text-center max-w-sm'>
-					<h1 className='font-extrabold text-3xl mb-4 font-serif'>
+				<div className='mb-8 text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>
+					<h1 className='font-extrabold text-3xl mb-0 font-serif'>
 						Login
 					</h1>
-					<p className='text-lg'>
+					<p className='text-lg mb-4'>
 						Sign in with your Google account and start building your
 						card decks.
 					</p>
+					<SignInCard />
 				</div>
-				<SignInCard />
 			</Layout>
 		</>
 	)
