@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import React, {
 	ChangeEvent,
 	KeyboardEvent,
@@ -8,11 +7,10 @@ import React, {
 	useState,
 } from 'react'
 import { AppContext } from '../context/app'
-import { deleteDeck, updateDeck } from '../lib/api'
 import Deck from '../models/Deck'
-import { Types } from '../reducers/reducers'
 import DeckPreviewToolbar from './DeckPreviewToolbar'
 import Stars from './Stars'
+import Tag from './Tag'
 
 type DeckPreviewProps = {
 	deck: Deck
@@ -23,10 +21,9 @@ type DeckPreviewProps = {
 
 const DeckPreview = (props: DeckPreviewProps) => {
 	const { deck, editing, setEditing } = props
-	const { dispatch } = useContext(AppContext)
+	const { actions } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
 	const [deleting, setDeleting] = useState<boolean>(false)
-	const router = useRouter()
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -50,15 +47,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 
 	useEffect(() => {
 		if (!titleRef.current) return
-		const newDeck = { ...deck, title: titleRef.current.value }
-		dispatch({
-			type: Types.UpdateDeck,
-			payload: {
-				oldDeck: deck,
-				newDeck: { ...deck, title: titleRef.current.value },
-			},
-		})
-		updateDeck(newDeck)
+		if (titleRef.current.value !== deck.title) {
+			actions.updateDeck({ ...deck, title: titleRef.current.value })
+		}
 	}, [title])
 
 	const handleKey = (event: KeyboardEvent): void => {
@@ -79,20 +70,13 @@ const DeckPreview = (props: DeckPreviewProps) => {
 
 	const handleDelete = (event: React.MouseEvent) => {
 		event.stopPropagation()
-		dispatch({
-			type: Types.DeleteDeck,
-			payload: deck,
-		})
-		deleteDeck(deck)
+		actions.deleteDeck(deck)
+		actions.deleteUnusedTags()
 		setDeleting(false)
 	}
 
 	const handlePick = (event: React.MouseEvent) => {
-		dispatch({
-			type: Types.PickDeck,
-			payload: deck,
-		})
-		router.push('/dojo')
+		actions.pickDeck(deck)
 	}
 
 	const averageRating =
@@ -101,8 +85,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	return (
 		<div
 			onClick={handlePick}
-			className='group btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
+			className='group mb-0.5 border border-orange-150 btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
 			<div className='flex flex-col min-w-0'>
+				{deck.tag && <Tag className='text-[11px]' tag={deck.tag} />}
 				<input
 					ref={titleRef}
 					onBlur={handleBlur}
@@ -115,7 +100,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 					value={title}
 					placeholder='Deck Title'
 				/>
-				<p className='text-xs'>{deck.cards.length} cards</p>
+				<p className='text-[11px]'>{deck.cards.length} cards</p>
 			</div>
 			<div className='flex items-center gap-x-1'>
 				<Stars rating={averageRating} />

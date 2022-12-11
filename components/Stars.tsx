@@ -21,7 +21,7 @@ const getOpacity = (idx: number, length: number, rating: number) => {
 	}
 }
 
-const Stars = ({ rating, size = '1rem', callback, activeCard }: StarsProps) => {
+const Stars = ({ rating, size = '1rem', callback }: StarsProps) => {
 	const stars = [1, 2, 3, 4, 5]
 	const [hovering, setHovering] = useState<number>(0)
 	const [confetti, setConfetti] = useState<boolean>(false)
@@ -46,7 +46,7 @@ const Stars = ({ rating, size = '1rem', callback, activeCard }: StarsProps) => {
 		<div className={`${callback ? 'cursor-pointer' : ''} flex`}>
 			{stars.map((star, idx) => {
 				return callback ? (
-					<>
+					<span key={idx}>
 						<Star
 							onClick={() => {
 								if (idx + 1 == 5 && rating !== 1) {
@@ -56,7 +56,6 @@ const Stars = ({ rating, size = '1rem', callback, activeCard }: StarsProps) => {
 							}}
 							onMouseEnter={() => handleMouseEnter(idx + 1)}
 							onMouseLeave={() => handleMouseLeave()}
-							key={idx}
 							size={size}
 							fill='black'
 							fillOpacity={
@@ -68,7 +67,7 @@ const Stars = ({ rating, size = '1rem', callback, activeCard }: StarsProps) => {
 							}
 						/>
 						{confetti && <Confetti />}
-					</>
+					</span>
 				) : (
 					<Star
 						key={idx}

@@ -7,6 +7,7 @@ export const testDeck1: Deck = {
 	title: 'This is a test deck',
 	cards: testCards1,
 	order: 0,
+	tag_id: null,
 }
 
 export const testDeck2: Deck = {
@@ -15,6 +16,7 @@ export const testDeck2: Deck = {
 	title: 'Just another deck',
 	cards: testCards2,
 	order: 1,
+	tag_id: null,
 }
 
 export const testDecks = [testDeck1, testDeck2]

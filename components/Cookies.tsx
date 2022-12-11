@@ -1,31 +1,21 @@
-import { Transition } from '@headlessui/react'
 import { Check, Cookie, X } from 'lucide-react'
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../context/app'
-import { Types } from '../reducers/reducers'
+import Consent from '../models/Consent'
 
 const Cookies = () => {
-	const { state, dispatch } = useContext(AppContext)
+	const { state, actions } = useContext(AppContext)
 	useEffect(() => {
-		if (state.consent === Types.ConsentLoading) {
-			dispatch({
-				type: Types.ConsentSet,
-				payload:
-					(window.localStorage.getItem('CONSENT') as
-						| Types.ConsentSome
-						| Types.ConsentAll) || Types.ConsentAwait,
-			})
-		} else if (
-			state.consent === Types.ConsentSome ||
-			state.consent === Types.ConsentAll
-		) {
-			window.localStorage.setItem('CONSENT', state.consent)
+		if (state.consent === 'LOADING') {
+			actions.setConsent(
+				window.localStorage.getItem('CONSENT') as Consent
+			)
 		}
 	}, [state.consent])
 
 	return (
 		<>
-			{state.consent === Types.ConsentAwait && (
+			{state.consent === 'AWAIT' && (
 				<div className='fixed bottom-0 z-10 p-4'>
 					<div className='animate-moveUpSlight translate-y-1 border rounded-md border-black p-4 bg-orange-100'>
 						<div className='md:flex items-center gap-x-5'>
@@ -42,23 +32,13 @@ const Cookies = () => {
 							</div>
 							<div className='flex flex-col text-center mt-2 gap-2 bg-theme-'>
 								<button
-									onClick={() => {
-										dispatch({
-											type: Types.ConsentSet,
-											payload: Types.ConsentSome,
-										})
-									}}
+									onClick={() => actions.setConsent('SOME')}
 									className='btn-secondary justify-center'>
 									<X size='1rem' />
 									Accept functional cookies only
 								</button>
 								<button
-									onClick={() => {
-										dispatch({
-											type: Types.ConsentSet,
-											payload: Types.ConsentAll,
-										})
-									}}
+									onClick={() => actions.setConsent('ALL')}
 									className='btn-primary justify-center'>
 									<Check size='1rem' />
 									Accept all cookies

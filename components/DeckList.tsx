@@ -1,69 +1,54 @@
 import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
-import { storeDeck } from '../lib/api'
-import { createNewCard } from '../lib/api.utils'
 import Card from '../models/Card'
 import Deck from '../models/Deck'
-import { Types } from '../reducers/reducers'
 import DeckPreview from './DeckPreview'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { template } from '../lib/utils'
 
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
-	const { dispatch, state } = useContext(AppContext)
-
+	const { state, actions } = useContext(AppContext)
+	const [filteredDecks, setFilteredDecks] = useState<Deck[]>([])
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
-		const createdDeck: Deck = {
-			id: null,
-			title: '',
-			cards: [],
-			order: state.decks.length,
-			created_by: state.user.id,
-		}
-
-		dispatch({
-			type: Types.AddDeck,
-			payload: createdDeck,
-		})
-
-		const newDeckId = await storeDeck(createdDeck)
-		if (!newDeckId) return
-
-		const newDeck = { ...createdDeck, id: newDeckId }
-		dispatch({
-			type: Types.UpdateDeck,
-			payload: {
-				oldDeck: createdDeck,
-				newDeck: newDeck,
-			},
-		})
-
-		const newCard: Card = {
-			deck_id: newDeck.id,
-			front: '',
-			back: '',
-			rating: 0,
-			id: null,
-		}
-
-		createNewCard(dispatch, newCard)
+		const newDeck = await actions.addDeck(
+			template.newDeck(
+				state.decks.length,
+				state.user.id,
+				state.activeTag ? state.activeTag : undefined
+			)
+		)
 
 		setEditing(newDeck)
 	}
 
+	useEffect(() => {
+		if (state.activeTag === null) {
+			setFilteredDecks(
+				state.decks.sort((deckA, deckB) => deckA.order - deckB.order)
+			)
+		} else {
+			setFilteredDecks(
+				state.decks
+					.filter((deck) => deck.tag_id === state.activeTag?.id)
+					.sort((deckA, deckB) => deckA.order - deckB.order)
+			)
+		}
+	}, [state.decks, state.activeTag])
+
 	return (
-		<div className='flex flex-col items-center gap-y-2 my-4 mb-16 w-full'>
-			{state.decks.length > 0 ? (
+		<div className='overflow-y-auto flex-grow flex flex-col items-center gap-y-2 w-full'>
+			{filteredDecks.length > 0 ? (
 				<Droppable droppableId='droppable-1' type='PERSON'>
 					{(provided) => (
 						<div
-							className='w-full'
+							className='w-full flex flex-col'
 							ref={provided.innerRef}
 							{...provided.droppableProps}>
-							{state.decks.map((deck, idx) => (
+							{filteredDecks.map((deck, idx) => (
 								<Draggable
 									draggableId={`draggable-${idx}`}
 									key={idx}
