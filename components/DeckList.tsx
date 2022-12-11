@@ -78,7 +78,7 @@ const DeckList = () => {
 					certain topic.
 				</p>
 			)}
-			<div className='mt-4'>
+			<div className='mt-4 pb-4'>
 				<button onClick={handleNewDeck} className='btn-primary'>
 					<PlusCircle /> Add deck
 				</button>
