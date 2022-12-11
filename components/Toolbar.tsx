@@ -12,6 +12,7 @@ import {
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/app'
 import ICard from '../models/Card'
+import ConfidenceFilter from './ConfidenceFilter'
 import Stars from './Stars'
 import ToolbarItem from './ToolbarItem'
 
@@ -59,8 +60,10 @@ const Toolbar = ({
 
 	return (
 		<div className='flex flex-col items-center justify-center'>
-			<div className='py-12 flex flex-col items-center'>
-				<p className='text-xs mb-4'>Confidence</p>
+			<div className='pt-12 pb-6 flex flex-col items-center'>
+				<div className='text-xs mb-4 flex gap-1 items-center'>
+					Confidence <ConfidenceFilter />
+				</div>
 				<div className='flex items-center gap-x-4'>
 					<ToolbarItem
 						icon={<ArrowLeft size={'1.75rem'} />}
