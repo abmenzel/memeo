@@ -70,7 +70,7 @@ const reducer = (state: AppState, action: Actions) => {
 							? {
 									...deck,
 									cards: deck.cards.filter(
-										(card) => card.id === action.payload.id
+										(card) => card.id !== action.payload.id
 									),
 							  }
 							: deck

@@ -86,7 +86,7 @@ const Card = ({
 			(event.code === 'Enter' && event.shiftKey == false) ||
 			event.code === 'Escape'
 		) {
-			setEditing(false)
+			setEditing(null)
 		}
 	}
 

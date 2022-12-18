@@ -19,6 +19,10 @@ const Dojo = () => {
 		)
 	}, [state.decks])
 
+	useEffect(() => {
+		//console.log('active deck updated', activeDeck)
+	}, [activeDeck])
+
 	return (
 		<>
 			<Head>

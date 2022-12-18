@@ -62,6 +62,8 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 		if (!lastCard) return
 		if (cardIsEmpty(lastCard)) {
 			setActiveCardIdx(cards.length - 1)
+		} else {
+			setActiveCardIdx(0)
 		}
 	}, [cards.length])
 
@@ -84,11 +86,14 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	}, [activeCard])
 
 	const next = () => {
+		if (editing) return
 		const newCardIdx = (activeCardIdx + 1) % cards.length
 		setFlipCard(state.options.initialFlipState)
 		setActiveCardIdx(newCardIdx)
 	}
 	const prev = () => {
+		if (editing) return
+		setEditing(null)
 		const newCardIdx =
 			activeCardIdx - 1 < 0
 				? cards.length - 1
@@ -172,16 +177,18 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 						{activeCardIdx + 1} / {deck.cards.length} cards
 					</div>
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						<div className='absolute max-w-md w-full mx-auto h-full'>
-							<div
-								onClick={prev}
-								className='w-10 md:w-16 h-full absolute left-0 z-10'
-							/>
-							<div
-								onClick={next}
-								className='w-10 md:w-16 h-full absolute right-0 z-10'
-							/>
-						</div>
+						{!editing && (
+							<div className='absolute max-w-md w-full mx-auto h-full'>
+								<div
+									onClick={prev}
+									className='w-10 md:w-16 h-full absolute left-0 z-10'
+								/>
+								<div
+									onClick={next}
+									className='w-10 md:w-16 h-full absolute right-0 z-10'
+								/>
+							</div>
+						)}
 
 						{cards.length > 0 && activeCard && (
 							<Card
