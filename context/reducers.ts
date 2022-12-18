@@ -36,10 +36,6 @@ const reducer = (state: AppState, action: Actions) => {
 					),
 					action.payload,
 				],
-				activeDeck:
-					state.activeDeck?.id === action.payload.id
-						? action.payload
-						: state.activeDeck,
 			}
 		case types.SET_DECKS:
 			return {
@@ -49,7 +45,7 @@ const reducer = (state: AppState, action: Actions) => {
 		case types.PICK_DECK:
 			return {
 				...state,
-				activeDeck: action.payload,
+				activeDeckId: action.payload,
 			}
 		case types.ADD_CARD:
 			return {
@@ -64,15 +60,8 @@ const reducer = (state: AppState, action: Actions) => {
 							: deck
 					),
 				],
-				activeDeck: state.activeDeck
-					? {
-							...state.activeDeck,
-							cards: [...state.activeDeck.cards, action.payload],
-					  }
-					: null,
 			}
 		case types.DELETE_CARD:
-			if (!state.activeDeck) return state
 			return {
 				...state,
 				decks: [
@@ -87,17 +76,8 @@ const reducer = (state: AppState, action: Actions) => {
 							: deck
 					),
 				],
-				activeDeck: {
-					...state.activeDeck,
-					cards: [
-						...state.activeDeck.cards.filter(
-							(card) => card.id !== action.payload.id
-						),
-					],
-				},
 			}
 		case types.UPDATE_CARD:
-			if (!state.activeDeck) return state
 			return {
 				...state,
 				decks: [
@@ -114,16 +94,6 @@ const reducer = (state: AppState, action: Actions) => {
 							: deck
 					),
 				],
-				activeDeck: {
-					...state.activeDeck,
-					cards: [
-						...state.activeDeck.cards.map((card) =>
-							card.id === action.payload.id
-								? action.payload
-								: card
-						),
-					],
-				},
 			}
 		case types.SET_OPTIONS:
 			return {

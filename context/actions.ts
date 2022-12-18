@@ -53,7 +53,7 @@ type Payloads = {
 	[types.DELETE_DECK]: Deck
 	[types.SET_DECKS]: Deck[]
 	[types.UPDATE_DECK]: Deck
-	[types.PICK_DECK]: Deck
+	[types.PICK_DECK]: string
 
 	[types.ADD_CARD]: Card
 	[types.DELETE_CARD]: Card
@@ -150,9 +150,10 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const pickDeck = (deck: Deck) => {
+		if (!deck.id) return
 		dispatch({
 			type: types.PICK_DECK,
-			payload: deck,
+			payload: deck.id,
 		})
 		router.push('/dojo')
 	}

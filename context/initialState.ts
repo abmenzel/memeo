@@ -5,7 +5,7 @@ const initialAppState: AppState = {
 	decks: [],
 	tags: [],
 	activeTag: null,
-	activeDeck: null,
+	activeDeckId: null,
 	consent: 'LOADING',
 	options: {
 		initialFlipState: false,

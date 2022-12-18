@@ -9,7 +9,7 @@ export default interface AppState {
 	decks: Deck[]
 	tags: Tag[]
 	activeTag: Tag | null
-	activeDeck: null | Deck
+	activeDeckId: null | string
 	consent: Consent
 	options: Options
 }
