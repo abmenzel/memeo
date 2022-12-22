@@ -1,15 +1,27 @@
 import { ArrowLeft } from 'lucide-react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import CardCarousel from '../components/CardCarousel'
 import Layout from '../components/Layout'
 import Tag from '../components/Tag'
-import ToggleFlip from '../components/ToggleFlip'
 import { AppContext } from '../context/app'
+import Deck from '../models/Deck'
 
 const Dojo = () => {
 	const { state } = useContext(AppContext)
+
+	const [activeDeck, setActiveDeck] = useState<undefined | Deck>()
+
+	useEffect(() => {
+		setActiveDeck(
+			state.decks.find((deck) => deck.id === state.activeDeckId)
+		)
+	}, [state.decks])
+
+	useEffect(() => {
+		//console.log('active deck updated', activeDeck)
+	}, [activeDeck])
 
 	return (
 		<>
@@ -27,18 +39,18 @@ const Dojo = () => {
 							</a>
 						</Link>
 						<div className='flex flex-col items-center'>
-							{state.activeDeck?.tag && (
+							{activeDeck?.tag && (
 								<Tag
 									className='text-[11px]'
-									tag={state.activeDeck.tag}
+									tag={activeDeck.tag}
 								/>
 							)}
 							<h2 className='font-serif text-xl font-bold'>
-								{state.activeDeck?.title}
+								{activeDeck?.title}
 							</h2>
 						</div>
 					</div>
-					<CardCarousel />
+					{activeDeck && <CardCarousel deck={activeDeck} />}
 				</div>
 			</Layout>
 		</>

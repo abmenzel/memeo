@@ -7,10 +7,10 @@ import { AppContext } from '../context/app'
 import arrayShuffle from 'array-shuffle'
 import { cardIsEmpty, template } from '../lib/utils'
 import { usePrevious } from '../hooks/usePrevious'
+import Deck from '../models/Deck'
 
-const CardCarousel = () => {
+const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const { state, actions } = useContext(AppContext)
-	const { activeDeck } = state
 	const [activeCard, setActiveCard] = useState<ICard | null>(null)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
 	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
@@ -19,7 +19,11 @@ const CardCarousel = () => {
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
-	const [cards, setCards] = useState<ICard[]>([])
+	const [cards, setCards] = useState<ICard[]>(deck.cards)
+
+	useEffect(() => {
+		setCards(deck.cards)
+	}, [deck.cards])
 
 	useEffect(() => {
 		setFlipCard(state.options.initialFlipState)
@@ -54,15 +58,12 @@ const CardCarousel = () => {
 	})
 
 	useEffect(() => {
-		if (!activeDeck) return
-		setCards(activeDeck.cards)
-	}, [activeDeck])
-
-	useEffect(() => {
 		const lastCard = cards[cards.length - 1]
 		if (!lastCard) return
 		if (cardIsEmpty(lastCard)) {
 			setActiveCardIdx(cards.length - 1)
+		} else {
+			setActiveCardIdx(0)
 		}
 	}, [cards.length])
 
@@ -85,11 +86,14 @@ const CardCarousel = () => {
 	}, [activeCard])
 
 	const next = () => {
+		if (editing) return
 		const newCardIdx = (activeCardIdx + 1) % cards.length
 		setFlipCard(state.options.initialFlipState)
 		setActiveCardIdx(newCardIdx)
 	}
 	const prev = () => {
+		if (editing) return
+		setEditing(null)
 		const newCardIdx =
 			activeCardIdx - 1 < 0
 				? cards.length - 1
@@ -99,11 +103,10 @@ const CardCarousel = () => {
 	}
 
 	const handleNewCard = async () => {
-		if (!state.activeDeck || !state.activeDeck.id) return
+		if (!deck.id) return
 		const lastCard = cards[cards.length - 1]
-		if (!lastCard) return
-		if (cardIsEmpty(lastCard)) return
-		actions.addCard(template.newCard(state.activeDeck.id))
+		if (lastCard && cardIsEmpty(lastCard)) return
+		actions.addCard(template.newCard(deck.id))
 	}
 
 	const handleShuffle = () => {
@@ -133,7 +136,7 @@ const CardCarousel = () => {
 	}
 
 	useEffect(() => {
-		if (!activeCardInputRef.current || !activeCard || !activeDeck) return
+		if (!activeCardInputRef.current || !activeCard) return
 		if (!editing) activeCardInputRef.current.blur()
 		if (editing?.id == activeCard.id) {
 			activeCardInputRef.current.focus()
@@ -169,23 +172,22 @@ const CardCarousel = () => {
 		<div className='flex-grow flex flex-col max-w-xl w-full'>
 			{cards.length > 0 ? (
 				<>
-					{activeDeck && (
-						<div className='text-center text-xs'>
-							{activeCardIdx + 1} / {activeDeck.cards.length}{' '}
-							cards
-						</div>
-					)}
+					<div className='text-center text-xs'>
+						{activeCardIdx + 1} / {deck.cards.length} cards
+					</div>
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						<div className='absolute max-w-md w-full mx-auto h-full'>
-							<div
-								onClick={prev}
-								className='w-10 md:w-16 h-full absolute left-0 z-10'
-							/>
-							<div
-								onClick={next}
-								className='w-10 md:w-16 h-full absolute right-0 z-10'
-							/>
-						</div>
+						{!editing && (
+							<div className='absolute max-w-md w-full mx-auto h-full'>
+								<div
+									onClick={prev}
+									className='w-10 md:w-16 h-full absolute left-0 z-10'
+								/>
+								<div
+									onClick={next}
+									className='w-10 md:w-16 h-full absolute right-0 z-10'
+								/>
+							</div>
+						)}
 
 						{cards.length > 0 && activeCard && (
 							<Card
