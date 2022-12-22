@@ -103,10 +103,10 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	}
 
 	const handleNewCard = async () => {
+		console.log('test')
 		if (!deck.id) return
 		const lastCard = cards[cards.length - 1]
-		if (!lastCard) return
-		if (cardIsEmpty(lastCard)) return
+		if (lastCard && cardIsEmpty(lastCard)) return
 		actions.addCard(template.newCard(deck.id))
 	}
 
