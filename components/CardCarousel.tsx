@@ -103,7 +103,6 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	}
 
 	const handleNewCard = async () => {
-		console.log('test')
 		if (!deck.id) return
 		const lastCard = cards[cards.length - 1]
 		if (lastCard && cardIsEmpty(lastCard)) return

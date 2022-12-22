@@ -11,6 +11,7 @@ import React, {
 } from 'react'
 import Card from '../models/Card'
 import { useDoubleTap } from 'use-double-tap'
+import { usePrevious } from '../hooks/usePrevious'
 
 const Card = ({
 	card,
@@ -29,6 +30,7 @@ const Card = ({
 }) => {
 	const [front, setFront] = useState<string>(card.front)
 	const [back, setBack] = useState<string>(card.back)
+	const previousCard: Card | null = usePrevious<Card | null>(card)
 
 	const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -47,6 +49,11 @@ const Card = ({
 			wrapperRef.current.offsetHeight
 			wrapperRef.current.style.animation = ''
 		}
+		if (card.id !== previousCard?.id) {
+			wrapperRef.current?.classList.add('animate-moveInFromRight')
+		} else {
+			wrapperRef.current?.classList.remove('animate-moveInFromRight')
+		}
 	}, [card])
 
 	const changeFront: ChangeEventHandler<HTMLTextAreaElement> = (
@@ -62,7 +69,9 @@ const Card = ({
 
 	const handleBlur = () => {
 		if (!editing) return
-		setEditing(null)
+		setTimeout(() => {
+			setEditing(null)
+		}, 100)
 	}
 
 	const handleCardClick: MouseEventHandler<Element> = (event) => {
@@ -93,7 +102,7 @@ const Card = ({
 	return (
 		<div
 			ref={wrapperRef}
-			className='relative flex text-center w-full max-w-md animate-moveInFromRight'>
+			className='relative flex text-center w-full max-w-md'>
 			<div
 				{...bind}
 				className='font-serif w-full flex items-center overflow-visible'>
