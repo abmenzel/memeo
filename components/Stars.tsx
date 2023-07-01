@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '../models/Card'
 import Confetti from './Confetti'
 
@@ -44,13 +44,17 @@ const Stars = ({ rating, size = '1rem', callback }: StarsProps) => {
 
 	return (
 		<div className={`${callback ? 'cursor-pointer' : ''} flex`}>
-			{stars.map((star, idx) => {
+			{stars.map((_, idx) => {
 				return callback ? (
 					<span key={idx}>
 						<Star
 							onClick={() => {
 								if (idx + 1 == 5 && rating !== 1) {
 									setConfetti(true)
+								}
+								if ((idx + 1) / stars.length === rating) {
+									callback(0)
+									return
 								}
 								callback(idx + 1)
 							}}
