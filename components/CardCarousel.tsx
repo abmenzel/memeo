@@ -1,13 +1,13 @@
+import arrayShuffle from 'array-shuffle'
 import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import Card from './Card'
-import ICard from '../models/Card'
-import Toolbar from './Toolbar'
 import { AppContext } from '../context/app'
-import arrayShuffle from 'array-shuffle'
-import { cardIsEmpty, template } from '../lib/utils'
 import { usePrevious } from '../hooks/usePrevious'
+import { cardIsEmpty, template } from '../lib/utils'
+import ICard from '../models/Card'
 import Deck from '../models/Deck'
+import Card from './Card'
+import Toolbar from './Toolbar'
 
 const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const { state, actions } = useContext(AppContext)
@@ -176,19 +176,6 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 						{activeCardIdx + 1} / {deck.cards.length} cards
 					</div>
 					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						{!editing && (
-							<div className='absolute max-w-md w-full mx-auto h-full'>
-								<div
-									onClick={prev}
-									className='w-10 md:w-16 h-full absolute left-0 z-10'
-								/>
-								<div
-									onClick={next}
-									className='w-10 md:w-16 h-full absolute right-0 z-10'
-								/>
-							</div>
-						)}
-
 						{cards.length > 0 && activeCard && (
 							<Card
 								card={activeCard}
