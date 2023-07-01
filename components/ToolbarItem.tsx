@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { Button } from './ui'
 
 const ToolbarItem = ({
 	icon,
@@ -7,11 +8,7 @@ const ToolbarItem = ({
 	icon: ReactNode
 	callback: (event: React.MouseEvent) => void
 }) => {
-	return (
-		<button className='btn' onClick={callback}>
-			{icon}
-		</button>
-	)
+	return <Button onClick={callback}>{icon}</Button>
 }
 
 export default ToolbarItem
