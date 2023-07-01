@@ -1,7 +1,8 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import CardCarousel from '../components/CardCarousel'
 import Layout from '../components/Layout'
 import Tag from '../components/Tag'
@@ -32,24 +33,30 @@ const Dojo = () => {
 			</Head>
 			<Layout>
 				<div className='relative w-full flex-grow flex flex-col'>
-					<div className='text-center relative pt-4 flex items-center justify-center'>
-						<Link href='/dashboard'>
-							<a className='btn-secondary absolute left-0'>
-								<ArrowLeft />
-							</a>
-						</Link>
-						<div className='flex flex-col items-center'>
-							{activeDeck?.tag && (
-								<Tag
-									className='text-[11px]'
-									tag={activeDeck.tag}
-								/>
-							)}
-							<h2 className='font-serif text-xl font-bold'>
-								{activeDeck?.title}
-							</h2>
-						</div>
-					</div>
+					<AnimatePresence>
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							className='text-center relative pt-4 flex items-center justify-center'>
+							<Link href='/dashboard'>
+								<a className='btn-secondary absolute left-0'>
+									<ArrowLeft />
+								</a>
+							</Link>
+							<div className='flex flex-col items-center'>
+								{activeDeck?.tag && (
+									<Tag
+										className='text-[11px]'
+										tag={activeDeck.tag}
+									/>
+								)}
+								<h2 className='font-serif text-xl font-bold'>
+									{activeDeck?.title}
+								</h2>
+							</div>
+						</motion.div>
+					</AnimatePresence>
+
 					{activeDeck && <CardCarousel deck={activeDeck} />}
 				</div>
 			</Layout>

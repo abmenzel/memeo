@@ -21,6 +21,11 @@ module.exports = {
 					175: '#ebd8bf',
 				},
 				theme: {
+					button: {
+						bg: {
+							hover: 'rgba(255, 255, 255, 0.1)',
+						},
+					},
 					dark: '#0e1428',
 					purple: '#4d2c56',
 					'light-orange': '#e9ac8d',

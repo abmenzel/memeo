@@ -1,8 +1,8 @@
+import { LogIn } from 'lucide-react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Layout from '../components/Layout'
 import Link from 'next/link'
-import { LogIn } from 'lucide-react'
+import Layout from '../components/Layout'
 
 const Home: NextPage = () => {
 	return (

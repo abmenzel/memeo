@@ -15,8 +15,14 @@
 	.-rotate-xy-180 {
 		transform: rotateY(10deg) rotateX(-90deg);
 	}
+	input:disabled,
+	textarea:disabled {
+		opacity: 1;
+		-webkit-text-fill-color: #0e1428;
+		color: #0e1428;
+	}
 	.btn {
-		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all hover:bg-gray-900 hover:bg-opacity-5 active:bg-opacity-5 p-1.5 px-2;
+		@apply gap-1.5 items-center cursor-pointer text-sm rounded-md inline-flex transition-all md:hover:bg-gray-900 md:hover:bg-opacity-5 md:active:bg-opacity-5 p-1.5 px-2;
 	}
 	.btn-secondary {
 		@apply btn;
