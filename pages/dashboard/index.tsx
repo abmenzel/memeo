@@ -1,11 +1,9 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import DeckList from '../../components/DeckList'
 import DeckListFilter from '../../components/DeckListFilter'
 import Layout from '../../components/Layout'
-import SignOutButton from '../../components/SignOutButton'
-import TagPicker from '../../components/TagPicker'
 import { AppContext } from '../../context/app'
 
 const Dashboard: NextPage = () => {

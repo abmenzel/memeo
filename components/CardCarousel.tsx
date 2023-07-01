@@ -1,4 +1,5 @@
 import arrayShuffle from 'array-shuffle'
+import { AnimatePresence, motion } from 'framer-motion'
 import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../context/app'
@@ -15,6 +16,7 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
 	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
 	const [editing, setEditing] = useState<ICard | null>(null)
+	const [direction, setDirection] = useState<'left' | 'right'>('right')
 	const activeCardInputRef = useRef<any>()
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
@@ -88,11 +90,13 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const next = () => {
 		if (editing) return
 		const newCardIdx = (activeCardIdx + 1) % cards.length
+		setDirection('right')
 		setFlipCard(state.options.initialFlipState)
 		setActiveCardIdx(newCardIdx)
 	}
 	const prev = () => {
 		if (editing) return
+		setDirection('left')
 		setEditing(null)
 		const newCardIdx =
 			activeCardIdx - 1 < 0
@@ -139,7 +143,9 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 		if (!activeCardInputRef.current || !activeCard) return
 		if (!editing) activeCardInputRef.current.blur()
 		if (editing?.id == activeCard.id) {
-			activeCardInputRef.current.focus()
+			setTimeout(() => {
+				activeCardInputRef.current.focus()
+			}, 200)
 		}
 		if (
 			!flipCard &&
@@ -172,21 +178,33 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 		<div className='flex-grow flex flex-col max-w-xl w-full'>
 			{cards.length > 0 ? (
 				<>
-					<div className='text-center text-xs'>
-						{activeCardIdx + 1} / {deck.cards.length} cards
-					</div>
-					<div className='relative flex-grow flex flex-col items-center justify-center'>
-						{cards.length > 0 && activeCard && (
-							<Card
-								card={activeCard}
-								setFlipCard={setFlipCard}
-								activeCardInputRef={activeCardInputRef}
-								setEditing={setEditing}
-								editing={editing}
-								flipCard={flipCard}
-							/>
-						)}
-					</div>
+					<AnimatePresence>
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							className='text-center text-xs'>
+							{activeCardIdx + 1} / {deck.cards.length} cards
+						</motion.div>
+					</AnimatePresence>
+					<AnimatePresence>
+						<motion.div
+							initial={{ scale: 0.9, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							className='relative flex-grow flex flex-col items-center justify-center'>
+							{cards.length > 0 && activeCard && (
+								<Card
+									card={activeCard}
+									setFlipCard={setFlipCard}
+									direction={direction}
+									activeCardInputRef={activeCardInputRef}
+									setEditing={setEditing}
+									editing={editing}
+									flipCard={flipCard}
+								/>
+							)}
+						</motion.div>
+					</AnimatePresence>
+
 					<Toolbar
 						activeCard={cards[activeCardIdx]}
 						activeCardIdx={activeCardIdx}
