@@ -1,17 +1,17 @@
 import { TextareaAutosize } from '@mui/material'
-import React, {
+import {
 	ChangeEvent,
-	KeyboardEventHandler,
-	KeyboardEvent,
-	useEffect,
-	useState,
 	ChangeEventHandler,
+	KeyboardEvent,
+	KeyboardEventHandler,
 	MouseEventHandler,
+	useEffect,
 	useRef,
+	useState,
 } from 'react'
-import Card from '../models/Card'
 import { useDoubleTap } from 'use-double-tap'
 import { usePrevious } from '../hooks/usePrevious'
+import Card from '../models/Card'
 
 const Card = ({
 	card,
@@ -117,8 +117,8 @@ const Card = ({
 						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={!flipCard ? activeCardInputRef : null}
-							disabled={disableFront}
-							className={`font-serif outline-none transition-none text-center bg-transparent font-bold resize-none ${
+							readOnly={disableFront}
+							className={`appearance-none font-serif outline-none transition-none text-center bg-transparent font-bold resize-none ${
 								(front.length > 80 && 'text-md') ||
 								(front.length > 60 && 'text-lg') ||
 								(front.length > 40 && 'text-xl') ||
@@ -148,7 +148,7 @@ const Card = ({
 						} max-h-96 overflow-y-auto transition-all duration-300 border rounded-md flex items-center justify-center bg-gradient-to-br to-orange-150 bg-opacity-5 from-orange-75 aspect-video border-gray-600 border-opacity-10 shadow-xl shadow-orange-175 hover:shadow-2xl`}>
 						<TextareaAutosize
 							ref={flipCard ? activeCardInputRef : null}
-							disabled={disableBack}
+							readOnly={disableBack}
 							className={`transition-none outline-none text-center bg-transparent resize-none ${
 								(back.length > 80 && 'text-sm') ||
 								(back.length > 60 && 'text-md') ||
