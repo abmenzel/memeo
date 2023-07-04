@@ -42,9 +42,9 @@ export const database = {
 			console.error(error)
 		}
 	},
-	updateCard: async (card: Card) => {
+	updateCard: async (card: Card): Promise<Card> => {
 		try {
-			await supabase
+			const { data: updatedCard } = await supabase
 				.from('cards')
 				.update({
 					front: card.front,
@@ -53,8 +53,12 @@ export const database = {
 					updated_at: new Date().toUTCString(),
 				})
 				.eq('id', card.id)
+				.select()
+			if (!updatedCard) throw new Error('Card not updated')
+			return updatedCard[0]
 		} catch (error) {
 			console.error(error)
+			return card
 		}
 	},
 	storeDeck: async (deck: Deck) => {

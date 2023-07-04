@@ -1,14 +1,14 @@
+import { useRouter } from 'next/router'
 import { Dispatch } from 'react'
+import { database, supabase } from '../lib/api'
+import { template } from '../lib/utils'
 import AppState from '../models/AppState'
 import Card from '../models/Card'
+import Consent from '../models/Consent'
 import Deck from '../models/Deck'
 import Options from '../models/Options'
-import User from '../models/User'
-import Consent from '../models/Consent'
-import { database, supabase } from '../lib/api'
-import { useRouter } from 'next/router'
-import { template } from '../lib/utils'
 import Tag from '../models/Tag'
+import User from '../models/User'
 
 enum types {
 	SIGN_IN = 'SIGN_IN',
@@ -81,7 +81,7 @@ export type IActions = {
 	pickDeck: (deck: Deck) => void
 	addCard: (card: Card) => void
 	deleteCard: (card: Card) => void
-	updateCard: (card: Card) => void
+	updateCard: (card: Card) => Promise<Card>
 	addTag: (tag: Tag) => Promise<Tag>
 	deleteTag: (tag: Tag) => Promise<void>
 	setActiveTag: (tag: Tag | null) => Promise<void>
@@ -176,12 +176,12 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		await database.deleteCard(card)
 	}
 
-	const updateCard = async (card: Card) => {
+	const updateCard = async (card: Card): Promise<Card> => {
 		dispatch({
 			type: types.UPDATE_CARD,
 			payload: card,
 		})
-		await database.updateCard(card)
+		return await database.updateCard(card)
 	}
 
 	const addTag = async (tag: Tag) => {

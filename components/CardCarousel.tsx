@@ -1,7 +1,7 @@
 import arrayShuffle from 'array-shuffle'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PlusCircle } from 'lucide-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/app'
 import { usePrevious } from '../hooks/usePrevious'
 import { cardIsEmpty, template } from '../lib/utils'
@@ -17,11 +17,18 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const [direction, setDirection] = useState<'left' | 'right'>('right')
-	const activeCardInputRef = useRef<any>()
+	const [activeInput, setActiveInput] = useState<HTMLTextAreaElement | null>(
+		null
+	)
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
 	const [cards, setCards] = useState<ICard[]>(deck.cards)
+
+	const updateCard = async (card: ICard) => {
+		const updatedCard = await actions.updateCard(card)
+		setActiveCard(updatedCard)
+	}
 
 	useEffect(() => {
 		setCards(deck.cards)
@@ -58,6 +65,14 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 			document.removeEventListener('keyup', handleGlobalKey)
 		}
 	})
+
+	useEffect(() => {
+		if (!editing) return
+		console.log(activeInput)
+		if (activeInput) {
+			activeInput.focus()
+		}
+	}, [editing])
 
 	useEffect(() => {
 		const lastCard = cards[cards.length - 1]
@@ -135,44 +150,9 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 				...activeCard,
 				rating: ratingRelative,
 			}
-			actions.updateCard(newCard)
+			updateCard(newCard)
 		}
 	}
-
-	useEffect(() => {
-		if (!activeCardInputRef.current || !activeCard) return
-		if (!editing) activeCardInputRef.current.blur()
-		if (editing?.id == activeCard.id) {
-			setTimeout(() => {
-				activeCardInputRef.current.focus()
-			}, 200)
-		}
-		if (
-			!flipCard &&
-			activeCard.front !== activeCardInputRef.current.value
-		) {
-			// Front was updated
-			console.log('front was updated')
-			actions.updateCard({
-				...activeCard,
-				front: activeCardInputRef.current.value,
-			})
-
-			return activeCardInputRef.current.blur()
-		} else if (
-			flipCard &&
-			activeCard.back !== activeCardInputRef.current.value
-		) {
-			// Back was updated
-			console.log('back was updated')
-			actions.updateCard({
-				...activeCard,
-				back: activeCardInputRef.current.value,
-			})
-
-			return activeCardInputRef.current.blur()
-		}
-	}, [editing])
 
 	return (
 		<div className='flex-grow flex flex-col max-w-xl w-full'>
@@ -195,8 +175,9 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 								<Card
 									card={activeCard}
 									setFlipCard={setFlipCard}
+									updateCard={updateCard}
 									direction={direction}
-									activeCardInputRef={activeCardInputRef}
+									setActiveInput={setActiveInput}
 									setEditing={setEditing}
 									editing={editing}
 									flipCard={flipCard}
