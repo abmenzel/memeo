@@ -85,7 +85,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	return (
 		<div
 			onClick={handlePick}
-			className='group mb-0.5 border border-orange-150 btn-secondary py-2 flex justify-between items-center gap-x-8 w-full bg-orange-100'>
+			className='group mb-2 bg-orange-150 btn-secondary py-2 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
 				{deck.tag && <Tag className='text-[11px]' tag={deck.tag} />}
 				<input

@@ -23,8 +23,11 @@ const Button: React.FC<Props> = (props) => {
 			backgroundColor: 'rgba(0,0,0,0)',
 		},
 		tap: {
-			scale: 1.05,
+			scale: 0.9,
 			backgroundColor: 'rgba(0,0,0,0.1)',
+			transition: {
+				duration: 0,
+			},
 		},
 	}
 

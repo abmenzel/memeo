@@ -1,11 +1,10 @@
 import { PlusCircle } from 'lucide-react'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
-import Card from '../models/Card'
+import { template } from '../lib/utils'
 import Deck from '../models/Deck'
 import DeckPreview from './DeckPreview'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
-import { template } from '../lib/utils'
 
 const DeckList = () => {
 	const [editing, setEditing] = useState<Deck | null>(null)
