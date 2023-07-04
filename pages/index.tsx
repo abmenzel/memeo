@@ -2,9 +2,12 @@ import { LogIn } from 'lucide-react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import { ForwardedRef, forwardRef } from 'react'
+import PageTransition from '../components/animations/PageTransition'
 
-const Home: NextPage = () => {
+type HomePageRef = ForwardedRef<HTMLDivElement>
+
+const Home: NextPage = forwardRef((props, ref: HomePageRef) => {
 	return (
 		<>
 			<Head>
@@ -12,8 +15,8 @@ const Home: NextPage = () => {
 				<meta name='description' content='Memeo' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Layout hideNavBar={true}>
-				<div className='h-full flex flex-col items-center justify-center text-center max-w-xs mb-12 gap-2'>
+			<PageTransition ref={ref}>
+				<div className='h-full mx-auto flex flex-col items-center justify-center text-center max-w-xs mb-12 gap-2'>
 					<h1 className='font-extrabold text-3xl font-serif mb-0'>
 						Memeo
 					</h1>
@@ -26,9 +29,9 @@ const Home: NextPage = () => {
 						</a>
 					</Link>
 				</div>
-			</Layout>
+			</PageTransition>
 		</>
 	)
-}
+})
 
 export default Home

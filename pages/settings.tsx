@@ -1,10 +1,12 @@
 import Head from 'next/head'
-import { useContext } from 'react'
-import Layout from '../components/Layout'
+import { ForwardedRef, forwardRef, useContext } from 'react'
 import ToggleFlip from '../components/ToggleFlip'
+import PageTransition from '../components/animations/PageTransition'
 import { AppContext } from '../context/app'
 
-const Settings = () => {
+type SettingsPageRef = ForwardedRef<HTMLDivElement>
+
+const Settings = forwardRef((props, ref: SettingsPageRef) => {
 	const { state } = useContext(AppContext)
 
 	return (
@@ -14,7 +16,7 @@ const Settings = () => {
 				<meta name='description' content='Memeo' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Layout>
+			<PageTransition ref={ref}>
 				<div className='relative w-full flex-grow flex items-center flex-col py-6'>
 					<h1 className='text-3xl mb-4 font-serif font-extrabold'>
 						Settings
@@ -26,9 +28,9 @@ const Settings = () => {
 						</div>
 					</div>
 				</div>
-			</Layout>
+			</PageTransition>
 		</>
 	)
-}
+})
 
 export default Settings

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { LayoutGrid, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
@@ -9,7 +10,18 @@ const Navbar = () => {
 	const router = useRouter()
 	const { actions } = useContext(AppContext)
 	return (
-		<div className='w-full flex justify-center items-center shrink-0 relative z-30'>
+		<motion.div
+			animate={{ y: 0 }}
+			transition={{
+				ease: 'easeInOut',
+			}}
+			exit={{
+				y: '100%',
+			}}
+			initial={{
+				y: '100%',
+			}}
+			className='w-full bg-orange-100 flex justify-center items-center shrink-0 relative z-30'>
 			<nav className='border-t border-black h-16 flex items-center border-opacity-10 max-w-lg w-full'>
 				<ul className='w-full flex justify-center gap-x-2'>
 					<NavItem
@@ -34,7 +46,7 @@ const Navbar = () => {
 					/>
 				</ul>
 			</nav>
-		</div>
+		</motion.div>
 	)
 }
 
