@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { PlusCircle } from 'lucide-react'
 import { useContext, useEffect, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
@@ -6,7 +7,10 @@ import { template } from '../lib/utils'
 import Deck from '../models/Deck'
 import DeckPreview from './DeckPreview'
 
-const DeckList = () => {
+type Props = React.HTMLAttributes<HTMLDivElement>
+
+const DeckList: React.FC<Props> = (props) => {
+	const { className } = props
 	const [editing, setEditing] = useState<Deck | null>(null)
 	const { state, actions } = useContext(AppContext)
 	const [filteredDecks, setFilteredDecks] = useState<Deck[]>([])
@@ -39,7 +43,11 @@ const DeckList = () => {
 	}, [state.decks, state.activeTag])
 
 	return (
-		<div className='overflow-y-auto flex-grow flex flex-col items-center gap-y-2 w-full'>
+		<div
+			className={clsx(
+				'overflow-y-auto hide-scrollbar flex-grow flex relative flex-col items-center gap-y-2 w-full',
+				className
+			)}>
 			{filteredDecks.length > 0 ? (
 				<Droppable droppableId='droppable-1' type='PERSON'>
 					{(provided) => (

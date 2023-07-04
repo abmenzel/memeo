@@ -1,30 +1,33 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
-import React, { forwardRef } from 'react'
+import { ForwardedRef, forwardRef } from 'react'
 
 type PageTransitionProps = HTMLMotionProps<'div'>
-type PageTransitionRef = React.ForwardedRef<HTMLDivElement>
+type PageTransitionRef = ForwardedRef<HTMLDivElement>
 
-function PageTransition(
-	{ children, ...rest }: PageTransitionProps,
-	ref: PageTransitionRef
-) {
-	const onTheRight = { x: '100%' }
-	const inTheCenter = { x: 0 }
-	const onTheLeft = { x: '-100%' }
+const PageTransition = forwardRef(
+	({ children, ...rest }: PageTransitionProps, ref: PageTransitionRef) => {
+		const transition = { duration: 0.2, ease: 'easeInOut' }
 
-	const transition = { duration: 0.6, ease: 'easeInOut' }
+		return (
+			<motion.div
+				className='w-full h-full flex-grow'
+				ref={ref}
+				initial={{
+					opacity: 0,
+				}}
+				animate={{
+					opacity: 1,
+				}}
+				exit={{
+					opacity: 0,
+					scale: 1.02,
+				}}
+				transition={transition}
+				{...rest}>
+				{children}
+			</motion.div>
+		)
+	}
+)
 
-	return (
-		<motion.div
-			ref={ref}
-			initial={onTheRight}
-			animate={inTheCenter}
-			exit={onTheLeft}
-			transition={transition}
-			{...rest}>
-			{children}
-		</motion.div>
-	)
-}
-
-export default forwardRef(PageTransition)
+export default PageTransition

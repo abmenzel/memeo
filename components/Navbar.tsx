@@ -1,6 +1,7 @@
-import { LayoutGrid, LogOut, Settings, Settings2 } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { LayoutGrid, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/router'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { AppContext } from '../context/app'
 import { supabase } from '../lib/api'
 import NavItem from './NavItem'
@@ -9,8 +10,19 @@ const Navbar = () => {
 	const router = useRouter()
 	const { actions } = useContext(AppContext)
 	return (
-		<div className='w-full flex justify-center'>
-			<nav className='mx-8 py-2 border-t border-black border-opacity-10 max-w-lg w-full'>
+		<motion.div
+			animate={{ y: 0 }}
+			transition={{
+				ease: 'easeInOut',
+			}}
+			exit={{
+				y: '100%',
+			}}
+			initial={{
+				y: '100%',
+			}}
+			className='w-full bg-orange-100 flex justify-center items-center shrink-0 relative z-30'>
+			<nav className='border-t border-black h-16 flex items-center border-opacity-10 max-w-lg w-full'>
 				<ul className='w-full flex justify-center gap-x-2'>
 					<NavItem
 						route='/dashboard'
@@ -34,7 +46,7 @@ const Navbar = () => {
 					/>
 				</ul>
 			</nav>
-		</div>
+		</motion.div>
 	)
 }
 

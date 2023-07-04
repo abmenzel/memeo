@@ -2,14 +2,22 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useContext, useEffect, useState } from 'react'
+import {
+	ForwardedRef,
+	forwardRef,
+	useContext,
+	useEffect,
+	useState,
+} from 'react'
 import CardCarousel from '../components/CardCarousel'
-import Layout from '../components/Layout'
 import Tag from '../components/Tag'
+import PageTransition from '../components/animations/PageTransition'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
 
-const Dojo = () => {
+type DojoPageRef = ForwardedRef<HTMLDivElement>
+
+const Dojo = forwardRef((props, ref: DojoPageRef) => {
 	const { state } = useContext(AppContext)
 
 	const [activeDeck, setActiveDeck] = useState<undefined | Deck>()
@@ -31,8 +39,8 @@ const Dojo = () => {
 				<meta name='description' content='Memeo' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Layout>
-				<div className='relative w-full flex-grow flex flex-col'>
+			<PageTransition ref={ref}>
+				<div className='w-full h-full flex flex-col'>
 					<AnimatePresence>
 						<motion.div
 							initial={{ opacity: 0 }}
@@ -59,9 +67,9 @@ const Dojo = () => {
 
 					{activeDeck && <CardCarousel deck={activeDeck} />}
 				</div>
-			</Layout>
+			</PageTransition>
 		</>
 	)
-}
+})
 
 export default Dojo
