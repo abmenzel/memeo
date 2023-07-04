@@ -7,12 +7,12 @@ import {
 	KeyboardEvent,
 	KeyboardEventHandler,
 	MouseEventHandler,
+	createRef,
 	useEffect,
 	useRef,
 	useState,
 } from 'react'
 import { useDoubleTap } from 'use-double-tap'
-import { usePrevious } from '../hooks/usePrevious'
 import Card from '../models/Card'
 
 const Card = ({
@@ -20,8 +20,9 @@ const Card = ({
 	flipCard,
 	direction,
 	editing,
-	activeCardInputRef,
+	setActiveInput,
 	setFlipCard,
+	updateCard,
 	setEditing,
 }: {
 	direction: 'left' | 'right'
@@ -29,12 +30,12 @@ const Card = ({
 	setFlipCard: Function
 	flipCard: boolean
 	editing: Card | null
-	activeCardInputRef: any
+	setActiveInput: (input: HTMLTextAreaElement | null) => void
+	updateCard: (card: Card) => Promise<void>
 	setEditing: Function
 }) => {
 	const [front, setFront] = useState<string>(card.front)
 	const [back, setBack] = useState<string>(card.back)
-	const previousCard: Card | null = usePrevious<Card | null>(card)
 
 	const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -67,10 +68,13 @@ const Card = ({
 	}
 
 	const handleBlur = () => {
-		if (!editing) return
-		setTimeout(() => {
-			setEditing(null)
-		}, 100)
+		if (card.front !== front) {
+			updateCard({ ...card, front })
+		}
+		if (card.back !== back) {
+			updateCard({ ...card, back })
+		}
+		setEditing(null)
 	}
 
 	const handleCardClick: MouseEventHandler<Element> = (event) => {
@@ -97,6 +101,14 @@ const Card = ({
 			setEditing(null)
 		}
 	}
+
+	const activeCardInputRef = createRef<HTMLTextAreaElement>()
+
+	useEffect(() => {
+		if (activeCardInputRef.current) {
+			setActiveInput(activeCardInputRef.current)
+		}
+	}, [activeCardInputRef])
 
 	return (
 		<AnimatePresence mode='popLayout' initial={false}>
@@ -153,6 +165,12 @@ const Card = ({
 								onChange={changeFront}
 								onKeyDown={handleKey}
 								onBlur={handleBlur}
+								onFocus={(e) =>
+									e.currentTarget.setSelectionRange(
+										e.currentTarget.value.length,
+										e.currentTarget.value.length
+									)
+								}
 							/>
 						</div>
 					</div>
@@ -180,6 +198,12 @@ const Card = ({
 								placeholder={'Card back'}
 								onClick={(event) =>
 									handleTextClick(event, disableBack)
+								}
+								onFocus={(e) =>
+									e.currentTarget.setSelectionRange(
+										e.currentTarget.value.length,
+										e.currentTarget.value.length
+									)
 								}
 								onKeyDown={handleKey}
 								onChange={changeBack}
