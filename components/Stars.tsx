@@ -23,16 +23,7 @@ const getOpacity = (idx: number, length: number, rating: number) => {
 
 const Stars = ({ rating, size = '1rem', callback }: StarsProps) => {
 	const stars = [1, 2, 3, 4, 5]
-	const [hovering, setHovering] = useState<number>(0)
 	const [confetti, setConfetti] = useState<boolean>(false)
-
-	const handleMouseEnter = (idx: number) => {
-		setHovering(idx)
-	}
-
-	const handleMouseLeave = () => {
-		setHovering(0)
-	}
 
 	useEffect(() => {
 		if (confetti) {
@@ -58,17 +49,9 @@ const Stars = ({ rating, size = '1rem', callback }: StarsProps) => {
 								}
 								callback(idx + 1)
 							}}
-							onMouseEnter={() => handleMouseEnter(idx + 1)}
-							onMouseLeave={() => handleMouseLeave()}
 							size={size}
 							fill='black'
-							fillOpacity={
-								hovering > 0
-									? idx + 1 <= hovering
-										? 1
-										: 0
-									: getOpacity(idx, stars.length, rating)
-							}
+							fillOpacity={getOpacity(idx, stars.length, rating)}
 						/>
 						{confetti && <Confetti />}
 					</span>
