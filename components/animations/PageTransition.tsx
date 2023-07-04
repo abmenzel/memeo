@@ -20,6 +20,7 @@ const PageTransition = forwardRef(
 				}}
 				exit={{
 					opacity: 0,
+					scale: 1.02,
 				}}
 				transition={transition}
 				{...rest}>
