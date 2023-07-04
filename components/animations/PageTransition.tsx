@@ -10,7 +10,7 @@ const PageTransition = forwardRef(
 
 		return (
 			<motion.div
-				className='w-full flex-grow'
+				className='w-full h-full flex-grow'
 				ref={ref}
 				initial={{
 					opacity: 0,
