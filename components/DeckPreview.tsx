@@ -25,6 +25,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	const { actions } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
 	const [deleting, setDeleting] = useState<boolean>(false)
+	const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false)
 
 	const titleRef = useRef<HTMLInputElement>(null)
 
@@ -77,7 +78,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	}
 
 	const handlePick = (event: React.MouseEvent) => {
-		actions.pickDeck(deck)
+		if (!contextMenuOpen) {
+			actions.pickDeck(deck)
+		}
 	}
 
 	const averageRating =
@@ -117,7 +120,8 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				<DeckPreviewToolbar
 					deck={deck}
 					deleting={deleting}
-					editing={editing}
+					setContextMenuOpen={setContextMenuOpen}
+					contextMenuOpen={contextMenuOpen}
 					handleEdit={handleEdit}
 					handleDelete={handleDelete}
 					setDeleting={setDeleting}
