@@ -23,7 +23,7 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 			</Head>
 			<PageTransition ref={ref}>
 				<AnimatePresence initial={false} mode='popLayout'>
-					{isLoading || (!state.user && <LoadingScreen />)}
+					{isLoading && <LoadingScreen />}
 				</AnimatePresence>
 				{!isLoading && !state.user && (
 					<div className='mb-8 mx-auto text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>

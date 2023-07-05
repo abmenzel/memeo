@@ -12,6 +12,7 @@ const reducer = (state: AppState, action: Actions) => {
 		case types.SIGN_OUT:
 			return {
 				...state,
+				userLoading: false,
 				user: action.payload,
 			}
 		case types.ADD_DECK:
