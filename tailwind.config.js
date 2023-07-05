@@ -23,6 +23,7 @@ module.exports = {
 				theme: {
 					button: {
 						bg: {
+							active: 'rgba(0,0,0,0.05)',
 							hover: 'rgba(255, 255, 255, 0.1)',
 						},
 					},

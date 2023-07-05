@@ -12,6 +12,7 @@ import {
 import CardCarousel from '../components/CardCarousel'
 import Tag from '../components/Tag'
 import PageTransition from '../components/animations/PageTransition'
+import { Button } from '../components/ui'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
 
@@ -47,9 +48,9 @@ const Dojo = forwardRef((props, ref: DojoPageRef) => {
 							animate={{ opacity: 1 }}
 							className='text-center relative pt-4 flex items-center justify-center'>
 							<Link href='/dashboard'>
-								<a className='btn-secondary absolute left-0'>
+								<Button className='absolute left-0'>
 									<ArrowLeft />
-								</a>
+								</Button>
 							</Link>
 							<div className='flex flex-col items-center'>
 								{activeDeck?.tag && (

@@ -1,5 +1,7 @@
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import React, { MouseEventHandler, ReactNode } from 'react'
+import { MouseEventHandler, ReactNode } from 'react'
+import { Button } from './ui'
 
 type NaviItemProps = {
 	route?: string
@@ -10,14 +12,15 @@ type NaviItemProps = {
 
 const NavItem = ({ icon, route, label, callback }: NaviItemProps) => {
 	const router = useRouter()
+	const active = router.pathname == route
 	return (
 		<li
 			onClick={callback}
-			className={`btn flex flex-col p-2 gap-y-1 items-center text-center justify-center text-xs ${
-				router.pathname == route ? 'opacity-100' : 'opacity-75'
-			}`}>
-			{icon}
-			<div className='font-bold'>{label}</div>
+			className={`flex flex-col p-2 gap-y-1 items-center text-center justify-center text-xs`}>
+			<Button className={clsx({ '!bg-theme-button-bg-active': active })}>
+				{icon}
+				<div className='font-bold'>{label}</div>
+			</Button>
 		</li>
 	)
 }

@@ -95,7 +95,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				},
 			}}
 			onClick={handlePick}
-			className='group mb-2 overflow-hidden rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
+			className='group mb-2 rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
 				{deck.tag && <Tag className='text-[10px]' tag={deck.tag} />}
 				<input
