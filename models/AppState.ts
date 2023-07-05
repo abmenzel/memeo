@@ -6,7 +6,9 @@ import Tag from './Tag'
 
 export default interface AppState {
 	user: null | User
+	userLoading: boolean
 	decks: Deck[]
+	decksLoading: boolean
 	tags: Tag[]
 	activeTag: Tag | null
 	activeDeckId: null | string
