@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import React, {
 	ChangeEvent,
 	KeyboardEvent,
@@ -83,9 +84,18 @@ const DeckPreview = (props: DeckPreviewProps) => {
 		deck.cards.reduce((acc, card) => acc + card.rating, 0) /
 		deck.cards.length
 	return (
-		<div
+		<motion.div
+			initial={{
+				backgroundColor: 'rgb(248, 230, 205)',
+			}}
+			whileTap={{
+				backgroundColor: 'rgb(236, 218, 194)',
+				transition: {
+					duration: 0,
+				},
+			}}
 			onClick={handlePick}
-			className='group mb-2 bg-orange-150 btn-secondary overflow-hidden px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
+			className='group mb-2 overflow-hidden rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
 				{deck.tag && <Tag className='text-[10px]' tag={deck.tag} />}
 				<input
@@ -114,7 +124,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 					handleProps={props.handleProps}
 				/>
 			</div>
-		</div>
+		</motion.div>
 	)
 }
 
