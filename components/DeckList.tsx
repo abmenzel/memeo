@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { PlusCircle } from 'lucide-react'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
 import { template } from '../lib/utils'
@@ -13,7 +13,10 @@ const DeckList: React.FC<Props> = (props) => {
 	const { className } = props
 	const [editing, setEditing] = useState<Deck | null>(null)
 	const { state, actions } = useContext(AppContext)
-	const [filteredDecks, setFilteredDecks] = useState<Deck[]>([])
+	const defaultDecksSort = useMemo(() => {
+		return state.decks.sort((deckA, deckB) => deckA.order - deckB.order)
+	}, [state.decks])
+	const [filteredDecks, setFilteredDecks] = useState<Deck[]>(defaultDecksSort)
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
@@ -30,9 +33,7 @@ const DeckList: React.FC<Props> = (props) => {
 
 	useEffect(() => {
 		if (state.activeTag === null) {
-			setFilteredDecks(
-				state.decks.sort((deckA, deckB) => deckA.order - deckB.order)
-			)
+			setFilteredDecks(defaultDecksSort)
 		} else {
 			setFilteredDecks(
 				state.decks

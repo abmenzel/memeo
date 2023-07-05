@@ -6,6 +6,7 @@ const reducer = (state: AppState, action: Actions) => {
 		case types.SIGN_IN:
 			return {
 				...state,
+				userLoading: false,
 				user: action.payload,
 			}
 		case types.SIGN_OUT:
@@ -40,6 +41,7 @@ const reducer = (state: AppState, action: Actions) => {
 		case types.SET_DECKS:
 			return {
 				...state,
+				decksLoading: false,
 				decks: action.payload,
 			}
 		case types.PICK_DECK:

@@ -1,10 +1,10 @@
-import React, { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
 
 import { useRouter } from 'next/router'
-import initialAppState from './initialState'
 import AppState from '../models/AppState'
-import { reducer } from './reducers'
 import { IActions, useActions } from './actions'
+import initialAppState from './initialState'
+import { reducer } from './reducers'
 
 const AppContext = createContext<{
 	state: AppState
@@ -35,8 +35,10 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, [state.user])
 
 	useEffect(() => {
-		if (state.user && router.pathname == '/login') router.push('/dashboard')
-		if (!state.user && router.pathname != '/') router.push('/login')
+		if (state.user && router.pathname === '/login') {
+			router.push('/dashboard')
+		}
+		if (!state.user && router.pathname !== '/') router.push('/login')
 	}, [state.user, router.pathname])
 
 	return (
@@ -46,4 +48,4 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	)
 }
 
-export { AppProvider, AppContext }
+export { AppContext, AppProvider }
