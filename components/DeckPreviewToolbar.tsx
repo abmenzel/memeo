@@ -1,14 +1,14 @@
 import { Menu } from '@headlessui/react'
 import { Edit3, GripVertical, MoreVertical, Tag, Trash2 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
+import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
-import DeleteModal from './DeleteModal'
 import TagModal from './TagModal'
+import { Button } from './ui'
 
 type DeckPreviewToolbarProps = {
 	deck: Deck
 	deleting: boolean
-	contextMenuOpen: boolean
 	setContextMenuOpen: (open: boolean) => void
 	handleDelete: (event: React.MouseEvent) => void
 	setDeleting: Function
@@ -23,26 +23,18 @@ const DeckPreviewToolbar = ({
 	setDeleting,
 	handleEdit,
 	setContextMenuOpen,
-	contextMenuOpen,
 	handleProps,
 }: DeckPreviewToolbarProps) => {
 	const [tagging, setTagging] = useState(false)
-
+	const { actions } = useContext(AppContext)
+	const { showModal } = actions
 	return (
 		<>
-			<DeleteModal
-				setDeleting={setDeleting}
-				deleting={deleting}
-				handleDelete={handleDelete}
-				deck={deck}
-			/>
 			<TagModal tagging={tagging} setTagging={setTagging} deck={deck} />
 			<Menu>
 				{({ open }) => {
 					if (open) {
-						setTimeout(() => {
-							setContextMenuOpen(true)
-						}, 100)
+						setContextMenuOpen(true)
 					} else {
 						setTimeout(() => {
 							setContextMenuOpen(false)
@@ -50,14 +42,15 @@ const DeckPreviewToolbar = ({
 					}
 					return (
 						<div className='relative'>
-							<Menu.Button
-								onClick={(event: React.MouseEvent) => {
+							<Button
+								onClick={(event: React.MouseEvent) =>
 									event.stopPropagation()
-								}}>
-								<span className='btn-secondary'>
+								}>
+								<Menu.Button as={Fragment}>
 									<MoreVertical size={'1rem'} />
-								</span>
-							</Menu.Button>
+								</Menu.Button>
+							</Button>
+
 							<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md flex flex-col'>
 								<Menu.Item>
 									<button
@@ -68,16 +61,7 @@ const DeckPreviewToolbar = ({
 										<Edit3 size={'1rem'} /> Rename
 									</button>
 								</Menu.Item>
-								<Menu.Item>
-									<button
-										className='btn-secondary p-2 pr-4 rounded-none'
-										onClick={(event) => {
-											event.stopPropagation()
-											setDeleting(true)
-										}}>
-										<Trash2 size={'1rem'} /> Delete
-									</button>
-								</Menu.Item>
+
 								<Menu.Item>
 									<button
 										className='btn-secondary p-2 pr-4 rounded-none'
@@ -87,6 +71,23 @@ const DeckPreviewToolbar = ({
 										}}>
 										<Tag size={'1rem'} /> Tag
 									</button>
+								</Menu.Item>
+								<Menu.Item>
+									<Button
+										animateScale={false}
+										rounded={false}
+										onClick={(event) =>
+											showModal({
+												title: `Delete ${deck.title}?`,
+												icon: <Trash2 size={'1rem'} />,
+												description:
+													'This will permanently delete this card deck.',
+												onConfirm: () =>
+													handleDelete(event),
+											})
+										}>
+										<Trash2 size={'1rem'} /> Delete
+									</Button>
 								</Menu.Item>
 							</Menu.Items>
 						</div>

@@ -14,4 +14,5 @@ export default interface AppState {
 	activeDeckId: null | string
 	consent: Consent
 	options: Options
+	modal: ModalState
 }

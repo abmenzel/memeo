@@ -130,6 +130,23 @@ const reducer = (state: AppState, action: Actions) => {
 				...state,
 				activeTag: action.payload,
 			}
+		case types.SHOW_MODAL:
+			return {
+				...state,
+				modal: {
+					show: true,
+					options: action.payload,
+					icon: action.payload.icon,
+				},
+			}
+		case types.HIDE_MODAL:
+			return {
+				...state,
+				modal: {
+					...state.modal,
+					show: false,
+				},
+			}
 		default:
 			console.error('Error with action', action)
 			throw new Error('Error with action')

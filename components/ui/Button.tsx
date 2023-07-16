@@ -1,30 +1,53 @@
 import clsx from 'clsx'
 import { Variants, motion } from 'framer-motion'
 
-type Props = React.HTMLProps<HTMLButtonElement>
+type Props = React.HTMLProps<HTMLButtonElement> & {
+	rounded?: boolean
+	animateScale?: boolean
+	variant?: 'primary' | 'secondary'
+}
 
 const Button: React.FC<Props> = (props) => {
-	const { className, onClick } = props
+	const {
+		className,
+		onClick,
+		variant = 'secondary',
+		rounded = true,
+		animateScale = true,
+	} = props
 
 	const baseProps = clsx(
 		'gap-1.5',
 		'items-center',
 		'cursor-pointer',
 		'text-sm',
-		'rounded-md',
+		{ 'rounded-md': rounded },
 		'inline-flex',
 		'transition-all',
 		'p-1.5',
 		'px-2'
 	)
 
+	const secondaryProps = clsx()
+
+	const primaryProps = clsx('text-orange-100')
+	const colors = {
+		primary: {
+			base: 'rgb(14,20,40)',
+			tap: 'rgb(17, 24, 48)',
+		},
+		secondary: {
+			base: 'rgba(0,0,0,0)',
+			tap: 'rgba(0,0,0,0.1)',
+		},
+	}
 	const buttonVariants: Variants = {
 		initial: {
-			backgroundColor: 'rgba(0,0,0,0)',
+			backgroundColor: colors[variant].base,
 		},
 		tap: {
-			scale: 0.9,
-			backgroundColor: 'rgba(0,0,0,0.1)',
+			scale: animateScale ? 0.9 : 1,
+			backgroundColor: colors[variant].tap,
 			transition: {
 				duration: 0,
 			},
@@ -36,7 +59,13 @@ const Button: React.FC<Props> = (props) => {
 			variants={buttonVariants}
 			initial='initial'
 			whileTap='tap'
-			className={clsx(baseProps, className)}
+			className={clsx(
+				baseProps,
+				variant === 'primary' && primaryProps,
+				variant === 'secondary' && secondaryProps,
+				className,
+				'bg-theme'
+			)}
 			onClick={onClick}>
 			{props.children}
 		</motion.button>
