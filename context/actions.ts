@@ -6,6 +6,7 @@ import AppState from '../models/AppState'
 import Card from '../models/Card'
 import Consent from '../models/Consent'
 import Deck from '../models/Deck'
+import { ShowModalConfig } from '../models/ModalState'
 import Options from '../models/Options'
 import Tag from '../models/Tag'
 import User from '../models/User'
@@ -32,6 +33,9 @@ enum types {
 	ADD_TAG = 'ADD_TAG',
 	DELETE_TAG = 'DELETE_TAG',
 	SET_ACTIVE_TAG = 'SET_ACTIVE_TAG',
+
+	SHOW_MODAL = 'SHOW_MODAL',
+	HIDE_MODAL = 'HIDE_MODAL',
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -67,6 +71,9 @@ type Payloads = {
 	[types.ADD_TAG]: Tag
 	[types.DELETE_TAG]: Tag
 	[types.SET_ACTIVE_TAG]: Tag | null
+
+	[types.SHOW_MODAL]: ShowModalConfig
+	[types.HIDE_MODAL]: null
 }
 
 export type Actions = ActionMap<Payloads>[keyof ActionMap<Payloads>]
@@ -91,6 +98,8 @@ export type IActions = {
 	syncUserDecks: (user: User) => Promise<void>
 	syncUserFromSession: () => Promise<void>
 	syncUserTags: (user: User) => Promise<void>
+	showModal: (modal: ShowModalConfig) => void
+	hideModal: () => void
 }
 
 const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
@@ -273,6 +282,20 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		})
 	}
 
+	const showModal = (modal: ShowModalConfig) => {
+		dispatch({
+			type: types.SHOW_MODAL,
+			payload: modal,
+		})
+	}
+
+	const hideModal = () => {
+		dispatch({
+			type: types.HIDE_MODAL,
+			payload: null,
+		})
+	}
+
 	return {
 		signIn,
 		signOut,
@@ -293,6 +316,8 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		syncUserDecks,
 		syncUserFromSession,
 		syncUserTags,
+		showModal,
+		hideModal,
 	}
 }
 

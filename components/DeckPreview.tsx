@@ -25,9 +25,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	const { actions } = useContext(AppContext)
 	const [title, setTitle] = useState<string>(deck.title)
 	const [deleting, setDeleting] = useState<boolean>(false)
+	const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false)
 
 	const titleRef = useRef<HTMLInputElement>(null)
-
 	const handleEdit = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		if (editing) {
@@ -77,7 +77,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	}
 
 	const handlePick = (event: React.MouseEvent) => {
-		actions.pickDeck(deck)
+		if (!contextMenuOpen) {
+			actions.pickDeck(deck)
+		}
 	}
 
 	const averageRating =
@@ -88,6 +90,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 			initial={{
 				backgroundColor: 'rgb(248, 230, 205)',
 			}}
+			whileHover={{
+				backgroundColor: 'rgb(236, 218, 194)',
+			}}
 			whileTap={{
 				backgroundColor: 'rgb(236, 218, 194)',
 				transition: {
@@ -95,7 +100,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				},
 			}}
 			onClick={handlePick}
-			className='group mb-2 rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
+			className='cursor-pointer group mb-2 rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
 				{deck.tag && <Tag className='text-[10px]' tag={deck.tag} />}
 				<input
@@ -117,7 +122,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				<DeckPreviewToolbar
 					deck={deck}
 					deleting={deleting}
-					editing={editing}
+					setContextMenuOpen={setContextMenuOpen}
 					handleEdit={handleEdit}
 					handleDelete={handleDelete}
 					setDeleting={setDeleting}

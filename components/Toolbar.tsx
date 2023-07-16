@@ -8,9 +8,8 @@ import {
 	RotateCw,
 	Shuffle,
 	Trash2,
-	X,
 } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '../context/app'
 import ICard from '../models/Card'
 import Stars from './Stars'
@@ -41,21 +40,20 @@ const Toolbar = ({
 	handleShuffle: () => void
 	setActiveCardIdx: (idx: number) => void
 }) => {
-	const [deleting, setDeleting] = useState<boolean>(false)
 	const { actions } = useContext(AppContext)
-
-	const handleDeleting = () => {
-		if (deleting) {
-			setDeleting(false)
-		} else {
-			setDeleting(true)
-		}
-	}
+	const { showModal } = actions
 
 	const handleDelete = () => {
 		actions.deleteCard(activeCard)
-		setDeleting(false)
 		setActiveCardIdx(activeCardIdx - 1)
+	}
+
+	const handleDeleting = () => {
+		showModal({
+			title: 'Delete Card',
+			description: 'Are you sure you want to delete this card?',
+			onConfirm: handleDelete,
+		})
 	}
 
 	return (
@@ -90,49 +88,34 @@ const Toolbar = ({
 				<motion.div
 					initial={{ y: 10, opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}>
-					{deleting ? (
-						<div className='py-4 flex gap-x-4 justify-center'>
-							<button
-								className='btn-secondary'
-								onClick={handleDelete}>
-								<Trash2 size={'1.25rem'} /> Delete
-							</button>
-							<button
-								className='btn-primary'
-								onClick={handleDeleting}>
-								<X size={'1.25rem'} /> Cancel
-							</button>{' '}
-						</div>
-					) : (
-						<div className='py-4 flex gap-x-4 justify-center'>
-							<ToolbarItem
-								icon={
-									editing?.id === activeCard?.id ? (
-										<Check size={'1.25rem'} />
-									) : (
-										<Edit size={'1.25rem'} />
-									)
-								}
-								callback={handleEdit}
-							/>
-							<ToolbarItem
-								icon={<Shuffle size={'1.25rem'} />}
-								callback={handleShuffle}
-							/>
-							<ToolbarItem
-								icon={<RotateCw size={'1.25rem'} />}
-								callback={setFlipCard}
-							/>
-							<ToolbarItem
-								icon={<PlusCircle size={'1.25rem'} />}
-								callback={handleNewCard}
-							/>
-							<ToolbarItem
-								icon={<Trash2 size={'1.25rem'} />}
-								callback={handleDeleting}
-							/>
-						</div>
-					)}
+					<div className='py-4 flex gap-x-4 justify-center'>
+						<ToolbarItem
+							icon={
+								editing?.id === activeCard?.id ? (
+									<Check size={'1.25rem'} />
+								) : (
+									<Edit size={'1.25rem'} />
+								)
+							}
+							callback={handleEdit}
+						/>
+						<ToolbarItem
+							icon={<Shuffle size={'1.25rem'} />}
+							callback={handleShuffle}
+						/>
+						<ToolbarItem
+							icon={<RotateCw size={'1.25rem'} />}
+							callback={setFlipCard}
+						/>
+						<ToolbarItem
+							icon={<PlusCircle size={'1.25rem'} />}
+							callback={handleNewCard}
+						/>
+						<ToolbarItem
+							icon={<Trash2 size={'1.25rem'} />}
+							callback={handleDeleting}
+						/>
+					</div>
 				</motion.div>
 			</AnimatePresence>
 		</div>

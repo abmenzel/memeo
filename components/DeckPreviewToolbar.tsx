@@ -1,22 +1,15 @@
-import {
-	Check,
-	Edit3,
-	GripVertical,
-	MoreVertical,
-	Tag,
-	Trash2,
-	X,
-} from 'lucide-react'
-import { Menu, Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useEffect, useState } from 'react'
+import { Menu } from '@headlessui/react'
+import { Edit3, GripVertical, MoreVertical, Tag, Trash2 } from 'lucide-react'
+import React, { Fragment, useContext, useState } from 'react'
+import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
-import DeleteModal from './DeleteModal'
 import TagModal from './TagModal'
+import { Button } from './ui'
 
 type DeckPreviewToolbarProps = {
 	deck: Deck
 	deleting: boolean
-	editing: null | Deck
+	setContextMenuOpen: (open: boolean) => void
 	handleDelete: (event: React.MouseEvent) => void
 	setDeleting: Function
 	handleEdit: (event: React.MouseEvent) => void
@@ -29,62 +22,77 @@ const DeckPreviewToolbar = ({
 	handleDelete,
 	setDeleting,
 	handleEdit,
-	editing,
+	setContextMenuOpen,
 	handleProps,
 }: DeckPreviewToolbarProps) => {
 	const [tagging, setTagging] = useState(false)
-
+	const { actions } = useContext(AppContext)
+	const { showModal } = actions
 	return (
 		<>
-			<DeleteModal
-				setDeleting={setDeleting}
-				deleting={deleting}
-				handleDelete={handleDelete}
-				deck={deck}
-			/>
 			<TagModal tagging={tagging} setTagging={setTagging} deck={deck} />
 			<Menu>
-				<div className='relative'>
-					<Menu.Button
-						onClick={(event: React.MouseEvent) =>
-							event.stopPropagation()
-						}>
-						<span className='btn-secondary'>
-							<MoreVertical size={'1rem'} />
-						</span>
-					</Menu.Button>
-					<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md flex flex-col'>
-						<Menu.Item>
-							<button
-								className='btn-secondary p-2 pr-4 rounded-none'
-								onClick={(event) => {
-									handleEdit(event)
-								}}>
-								<Edit3 size={'1rem'} /> Rename
-							</button>
-						</Menu.Item>
-						<Menu.Item>
-							<button
-								className='btn-secondary p-2 pr-4 rounded-none'
-								onClick={(event) => {
+				{({ open }) => {
+					if (open) {
+						setContextMenuOpen(true)
+					} else {
+						setTimeout(() => {
+							setContextMenuOpen(false)
+						}, 100)
+					}
+					return (
+						<div className='relative'>
+							<Button
+								onClick={(event: React.MouseEvent) =>
 									event.stopPropagation()
-									setDeleting(true)
-								}}>
-								<Trash2 size={'1rem'} /> Delete
-							</button>
-						</Menu.Item>
-						<Menu.Item>
-							<button
-								className='btn-secondary p-2 pr-4 rounded-none'
-								onClick={(event) => {
-									event.stopPropagation()
-									setTagging(true)
-								}}>
-								<Tag size={'1rem'} /> Tag
-							</button>
-						</Menu.Item>
-					</Menu.Items>
-				</div>
+								}>
+								<Menu.Button as={Fragment}>
+									<MoreVertical size={'1rem'} />
+								</Menu.Button>
+							</Button>
+
+							<Menu.Items className='bg-orange-100 z-10 absolute right-0 border border-black rounded-md flex flex-col'>
+								<Menu.Item>
+									<button
+										className='btn-secondary p-2 pr-4 rounded-none'
+										onClick={(event) => {
+											handleEdit(event)
+										}}>
+										<Edit3 size={'1rem'} /> Rename
+									</button>
+								</Menu.Item>
+
+								<Menu.Item>
+									<button
+										className='btn-secondary p-2 pr-4 rounded-none'
+										onClick={(event) => {
+											event.stopPropagation()
+											setTagging(true)
+										}}>
+										<Tag size={'1rem'} /> Tag
+									</button>
+								</Menu.Item>
+								<Menu.Item>
+									<Button
+										animateScale={false}
+										rounded={false}
+										onClick={(event) =>
+											showModal({
+												title: `Delete ${deck.title}?`,
+												icon: <Trash2 size={'1rem'} />,
+												description:
+													'This will permanently delete this card deck.',
+												onConfirm: () =>
+													handleDelete(event),
+											})
+										}>
+										<Trash2 size={'1rem'} /> Delete
+									</Button>
+								</Menu.Item>
+							</Menu.Items>
+						</div>
+					)
+				}}
 			</Menu>
 			<button {...handleProps} className='btn-secondary'>
 				<GripVertical size='1rem' />

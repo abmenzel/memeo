@@ -1,6 +1,7 @@
 import User from '../models/User'
 import Consent from './Consent'
 import Deck from './Deck'
+import { ModalState } from './ModalState'
 import Options from './Options'
 import Tag from './Tag'
 
@@ -14,4 +15,5 @@ export default interface AppState {
 	activeDeckId: null | string
 	consent: Consent
 	options: Options
+	modal: ModalState
 }
