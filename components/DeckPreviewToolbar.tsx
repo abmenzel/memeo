@@ -1,5 +1,12 @@
 import { Menu } from '@headlessui/react'
-import { Edit3, GripVertical, MoreVertical, Tag, Trash2 } from 'lucide-react'
+import {
+	Copy,
+	Edit3,
+	GripVertical,
+	MoreVertical,
+	Tag,
+	Trash2,
+} from 'lucide-react'
 import React, { Fragment, useContext, useState } from 'react'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
@@ -71,6 +78,17 @@ const DeckPreviewToolbar = ({
 										}}>
 										<Tag size={'1rem'} /> Tag
 									</button>
+								</Menu.Item>
+								<Menu.Item>
+									<Button
+										rounded={false}
+										animateScale={false}
+										onClick={(event) => {
+											event.stopPropagation()
+											actions.duplicateDeck(deck)
+										}}>
+										<Copy size={'1rem'} /> Duplicate
+									</Button>
 								</Menu.Item>
 								<Menu.Item>
 									<Button
