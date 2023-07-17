@@ -68,6 +68,7 @@ export const database = {
 				.insert({
 					title: deck.title,
 					created_by: deck.created_by,
+					tag_id: deck.tag_id,
 					order: deck.order,
 				})
 				.select()

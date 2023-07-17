@@ -85,6 +85,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	const averageRating =
 		deck.cards.reduce((acc, card) => acc + card.rating, 0) /
 		deck.cards.length
+
 	return (
 		<motion.div
 			initial={{

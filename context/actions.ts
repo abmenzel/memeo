@@ -87,6 +87,7 @@ export type IActions = {
 	setDecks: (decks: Deck[]) => void
 	pickDeck: (deck: Deck) => void
 	addCard: (card: Card) => void
+	duplicateDeck: (deck: Deck) => Promise<Deck>
 	deleteCard: (card: Card) => void
 	updateCard: (card: Card) => Promise<Card>
 	addTag: (tag: Tag) => Promise<Tag>
@@ -120,7 +121,12 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		router.push('/login')
 	}
 
-	const addDeck = async (deck: Deck) => {
+	const addDeck = async (
+		deck: Deck,
+		options?: {
+			addDefault?: boolean
+		}
+	) => {
 		const deckId = await database.storeDeck(deck)
 		if (!deckId) throw Error('Error generating deck ID')
 		const newDeck = {
@@ -131,7 +137,8 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			type: types.ADD_DECK,
 			payload: newDeck,
 		})
-		addCard(template.newCard(deckId))
+		if (options && options.addDefault === false) return newDeck
+		await addCard(template.newCard(deckId))
 		return newDeck
 	}
 
@@ -165,6 +172,28 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			payload: deck.id,
 		})
 		router.push('/dojo')
+	}
+
+	const duplicateDeck = async (deck: Deck) => {
+		const newDeck = await addDeck(
+			{
+				...deck,
+				cards: [],
+				title: `${deck.title} (copy)`,
+			},
+			{
+				addDefault: false,
+			}
+		)
+		await Promise.all(
+			deck.cards.map(async (card) => {
+				await addCard({
+					...card,
+					deck_id: newDeck.id,
+				})
+			})
+		)
+		return newDeck
 	}
 
 	const addCard = async (card: Card): Promise<Card> => {
@@ -318,6 +347,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		syncUserTags,
 		showModal,
 		hideModal,
+		duplicateDeck,
 	}
 }
 
