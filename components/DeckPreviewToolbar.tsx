@@ -12,6 +12,7 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
 import TagModal from './TagModal'
+import TagPicker from './TagPicker'
 import { Button } from './ui'
 
 type DeckPreviewToolbarProps = {
@@ -71,10 +72,17 @@ const DeckPreviewToolbar = ({
 									<Button
 										rounded={false}
 										animateScale={false}
-										onClick={(event) => {
-											event.stopPropagation()
-											setTagging(true)
-										}}>
+										onClick={() =>
+											showModal({
+												title: `Tag ${deck.title}`,
+												component: (
+													<TagPicker
+														deck={deck}
+														className='mb-2'
+													/>
+												),
+											})
+										}>
 										<Tag size={'1rem'} /> Tag
 									</Button>
 								</Menu.Item>

@@ -31,7 +31,7 @@
 		@apply btn bg-theme-dark text-orange-100 hover:bg-theme-dark hover:bg-opacity-80;
 	}
 	.btn-tag {
-		@apply px-1 py-0 leading-normal rounded-sm shrink w-fit;
+		@apply px-1 py-0.5 rounded-sm flex items-center shrink w-fit leading-none;
 	}
 	.height-actual-screen {
 		height: var(--doc-height);
@@ -45,6 +45,12 @@
 	}
 	.hide-scrollbar::-webkit-scrollbar {
 		display: none;
+	}
+	.no-highlight {
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-text-select: none;
+		-webkit-user-select: none;
 	}
 }
 

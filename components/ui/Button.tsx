@@ -24,21 +24,23 @@ const Button: React.FC<Props> = (props) => {
 		'gap-1.5',
 		'items-center',
 		'cursor-pointer',
+		'leading-none',
 		'text-sm',
 		{ 'rounded-md': rounded },
 		'inline-flex',
 		'transition-all',
 		'p-1.5',
-		'px-2'
+		'px-2',
+		'no-highlight'
 	)
 
 	const secondaryProps = clsx()
 
-	const primaryProps = clsx('text-orange-100')
+	const primaryProps = clsx('text-orange-100', 'bg-theme-dark')
 	const colors = {
 		primary: {
-			base: 'rgb(14,20,40)',
-			tap: 'rgb(17, 24, 48)',
+			base: 'rgba(14,20,40, 1)',
+			tap: 'rgba(17, 24, 48, 1)',
 		},
 		secondary: {
 			base: 'rgba(0,0,0,0)',

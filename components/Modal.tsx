@@ -1,6 +1,6 @@
 import { Dialog } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, X } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ModalState } from '../models/ModalState'
 import { Button } from './ui'
@@ -45,14 +45,17 @@ const Modal: React.FC<Props> = (props) => {
 							<Dialog.Title className='text-xl font-bold font-serif mb-2'>
 								{options.title}
 							</Dialog.Title>
-							<Dialog.Description className='text-sm mb-4'>
-								{options.description}
-							</Dialog.Description>
+							{options.component}
+							{options.description && (
+								<Dialog.Description className='text-sm mb-4'>
+									{options.description}
+								</Dialog.Description>
+							)}
 							<div className='flex gap-x-2'>
-								<Button onClick={() => onClose()}>
+								{/*<Button onClick={() => onClose()}>
 									<X size={'1rem'} />
 									Cancel
-								</Button>
+							</Button>*/}
 								{options.onConfirm && (
 									<Button
 										variant='primary'

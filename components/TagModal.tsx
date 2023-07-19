@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Deck from '../models/Deck'
-import TagPicker from './TagPicker'
+import TagPicker from './_TagPicker'
 
 type TagModalProps = {
 	setTagging: Function
