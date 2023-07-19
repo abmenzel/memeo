@@ -122,11 +122,9 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				<Stars rating={averageRating} />
 				<DeckPreviewToolbar
 					deck={deck}
-					deleting={deleting}
 					setContextMenuOpen={setContextMenuOpen}
 					handleEdit={handleEdit}
 					handleDelete={handleDelete}
-					setDeleting={setDeleting}
 					handleProps={props.handleProps}
 				/>
 			</div>

@@ -1,10 +1,13 @@
 import clsx from 'clsx'
 import { Variants, motion } from 'framer-motion'
 
-type Props = React.HTMLProps<HTMLButtonElement> & {
+type Props = {
+	className?: string
+	onClick?: (event: React.MouseEvent) => void
 	rounded?: boolean
 	animateScale?: boolean
 	variant?: 'primary' | 'secondary'
+	children: React.ReactNode
 }
 
 const Button: React.FC<Props> = (props) => {
@@ -14,6 +17,7 @@ const Button: React.FC<Props> = (props) => {
 		variant = 'secondary',
 		rounded = true,
 		animateScale = true,
+		...rest
 	} = props
 
 	const baseProps = clsx(
@@ -66,7 +70,8 @@ const Button: React.FC<Props> = (props) => {
 				className,
 				'bg-theme'
 			)}
-			onClick={onClick}>
+			onClick={onClick}
+			{...rest}>
 			{props.children}
 		</motion.button>
 	)
