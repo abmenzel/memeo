@@ -7,11 +7,10 @@ import {
 	Tag,
 	Trash2,
 } from 'lucide-react'
-import React, { Fragment, useContext, useState } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
-import TagModal from './TagModal'
 import TagPicker from './TagPicker'
 import { Button } from './ui'
 
@@ -30,12 +29,10 @@ const DeckPreviewToolbar = ({
 	setContextMenuOpen,
 	handleProps,
 }: DeckPreviewToolbarProps) => {
-	const [tagging, setTagging] = useState(false)
 	const { actions } = useContext(AppContext)
 	const { showModal } = actions
 	return (
 		<>
-			<TagModal tagging={tagging} setTagging={setTagging} deck={deck} />
 			<Menu>
 				{({ open }) => {
 					if (open) {
