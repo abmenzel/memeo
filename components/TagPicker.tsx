@@ -102,8 +102,12 @@ const TagPicker: React.FC<TagPickerProps> = ({ deck, className }) => {
 									'px-2',
 									'py-1.5',
 									'rounded-md',
+									'border',
 									{
-										'border border-theme-dark': isSelected,
+										'border-transparent': !isSelected,
+									},
+									{
+										'border-theme-dark': isSelected,
 									}
 								)}
 							/>
