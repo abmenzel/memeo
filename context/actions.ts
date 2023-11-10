@@ -273,7 +273,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 
 	const syncUserDecks = async (user: User) => {
 		const userDecks = await database.getDecksByUser(user)
-		if (userDecks?.length > 0) {
+		if (userDecks) {
 			dispatch({
 				type: types.SET_DECKS,
 				payload: userDecks,

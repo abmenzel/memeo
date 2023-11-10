@@ -5,7 +5,7 @@
 	"author": "Alexander Menzel",
 	"license": "The MIT License (MIT)",
 	"scripts": {
-		"dev": "next dev & ~/telebit http 54321",
+		"dev": "next dev",
 		"db:reset": "supabase stop && supabase start",
 		"db:stop": "supabase stop --backup",
 		"db:start": "supabase start",
