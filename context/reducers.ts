@@ -122,7 +122,7 @@ const reducer = (state: AppState, action: Actions) => {
 			return {
 				...state,
 				tags: [
-					...state.tags.filter((tag) => tag.id === action.payload.id),
+					...state.tags.filter((tag) => tag.id !== action.payload.id),
 				],
 			}
 		case types.SET_ACTIVE_TAG:

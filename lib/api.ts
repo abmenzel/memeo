@@ -175,11 +175,11 @@ export const database = {
 	},
 	deleteTag: async (tag: Tag): Promise<void> => {
 		try {
-			await supabase.from('tags').delete().eq('id', tag.id)
 			await supabase
 				.from('decks')
 				.update({ tag_id: null })
 				.eq('tag_id', tag.id)
+			await supabase.from('tags').delete().eq('id', tag.id)
 		} catch (error) {
 			console.error(error)
 		}
