@@ -3,6 +3,7 @@ export interface ModalState {
 	options: {
 		title: string
 		description: string
+		component?: JSX.Element
 		icon?: JSX.Element
 		onConfirm?: () => void
 	}
@@ -10,7 +11,8 @@ export interface ModalState {
 
 export type ShowModalConfig = {
 	title: string
-	description: string
+	description?: string
+	component?: JSX.Element
 	icon?: JSX.Element
 	onConfirm?: () => void
 }

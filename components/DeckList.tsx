@@ -11,7 +11,6 @@ type Props = React.HTMLAttributes<HTMLDivElement>
 
 const DeckList: React.FC<Props> = (props) => {
 	const { className } = props
-	const [editing, setEditing] = useState<Deck | null>(null)
 	const { state, actions } = useContext(AppContext)
 	const defaultDecksSort = useMemo(() => {
 		return state.decks.sort((deckA, deckB) => deckA.order - deckB.order)
@@ -20,15 +19,13 @@ const DeckList: React.FC<Props> = (props) => {
 	const handleNewDeck = async () => {
 		if (!state.user) return
 
-		const newDeck = await actions.addDeck(
+		await actions.addDeck(
 			template.newDeck(
 				state.decks.length,
 				state.user.id,
 				state.activeTag ? state.activeTag : undefined
 			)
 		)
-
-		setEditing(newDeck)
 	}
 
 	useEffect(() => {
@@ -68,8 +65,6 @@ const DeckList: React.FC<Props> = (props) => {
 											<DeckPreview
 												key={idx}
 												deck={deck}
-												editing={editing}
-												setEditing={setEditing}
 												handleProps={pr.dragHandleProps}
 											/>
 										</div>

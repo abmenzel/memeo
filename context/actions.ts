@@ -93,7 +93,6 @@ export type IActions = {
 	addTag: (tag: Tag) => Promise<Tag>
 	deleteTag: (tag: Tag) => Promise<void>
 	setActiveTag: (tag: Tag | null) => Promise<void>
-	deleteUnusedTags: () => Promise<void>
 	setOptions: (options: Options) => void
 	setConsent: (consent: Consent) => void
 	syncUserDecks: (user: User) => Promise<void>
@@ -248,14 +247,6 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		})
 	}
 
-	const deleteUnusedTags = async () => {
-		state.tags.map((tag) => {
-			if (!state.decks.some((deck) => deck.tag_id === tag.id)) {
-				deleteTag(tag)
-			}
-		})
-	}
-
 	const setOptions = (options: Options) => {
 		dispatch({
 			type: types.SET_OPTIONS,
@@ -273,7 +264,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 
 	const syncUserDecks = async (user: User) => {
 		const userDecks = await database.getDecksByUser(user)
-		if (userDecks?.length > 0) {
+		if (userDecks) {
 			dispatch({
 				type: types.SET_DECKS,
 				payload: userDecks,
@@ -338,7 +329,6 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		updateCard,
 		addTag,
 		deleteTag,
-		deleteUnusedTags,
 		setActiveTag,
 		setOptions,
 		setConsent,
