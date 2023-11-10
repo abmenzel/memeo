@@ -33,10 +33,12 @@ const reducer = (state: AppState, action: Actions) => {
 			return {
 				...state,
 				decks: [
-					...state.decks.filter(
-						(deck) => deck.id !== action.payload.id
-					),
-					action.payload,
+					...state.decks.map((deck) => {
+						if (deck.id === action.payload.id) {
+							return action.payload
+						}
+						return deck
+					}),
 				],
 			}
 		case types.SET_DECKS:
@@ -134,9 +136,9 @@ const reducer = (state: AppState, action: Actions) => {
 			return {
 				...state,
 				modal: {
+					...state.modal,
 					show: true,
 					options: action.payload,
-					icon: action.payload.icon,
 				},
 			}
 		case types.HIDE_MODAL:
