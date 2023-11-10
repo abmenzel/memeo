@@ -22,6 +22,7 @@ const Modal: React.FC<Props> = (props) => {
 		<AnimatePresence>
 			{showModal && (
 				<Dialog
+					key={options.title}
 					onClick={(event: any) => event.stopPropagation()}
 					open={showModal}
 					onClose={() => onClose()}
