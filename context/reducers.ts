@@ -136,9 +136,9 @@ const reducer = (state: AppState, action: Actions) => {
 			return {
 				...state,
 				modal: {
+					...state.modal,
 					show: true,
 					options: action.payload,
-					icon: action.payload.icon,
 				},
 			}
 		case types.HIDE_MODAL:

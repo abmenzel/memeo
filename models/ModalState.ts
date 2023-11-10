@@ -2,7 +2,7 @@ export interface ModalState {
 	show: boolean
 	options: {
 		title: string
-		description: string
+		description?: string
 		component?: JSX.Element
 		icon?: JSX.Element
 		onConfirm?: () => void
