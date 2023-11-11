@@ -161,6 +161,30 @@ export const database = {
 			console.error(error)
 		}
 	},
+	updateDecks: async (decks: Deck[]) => {
+		console.info('updating decks', decks)
+		const decksWithIds = decks.filter((deck) => deck.id)
+		const testDeck = decksWithIds[0]
+		if (!decks) return
+		if (!testDeck) throw new Error('No decks with IDs')
+		try {
+			if (decksWithIds.length > 1) {
+				await supabase.from('decks').upsert(
+					decksWithIds.map((deck) => ({
+						id: deck.id as string,
+						title: deck.title,
+						created_by: deck.created_by,
+						order: deck.order,
+						tag_id: deck.tag_id,
+					}))
+				)
+			} else {
+				await database.updateDeck(decksWithIds[0])
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	},
 	storeTag: async (tag: Tag): Promise<string | null> => {
 		console.info('storing tag', tag)
 		try {

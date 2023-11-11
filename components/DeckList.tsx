@@ -9,6 +9,7 @@ import {
 	Droppable,
 } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
+import { database } from '../lib/api'
 import { template } from '../lib/utils'
 import Deck from '../models/Deck'
 import DeckPreview from './DeckPreview'
@@ -46,6 +47,7 @@ const DeckList: React.FC<Props> = (props) => {
 				destination.index
 			)
 			actions.setDecks(reorderedDecks)
+			database.updateDecks(reorderedDecks)
 		},
 		[state.decks]
 	)
