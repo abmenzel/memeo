@@ -68,9 +68,10 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 
 	useEffect(() => {
 		if (!editing) return
-		console.log(activeInput)
 		if (activeInput) {
-			activeInput.focus()
+			setTimeout(() => {
+				activeInput.focus()
+			}, 300) // wait for animation to finish
 		}
 	}, [editing])
 

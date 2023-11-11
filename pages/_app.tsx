@@ -1,7 +1,6 @@
 import { AnimatePresence } from 'framer-motion'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import DragDropHandler from '../components/DragDropHandler'
 import GoogleAnalytics from '../components/GoogleAnalytics'
 import Layout from '../components/Layout'
 import { AppProvider } from '../context/app'
@@ -15,14 +14,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<AppProvider>
-			<DragDropHandler>
-				<GoogleAnalytics />
-				<Layout hideNavBar={hideNavBar}>
-					<AnimatePresence initial={false} mode='popLayout'>
-						<Component {...pageProps} key={pageKey} />
-					</AnimatePresence>
-				</Layout>
-			</DragDropHandler>
+			<GoogleAnalytics />
+			<Layout hideNavBar={hideNavBar}>
+				<AnimatePresence initial={false} mode='popLayout'>
+					<Component {...pageProps} key={pageKey} />
+				</AnimatePresence>
+			</Layout>
 		</AppProvider>
 	)
 }

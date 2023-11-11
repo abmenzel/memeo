@@ -265,9 +265,10 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	const syncUserDecks = async (user: User) => {
 		const userDecks = await database.getDecksByUser(user)
 		if (userDecks) {
+			const sortedDecks = userDecks.sort((a, b) => a.order - b.order)
 			dispatch({
 				type: types.SET_DECKS,
-				payload: userDecks,
+				payload: sortedDecks,
 			})
 		}
 	}
@@ -282,7 +283,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 					type: types.SIGN_IN,
 					payload: {
 						id: user.id,
-						name: identity.identity_data.full_name,
+						name: identity.identity_data?.full_name,
 					},
 				})
 			}

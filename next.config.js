@@ -3,7 +3,7 @@ const withPWA = require('next-pwa')({
 })
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	reactStrictMode: true,
+	reactStrictMode: false,
 	swcMinify: true,
 	webpack(config) {
 		config.module.rules.push({

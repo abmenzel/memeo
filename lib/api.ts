@@ -17,6 +17,7 @@ export const supabase = createClient<Database>(
 
 export const database = {
 	storeCard: async (card: Card) => {
+		console.info('storing card', card)
 		try {
 			const { data: cardsAdded } = await supabase
 				.from('cards')
@@ -36,6 +37,8 @@ export const database = {
 		return null
 	},
 	deleteCard: async (card: Card) => {
+		console.info('deleting card', card)
+		if (!card.id) throw new Error('Card has no ID')
 		try {
 			await supabase.from('cards').delete().eq('id', card.id)
 		} catch (error) {
@@ -43,6 +46,8 @@ export const database = {
 		}
 	},
 	updateCard: async (card: Card): Promise<Card> => {
+		console.info('updating card', card)
+		if (!card.id) throw new Error('Card has no ID')
 		try {
 			const { data: updatedCard } = await supabase
 				.from('cards')
@@ -62,6 +67,7 @@ export const database = {
 		}
 	},
 	storeDeck: async (deck: Deck) => {
+		console.info('storing deck', deck)
 		try {
 			const { data: decksAdded } = await supabase
 				.from('decks')
@@ -81,6 +87,8 @@ export const database = {
 		return null
 	},
 	deleteDeck: async (deck: Deck) => {
+		console.info('deleting deck', deck)
+		if (!deck.id) throw new Error('Deck has no ID')
 		try {
 			await supabase.from('cards').delete().eq('deck_id', deck.id)
 			await supabase.from('decks').delete().eq('id', deck.id)
@@ -93,11 +101,19 @@ export const database = {
 			console.log('finding decks for user', user.id)
 			const { data: decksData } = await supabase
 				.from('decks')
-				.select()
+				.select(
+					`
+				id,
+				title,
+				created_by,
+				order,
+				tag_id,
+				tag:tags!tag_id(created_by, id, color, name)
+			  `
+				)
 				.eq('created_by', user.id)
 
 			if (!decksData) return []
-
 			const decks = await Promise.all(
 				decksData.map(async (deck) => {
 					try {
@@ -106,31 +122,19 @@ export const database = {
 							.select()
 							.eq('deck_id', deck.id)
 
-						const { data: tagData } = await supabase
-							.from('tags')
-							.select()
-							.eq('id', deck.tag_id)
-
 						const deckWithCards: Deck = {
 							...deck,
+							tag: deck.tag as unknown as Tag | undefined, // Supabase type specifies this as an array, but it is a single tag object
 							cards: cardsData
 								? cardsData.map((card) => {
 										return { ...card }
 								  })
 								: [],
-							tag: tagData?.[0]
-								? {
-										...tagData[0],
-								  }
-								: undefined,
 						}
 						return deckWithCards
 					} catch (error) {
-						console.error()
-					}
-					return {
-						...deck,
-						cards: [],
+						console.error(error)
+						throw new Error('Error getting cards for deck')
 					}
 				})
 			)
@@ -141,6 +145,8 @@ export const database = {
 		return []
 	},
 	updateDeck: async (deck: Deck) => {
+		console.info('updating deck', deck)
+		if (!deck.id) throw new Error('Deck has no ID')
 		try {
 			await supabase
 				.from('decks')
@@ -155,7 +161,32 @@ export const database = {
 			console.error(error)
 		}
 	},
+	updateDecks: async (decks: Deck[]) => {
+		console.info('updating decks', decks)
+		const decksWithIds = decks.filter((deck) => deck.id)
+		const testDeck = decksWithIds[0]
+		if (!decks) return
+		if (!testDeck) throw new Error('No decks with IDs')
+		try {
+			if (decksWithIds.length > 1) {
+				await supabase.from('decks').upsert(
+					decksWithIds.map((deck) => ({
+						id: deck.id as string,
+						title: deck.title,
+						created_by: deck.created_by,
+						order: deck.order,
+						tag_id: deck.tag_id,
+					}))
+				)
+			} else {
+				await database.updateDeck(decksWithIds[0])
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	},
 	storeTag: async (tag: Tag): Promise<string | null> => {
+		console.info('storing tag', tag)
 		try {
 			const { data: tagsAdded } = await supabase
 				.from('tags')
@@ -174,6 +205,8 @@ export const database = {
 		return null
 	},
 	deleteTag: async (tag: Tag): Promise<void> => {
+		console.info('deleting tag', tag)
+		if (!tag.id) throw new Error('Tag has no ID')
 		try {
 			await supabase
 				.from('decks')
@@ -185,12 +218,12 @@ export const database = {
 		}
 	},
 	getTagsByUser: async (user: User): Promise<Tag[]> => {
+		console.info('getting tags for user', user)
 		try {
 			const { data: tagsData } = await supabase
 				.from('tags')
 				.select()
 				.eq('created_by', user.id)
-
 			const tags: Tag[] = tagsData
 				? tagsData.map((tag) => {
 						return {
