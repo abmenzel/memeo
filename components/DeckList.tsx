@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import clsx from 'clsx'
 import { PlusCircle } from 'lucide-react'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
 import { template } from '../lib/utils'
@@ -21,7 +21,6 @@ const reorder = (decks: Deck[], startIndex: number, endIndex: number) => {
 const DeckList: React.FC<Props> = (props) => {
 	const { className } = props
 	const { state, actions } = useContext(AppContext)
-	//const [decks, setDecks] = useState<Deck[]>(state.decks)
 
 	const handleNewDeck = async () => {
 		if (!state.user) return
@@ -30,10 +29,6 @@ const DeckList: React.FC<Props> = (props) => {
 			template.newDeck(state.decks.length, state.user.id)
 		)
 	}
-
-	useEffect(() => {
-		console.log('Decks updated', state.decks)
-	}, [state.decks])
 
 	const handleDragEnd = (result: any) => {
 		if (!result.destination) return
