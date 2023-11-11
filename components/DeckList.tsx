@@ -1,8 +1,13 @@
 import classNames from 'classnames'
 import clsx from 'clsx'
 import { PlusCircle } from 'lucide-react'
-import { useContext } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { useCallback, useContext } from 'react'
+import {
+	DragDropContext,
+	Draggable,
+	DropResult,
+	Droppable,
+} from 'react-beautiful-dnd'
 import { AppContext } from '../context/app'
 import { template } from '../lib/utils'
 import Deck from '../models/Deck'
@@ -22,25 +27,28 @@ const DeckList: React.FC<Props> = (props) => {
 	const { className } = props
 	const { state, actions } = useContext(AppContext)
 
-	const handleNewDeck = async () => {
+	const handleNewDeck = useCallback(async () => {
 		if (!state.user) return
 
 		await actions.addDeck(
 			template.newDeck(state.decks.length, state.user.id)
 		)
-	}
+	}, [state.decks, state.user])
 
-	const handleDragEnd = (result: any) => {
-		if (!result.destination) return
-		const { source, destination } = result
-		if (source.index === destination.index) return
-		const reorderedDecks = reorder(
-			state.decks,
-			source.index,
-			destination.index
-		)
-		actions.setDecks(reorderedDecks)
-	}
+	const handleDragEnd = useCallback(
+		(result: DropResult) => {
+			if (!result.destination) return
+			const { source, destination } = result
+			if (source.index === destination.index) return
+			const reorderedDecks = reorder(
+				state.decks,
+				source.index,
+				destination.index
+			)
+			actions.setDecks(reorderedDecks)
+		},
+		[state.decks]
+	)
 
 	return (
 		<div
@@ -72,7 +80,6 @@ const DeckList: React.FC<Props> = (props) => {
 												ref={pr.innerRef}
 												{...pr.draggableProps}>
 												<DeckPreview
-													key={idx}
 													deck={deck}
 													handleProps={
 														pr.dragHandleProps
