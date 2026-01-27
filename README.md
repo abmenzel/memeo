@@ -9,11 +9,6 @@ This can be ideal when studying for an exam or learning a language.
 
 Memeo is a work in progress, but the live version is functional and will remain so.
 
-## 🚣 Live version
-
-Try the [live version](https://memeo.vercel.app/).
-The demo reflects the **main branch**.
-
 ## Technologies
 
 -   Next JS
