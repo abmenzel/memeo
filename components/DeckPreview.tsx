@@ -22,10 +22,6 @@ const DeckPreview = (props: DeckPreviewProps) => {
 		actions.pickDeck(deck)
 	}
 
-	const averageRating =
-		deck.cards.reduce((acc, card) => acc + card.rating, 0) /
-		deck.cards.length
-
 	return (
 		<motion.div
 			initial={{
@@ -51,7 +47,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 				<p className='text-[11px]'>{deck.cards.length} cards</p>
 			</div>
 			<div className='flex items-center gap-x-1'>
-				<Stars rating={averageRating} />
+				<Stars rating={deck.averageRating ?? 0} />
 				<div className='flex items-cener gap-0'>
 					<Button
 						onClick={(event: React.MouseEvent) => {

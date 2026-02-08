@@ -28,12 +28,15 @@ export const apiFetch = async <T>(
 ): Promise<ApiResult<T>> => {
   const url = new URL(path, BASE_URL).toString()
 
+  const token = localStorage.getItem('token')
+
   const res = await fetch(url, {
     ...init,
     headers: {
       accept: 'application/json',
       ...(init.body ? { 'content-type': 'application/json' } : {}),
       ...(init.headers ?? {}),
+      ...(token ? {'Authorization': `Bearer ${token}`} : {})
     },
   })
 

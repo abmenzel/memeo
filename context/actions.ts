@@ -10,6 +10,7 @@ import Options from '../models/Options'
 import Tag from '../models/Tag'
 import User from '../models/User'
 import { database } from '../lib/api'
+import { listDecks } from '../lib/api/decks'
 
 enum types {
 	SIGN_IN = 'SIGN_IN',
@@ -113,6 +114,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const signOut = () => {
+		localStorage.removeItem('token')
 		dispatch({
 			type: types.SIGN_OUT,
 			payload: null,
@@ -274,7 +276,13 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const syncUserDecks = async (user: User) => {
-			const sortedDecks: any = []
+			const res = await listDecks()
+			if(!res.ok){
+				console.error(res.error)
+				return
+			}
+			console.log("TEST", res.data)
+			const sortedDecks: Deck[] = res.data
 			dispatch({
 				type: types.SET_DECKS,
 				payload: sortedDecks,
@@ -282,26 +290,21 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const syncUserFromSession = async () => {
-		
-		/*const { data } = await supabase.auth.getSession()
-		if (data?.session?.user) {
-			const user = data.session.user
-			if (user.identities) {
-				const identity = user.identities[0]
-				dispatch({
-					type: types.SIGN_IN,
-					payload: {
-						id: user.id,
-						name: identity.identity_data?.full_name,
-					},
-				})
-			}
-		} else {
+		const storedToken = localStorage.getItem('token')
+		if(storedToken){
 			dispatch({
+				type: types.SIGN_IN,
+				payload: {
+					id: -1, // TODO: remove
+					name: 'Test',
+				},
+			})
+			return
+		}
+		dispatch({
 				type: types.SIGN_OUT,
 				payload: null,
 			})
-		}*/
 	}
 
 	const syncUserTags = async (user: User) => {

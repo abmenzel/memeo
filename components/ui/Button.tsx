@@ -31,7 +31,9 @@ const Button: React.FC<Props> = (props) => {
 		'transition-all',
 		'p-1.5',
 		'px-2',
-		'no-highlight'
+		'no-highlight',
+		'focus-visible:outline-theme-dark',
+		'outline-offset-4'
 	)
 
 	const secondaryProps = clsx()

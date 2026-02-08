@@ -32,7 +32,7 @@ const DeckList: React.FC<Props> = (props) => {
 		if (!state.user) return
 
 		await actions.addDeck(
-			template.newDeck(state.decks.length, state.user.id)
+			template.newDeck(state.decks.length, '')
 		)
 	}, [state.decks, state.user])
 

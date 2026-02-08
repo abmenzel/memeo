@@ -4,10 +4,13 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { ForwardedRef, forwardRef } from 'react'
 import PageTransition from '../components/animations/PageTransition'
+import { Button } from '../components/ui'
+import { useRouter } from 'next/router'
 
 type HomePageRef = ForwardedRef<HTMLDivElement>
 
 const Home: NextPage = forwardRef((props, ref: HomePageRef) => {
+	const router = useRouter()
 	return (
 		<>
 			<Head>
@@ -23,11 +26,13 @@ const Home: NextPage = forwardRef((props, ref: HomePageRef) => {
 					<p className='text-lg mb-4'>
 						Become a master at memorizing anything you would like.
 					</p>
-					<Link href={'/login'}>
-						<a className='btn-primary'>
-							<LogIn /> Get started
-						</a>
-					</Link>
+					<Button
+						variant='primary'
+						onClick={() => {
+							router.push('/login')
+						}}>
+						Get started
+					</Button>
 				</div>
 			</PageTransition>
 		</>

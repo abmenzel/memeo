@@ -9,7 +9,7 @@ export const cardIsEmpty = (card: Card) => {
 export const template = {
 	newDeck: (order: number, created_by: string, tag?: Tag): Deck => ({
 		id: -1,
-		title: '',
+		title: 'Untitled Deck',
 		cards: [],
 		order: order,
 		created_by: created_by,

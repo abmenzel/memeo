@@ -19,6 +19,7 @@ class CardsController < ApplicationController
   end
 
   def update
+    card_params = params.expect(card: [:front, :back, :rating])
     if @card.update(card_params)
       render json: @card, status: :created
     else

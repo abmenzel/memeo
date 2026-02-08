@@ -3,7 +3,7 @@ class DecksController < ApplicationController
   before_action :set_deck, only: %i[update destroy]
   
   def index
-    render json: Current.user.decks
+    render json: Current.user.decks.includes(:cards), include: :cards
   end
 
   def show
