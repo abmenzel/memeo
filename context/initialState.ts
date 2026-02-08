@@ -15,7 +15,6 @@ const initialAppState: AppState = {
 			description: '',
 		},
 	},
-	consent: 'LOADING',
 	options: {
 		initialFlipState: false,
 	},

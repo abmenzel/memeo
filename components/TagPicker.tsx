@@ -37,14 +37,13 @@ const TagPicker: React.FC<TagPickerProps> = ({ deck, className }) => {
 		const newTag = inputRef.current.value
 		if (newTag.length > 0) {
 			const createdTag = await actions.addTag({
+				id: -1,
 				name: newTag,
-				id: null,
 				color: tagColors[Math.floor(Math.random() * tagColors.length)],
 			})
 			actions.updateDeck({
 				...deck,
-				tag_id: createdTag.id,
-				tag: createdTag,
+				tag_ids: [createdTag.id],
 			})
 			setAddingNewTag(false)
 			actions.hideModal()
@@ -75,21 +74,23 @@ const TagPicker: React.FC<TagPickerProps> = ({ deck, className }) => {
 						<PlusCircle size='1rem' /> New tag
 					</Button>
 					{state.tags.map((tag, index) => {
-						const isSelected = tag.id === deck.tag_id
+						const isSelected = deck.tags.some(
+							(t) => t.id === tag.id,
+						)
 						return (
 							<Tag
 								onClick={() => {
 									if (isSelected) {
 										actions.updateDeck({
 											...deck,
-											tag_id: null,
-											tag: undefined,
+											tag_ids: [],
+											tags: [tag],
 										})
 									} else {
 										actions.updateDeck({
 											...deck,
-											tag_id: tag.id,
-											tag: tag,
+											tag_ids: [tag.id],
+											tags: [tag],
 										})
 									}
 
@@ -107,7 +108,7 @@ const TagPicker: React.FC<TagPickerProps> = ({ deck, className }) => {
 									},
 									{
 										'border-theme-dark': isSelected,
-									}
+									},
 								)}
 							/>
 						)

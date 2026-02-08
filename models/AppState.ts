@@ -1,5 +1,4 @@
 import User from '../models/User'
-import Consent from './Consent'
 import Deck from './Deck'
 import { ModalState } from './ModalState'
 import Options from './Options'
@@ -12,8 +11,7 @@ export default interface AppState {
 	decksLoading: boolean
 	tags: Tag[]
 	activeTag: Tag | null
-	activeDeckId: null | string
-	consent: Consent
+	activeDeckId: null | number
 	options: Options
 	modal: ModalState
 }

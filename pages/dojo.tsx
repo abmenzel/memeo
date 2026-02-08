@@ -25,7 +25,7 @@ const Dojo = forwardRef((props, ref: DojoPageRef) => {
 
 	useEffect(() => {
 		setActiveDeck(
-			state.decks.find((deck) => deck.id === state.activeDeckId)
+			state.decks.find((deck) => deck.id === state.activeDeckId),
 		)
 	}, [state.decks])
 
@@ -53,14 +53,11 @@ const Dojo = forwardRef((props, ref: DojoPageRef) => {
 								</Button>
 							</Link>
 							<div className='flex flex-col items-center'>
-								{activeDeck?.tag && (
-									<Tag
-										className='text-[11px]'
-										tag={activeDeck.tag}
-									/>
-								)}
+								{activeDeck?.tags.map((tag) => (
+									<Tag className='text-[11px]' tag={tag} />
+								))}
 								<h2 className='font-serif text-xl font-bold'>
-									{activeDeck?.title}
+									{activeDeck?.name}
 								</h2>
 							</div>
 						</motion.div>

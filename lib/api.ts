@@ -31,7 +31,7 @@ export const database = {
 		return apiFetch<Deck>(`/decks/`, {
 			method: 'POST',
 			body: JSON.stringify({
-				name: deck.title
+				name: deck.name
 			})
 		})
 	},
@@ -44,17 +44,35 @@ export const database = {
 		return apiFetch<Deck>(`/decks/${deck.id}/`, {
 			method: 'PUT',
 			body: JSON.stringify({
-				name: deck.title
+				name: deck.name,
+				tag_ids: deck.tag_ids,
 			})
 		})
 	},
 	updateDecks: async (decks: Deck[]) => {
 		return []
 	},
-	storeTag: async (tag: Tag): Promise<string | null> => {
-		return null
+	storeTag: async (tag: Tag) => {
+		return apiFetch<Tag>(`/tags/`, {
+			method: 'POST',
+			body: JSON.stringify({
+				name: tag.name,
+				color: tag.color,
+			})
+		})
 	},
-	deleteTag: async (tag: Tag): Promise<void> => {
-		return
+	updateTag: async (tag: Tag) => {
+		return apiFetch<Tag>(`/tags/${tag.id}/`, {
+			method: 'PUT',
+			body: JSON.stringify({
+				name: tag.name,
+				color: tag.color,
+			})
+		})
+	},
+	deleteTag: async (tag: Tag) => {
+		return apiFetch(`/tags/${tag.id}/`, {
+			method: 'DELETE',
+		})
 	},
 }

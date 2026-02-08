@@ -32,7 +32,7 @@ const DeckList: React.FC<Props> = (props) => {
 		if (!state.user) return
 
 		await actions.addDeck(
-			template.newDeck(state.decks.length, '')
+			template.newDeck(state.decks.length)
 		)
 	}, [state.decks, state.user])
 
@@ -74,10 +74,7 @@ const DeckList: React.FC<Props> = (props) => {
 										{(pr) => (
 											<div
 												className={classNames({
-													hidden:
-														state.activeTag &&
-														deck.tag_id !==
-															state.activeTag.id,
+													hidden: state.activeTag && !deck.tags.some((t) => state.activeTag && t.id === state.activeTag.id)
 												})}
 												ref={pr.innerRef}
 												{...pr.draggableProps}>

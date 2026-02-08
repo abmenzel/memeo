@@ -3,14 +3,14 @@ import { Dispatch } from 'react'
 import { template } from '../lib/utils'
 import AppState from '../models/AppState'
 import Card from '../models/Card'
-import Consent from '../models/Consent'
-import Deck from '../models/Deck'
+import Deck, { UpdateDeckProps } from '../models/Deck'
 import { ShowModalConfig } from '../models/ModalState'
 import Options from '../models/Options'
 import Tag from '../models/Tag'
 import User from '../models/User'
 import { database } from '../lib/api'
 import { listDecks } from '../lib/api/decks'
+import { listTags } from '../lib/api/tags'
 
 enum types {
 	SIGN_IN = 'SIGN_IN',
@@ -25,8 +25,6 @@ enum types {
 	ADD_CARD = 'ADD_CARD',
 	DELETE_CARD = 'DELETE_CARD',
 	UPDATE_CARD = 'UPDATE_CARD',
-
-	SET_CONSENT = 'SET_CONSENT',
 
 	SET_OPTIONS = 'SET_OPTIONS',
 
@@ -43,11 +41,11 @@ type ActionMap<M extends { [index: string]: any }> = {
 	[Key in keyof M]: M[Key] extends undefined
 		? {
 				type: Key
-		  }
+			}
 		: {
 				type: Key
 				payload: M[Key]
-		  }
+			}
 }
 
 type Payloads = {
@@ -57,14 +55,12 @@ type Payloads = {
 	[types.ADD_DECK]: Deck
 	[types.DELETE_DECK]: Deck
 	[types.SET_DECKS]: Deck[]
-	[types.UPDATE_DECK]: Deck
+	[types.UPDATE_DECK]: UpdateDeckProps
 	[types.PICK_DECK]: number
 
 	[types.ADD_CARD]: Card
 	[types.DELETE_CARD]: Card
 	[types.UPDATE_CARD]: Card
-
-	[types.SET_CONSENT]: Consent
 
 	[types.SET_OPTIONS]: Options
 
@@ -84,7 +80,7 @@ export type IActions = {
 	signOut: () => void
 	addDeck: (deck: Deck) => Promise<Deck>
 	deleteDeck: (deck: Deck) => Promise<void>
-	updateDeck: (deck: Deck) => void
+	updateDeck: (deck: UpdateDeckProps) => void
 	setDecks: (decks: Deck[]) => void
 	pickDeck: (deck: Deck) => void
 	addCard: (card: Card) => void
@@ -95,7 +91,6 @@ export type IActions = {
 	deleteTag: (tag: Tag) => Promise<void>
 	setActiveTag: (tag: Tag | null) => Promise<void>
 	setOptions: (options: Options) => void
-	setConsent: (consent: Consent) => void
 	syncUserDecks: (user: User) => Promise<void>
 	syncUserFromSession: () => Promise<void>
 	syncUserTags: (user: User) => Promise<void>
@@ -126,10 +121,10 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		deck: Deck,
 		options?: {
 			addDefault?: boolean
-		}
+		},
 	) => {
 		const res = await database.storeDeck(deck)
-		if(!res.ok){
+		if (!res.ok) {
 			throw Error(res.error.message)
 		}
 		const newDeck = {
@@ -153,7 +148,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		await database.deleteDeck(deck)
 	}
 
-	const updateDeck = async (deck: Deck) => {
+	const updateDeck = async (deck: UpdateDeckProps) => {
 		dispatch({
 			type: types.UPDATE_DECK,
 			payload: deck,
@@ -178,16 +173,15 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const duplicateDeck = async (deck: Deck) => {
-		return deck
-		/*const newDeck = await addDeck(
+		const newDeck = await addDeck(
 			{
 				...deck,
 				cards: [],
-				title: `${deck.title} (copy)`,
+				name: `${deck.name} (copy)`,
 			},
 			{
 				addDefault: false,
-			}
+			},
 		)
 		await Promise.all(
 			deck.cards.map(async (card) => {
@@ -195,14 +189,14 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 					...card,
 					deck_id: newDeck.id,
 				})
-			})
+			}),
 		)
-		return newDeck*/
+		return newDeck
 	}
 
 	const addCard = async (card: Card): Promise<Card> => {
 		const res = await database.storeCard(card)
-		if(!res.ok){
+		if (!res.ok) {
 			throw new Error(res.error.message)
 		}
 		const newCard = { ...card, id: res.data.id }
@@ -227,30 +221,34 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			payload: card,
 		})
 		const res = await database.updateCard(card)
-		if(!res.ok){
+		if (!res.ok) {
 			throw new Error(res.error.message)
 		}
 		return res.data
 	}
 
 	const addTag = async (tag: Tag) => {
-		return tag
-		/*const tagId = await database.storeTag(tag)
-		if (!tagId) throw new Error('Error generating tag ID')
-		const newTag: Tag = { ...tag, id: tagId }
+		const res = await database.storeTag(tag)
+		if (!res.ok) {
+			throw new Error(res.error.message)
+		}
+		const newTag = res.data
 		dispatch({
 			type: types.ADD_TAG,
 			payload: newTag,
 		})
-		return newTag*/
+		return newTag
 	}
 
 	const deleteTag = async (tag: Tag) => {
-		/*database.deleteTag(tag)
+		const res = await database.deleteTag(tag)
+		if (!res.ok) {
+			throw new Error(res.error.message)
+		}
 		dispatch({
 			type: types.DELETE_TAG,
 			payload: tag,
-		})*/
+		})
 	}
 
 	const setActiveTag = async (tag: Tag | null) => {
@@ -267,31 +265,22 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		})
 	}
 
-	const setConsent = (consent: Consent) => {
+	const syncUserDecks = async () => {
+		const res = await listDecks()
+		if (!res.ok) {
+			console.error(res.error)
+			return
+		}
+		const sortedDecks: Deck[] = res.data
 		dispatch({
-			type: types.SET_CONSENT,
-			payload: consent,
+			type: types.SET_DECKS,
+			payload: sortedDecks,
 		})
-		window.localStorage.setItem('CONSENT', consent)
-	}
-
-	const syncUserDecks = async (user: User) => {
-			const res = await listDecks()
-			if(!res.ok){
-				console.error(res.error)
-				return
-			}
-			console.log("TEST", res.data)
-			const sortedDecks: Deck[] = res.data
-			dispatch({
-				type: types.SET_DECKS,
-				payload: sortedDecks,
-			})
 	}
 
 	const syncUserFromSession = async () => {
 		const storedToken = localStorage.getItem('token')
-		if(storedToken){
+		if (storedToken) {
 			dispatch({
 				type: types.SIGN_IN,
 				payload: {
@@ -302,13 +291,18 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			return
 		}
 		dispatch({
-				type: types.SIGN_OUT,
-				payload: null,
-			})
+			type: types.SIGN_OUT,
+			payload: null,
+		})
 	}
 
-	const syncUserTags = async (user: User) => {
-		const tags: any = []
+	const syncUserTags = async () => {
+		const res = await listTags()
+		if (!res.ok) {
+			console.error(res.error)
+			return
+		}
+		const tags: Tag[] = res.data
 		dispatch({
 			type: types.SET_TAGS,
 			payload: tags,
@@ -344,7 +338,6 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		deleteTag,
 		setActiveTag,
 		setOptions,
-		setConsent,
 		syncUserDecks,
 		syncUserFromSession,
 		syncUserTags,

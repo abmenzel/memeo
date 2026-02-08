@@ -3,20 +3,22 @@ import Tag from './Tag'
 
 interface Deck {
 	id: number
-	title: string
+	name: string
 	cards: Card[]
 	order: number
-	tag_id: number | null
-	tag?: Tag
+	tags: Tag[]
 }
 
 export type CreateDeckProps = {
-	title: string
+	name: string
 }
 
 export type UpdateDeckProps = {
 	id: number
-	title?: string
+	name?: string
+	tag_ids?: number[]
+	tags?: Tag[]
+	order?: number
 }
 
 export type DeleteDeckProps = {

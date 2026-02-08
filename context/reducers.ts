@@ -105,11 +105,6 @@ const reducer = (state: AppState, action: Actions) => {
 				...state,
 				options: action.payload,
 			}
-		case types.SET_CONSENT:
-			return {
-				...state,
-				consent: action.payload,
-			}
 		case types.SET_TAGS:
 			return {
 				...state,

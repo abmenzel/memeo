@@ -22,7 +22,7 @@ const DeckOptions = (props: { deck: Deck }) => {
 				rounded={false}
 				onClick={(event) =>
 					showModal({
-						title: `Delete ${deck.title}?`,
+						title: `Delete ${deck.name}?`,
 						icon: <Trash2 size={'1rem'} />,
 						description:
 							'This will permanently delete this card deck.',
@@ -47,7 +47,7 @@ const DeckOptions = (props: { deck: Deck }) => {
 				animateScale={false}
 				onClick={() =>
 					showModal({
-						title: `Tag ${deck.title}`,
+						title: `Tag ${deck.name}`,
 						component: <TagPicker deck={deck} className='mb-2' />,
 					})
 				}>

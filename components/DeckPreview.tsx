@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { GripVertical, MoreVertical } from 'lucide-react'
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
 import DeckOptions from './DeckOptions'
@@ -22,6 +22,11 @@ const DeckPreview = (props: DeckPreviewProps) => {
 		actions.pickDeck(deck)
 	}
 
+	const averageRating = useMemo(() => {
+		const sumOfRatings = deck.cards.reduce((acc, card) => acc + card.rating, 0)
+		return sumOfRatings / deck.cards.length
+	}, [deck.cards])
+
 	return (
 		<motion.div
 			initial={{
@@ -39,15 +44,15 @@ const DeckPreview = (props: DeckPreviewProps) => {
 			onClick={handlePick}
 			className='no-highlight cursor-pointer group mb-2 rounded-md text-sm transition-all px-3 py-4 flex justify-between items-center gap-x-8 w-full'>
 			<div className='flex flex-col min-w-0'>
-				{deck.tag && <Tag className='text-[10px]' tag={deck.tag} />}
+				{deck.tags.map((tag) => <Tag className='text-[10px]' tag={tag} />)}
 				<p
 					className={`font-serif font-extrabold min-w-0 text-sm md:text-lg flex bg-transparent outline-none text-ellipsis`}>
-					{deck.title ? deck.title : 'New deck'}
+					{deck.name ? deck.name : 'New deck'}
 				</p>
 				<p className='text-[11px]'>{deck.cards.length} cards</p>
 			</div>
 			<div className='flex items-center gap-x-1'>
-				<Stars rating={deck.averageRating ?? 0} />
+				<Stars rating={averageRating ?? 0} />
 				<div className='flex items-cener gap-0'>
 					<Button
 						onClick={(event: React.MouseEvent) => {
