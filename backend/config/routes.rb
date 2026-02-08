@@ -12,9 +12,7 @@ Rails.application.routes.draw do
     resources :cards, only: %i[index show create update destroy]
   end
 
-  # Cards
-  get "decks/:deck_id/" => "cards#index", controller: "cards"
-  post "decks/:deck_id/" => "cards#create"
+  resources :tags
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

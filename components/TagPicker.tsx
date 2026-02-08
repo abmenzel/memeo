@@ -40,7 +40,6 @@ const TagPicker: React.FC<TagPickerProps> = ({ deck, className }) => {
 				name: newTag,
 				id: null,
 				color: tagColors[Math.floor(Math.random() * tagColors.length)],
-				created_by: state.user.id,
 			})
 			actions.updateDeck({
 				...deck,

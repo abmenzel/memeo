@@ -5,7 +5,6 @@ interface Deck {
 	id: number
 	title: string
 	cards: Card[]
-	created_by: string
 	order: number
 	tag_id: number | null
 	tag?: Tag

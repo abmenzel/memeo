@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_155210) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_08_215020) do
   create_table "cards", force: :cascade do |t|
     t.string "back"
     t.datetime "created_at", null: false
@@ -29,6 +29,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_155210) do
     t.index ["user_id"], name: "index_decks_on_user_id"
   end
 
+  create_table "decks_tags", id: false, force: :cascade do |t|
+    t.integer "deck_id", null: false
+    t.integer "tag_id", null: false
+    t.index ["deck_id"], name: "index_decks_tags_on_deck_id"
+    t.index ["tag_id"], name: "index_decks_tags_on_tag_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -37,6 +44,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_155210) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -49,5 +65,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_155210) do
 
   add_foreign_key "cards", "decks"
   add_foreign_key "decks", "users"
+  add_foreign_key "decks_tags", "decks", on_delete: :cascade
+  add_foreign_key "decks_tags", "tags", on_delete: :cascade
   add_foreign_key "sessions", "users"
+  add_foreign_key "tags", "users"
 end

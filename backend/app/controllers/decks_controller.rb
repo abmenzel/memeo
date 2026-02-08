@@ -3,7 +3,7 @@ class DecksController < ApplicationController
   before_action :set_deck, only: %i[update destroy]
   
   def index
-    render json: Current.user.decks.includes(:cards), include: :cards
+    render json: Current.user.decks.includes(:cards, :tags), include: [:cards, :tags]
   end
 
   def show
@@ -21,7 +21,10 @@ class DecksController < ApplicationController
   end
 
   def update
-    if @deck.update(deck_params)
+    allowed_ids = Current.user.tags.where(id: params[:tag_ids]).pluck(:id)
+    attrs = deck_params.to_h.merge(tag_ids: allowed_ids)
+
+    if @deck.update(attrs)
       render json: @deck
     else
       render json: @deck.errors, status: :unprocessable_entity
