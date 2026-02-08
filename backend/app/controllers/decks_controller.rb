@@ -1,5 +1,6 @@
 class DecksController < ApplicationController
   before_action :require_authentication
+  before_action :set_deck, only: %i[update destroy]
   
   def index
     render json: Current.user.decks
@@ -13,7 +14,7 @@ class DecksController < ApplicationController
     @deck = Current.user.decks.build(deck_params)
 
     if @deck.save
-      render json: @deck, status: :created, location: @deck
+      render json: @deck, status: :created
     else
       render json: @deck.errors, status: :unprocessable_entity
     end
