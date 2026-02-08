@@ -3,7 +3,6 @@ import { LayoutGrid, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
 import { AppContext } from '../context/app'
-import { supabase } from '../lib/api'
 import NavItem from './NavItem'
 
 const Navbar = () => {
@@ -39,7 +38,6 @@ const Navbar = () => {
 					<NavItem
 						icon={<LogOut />}
 						callback={async () => {
-							const { error } = await supabase.auth.signOut()
 							actions.signOut()
 						}}
 						label='Sign out'

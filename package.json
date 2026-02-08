@@ -6,10 +6,6 @@
 	"license": "The MIT License (MIT)",
 	"scripts": {
 		"dev": "next dev",
-		"db:reset": "supabase stop && supabase start",
-		"db:stop": "supabase stop --backup",
-		"db:start": "supabase start",
-		"db:gen-types": "supabase gen types typescript --local > ./models/Database.ts",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
@@ -19,7 +15,6 @@
 		"@emotion/styled": "^11.10.4",
 		"@headlessui/react": "^1.7.4",
 		"@mui/material": "^5.10.10",
-		"@supabase/supabase-js": "^2.38.4",
 		"array-shuffle": "^3.0.0",
 		"canvas-confetti": "^1.5.1",
 		"classnames": "^2.3.2",

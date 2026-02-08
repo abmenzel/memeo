@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 import { Dispatch } from 'react'
-import { database, supabase } from '../lib/api'
 import { template } from '../lib/utils'
 import AppState from '../models/AppState'
 import Card from '../models/Card'
@@ -10,6 +9,7 @@ import { ShowModalConfig } from '../models/ModalState'
 import Options from '../models/Options'
 import Tag from '../models/Tag'
 import User from '../models/User'
+import { database } from '../lib/api'
 
 enum types {
 	SIGN_IN = 'SIGN_IN',
@@ -57,7 +57,7 @@ type Payloads = {
 	[types.DELETE_DECK]: Deck
 	[types.SET_DECKS]: Deck[]
 	[types.UPDATE_DECK]: Deck
-	[types.PICK_DECK]: string
+	[types.PICK_DECK]: number
 
 	[types.ADD_CARD]: Card
 	[types.DELETE_CARD]: Card
@@ -126,18 +126,20 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			addDefault?: boolean
 		}
 	) => {
-		const deckId = await database.storeDeck(deck)
-		if (!deckId) throw Error('Error generating deck ID')
+		const res = await database.storeDeck(deck)
+		if(!res.ok){
+			throw Error(res.error.message)
+		}
 		const newDeck = {
 			...deck,
-			id: deckId,
+			id: res.data.id,
 		}
 		dispatch({
 			type: types.ADD_DECK,
 			payload: newDeck,
 		})
 		if (options && options.addDefault === false) return newDeck
-		await addCard(template.newCard(deckId))
+		await addCard(template.newCard(res.data.id))
 		return newDeck
 	}
 
@@ -174,7 +176,8 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const duplicateDeck = async (deck: Deck) => {
-		const newDeck = await addDeck(
+		return deck
+		/*const newDeck = await addDeck(
 			{
 				...deck,
 				cards: [],
@@ -192,12 +195,15 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 				})
 			})
 		)
-		return newDeck
+		return newDeck*/
 	}
 
 	const addCard = async (card: Card): Promise<Card> => {
-		const cardId = await database.storeCard(card)
-		const newCard = { ...card, id: cardId }
+		const res = await database.storeCard(card)
+		if(!res.ok){
+			throw new Error(res.error.message)
+		}
+		const newCard = { ...card, id: res.data.id }
 		dispatch({
 			type: types.ADD_CARD,
 			payload: newCard,
@@ -218,26 +224,31 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			type: types.UPDATE_CARD,
 			payload: card,
 		})
-		return await database.updateCard(card)
+		const res = await database.updateCard(card)
+		if(!res.ok){
+			throw new Error(res.error.message)
+		}
+		return res.data
 	}
 
 	const addTag = async (tag: Tag) => {
-		const tagId = await database.storeTag(tag)
+		return tag
+		/*const tagId = await database.storeTag(tag)
 		if (!tagId) throw new Error('Error generating tag ID')
 		const newTag: Tag = { ...tag, id: tagId }
 		dispatch({
 			type: types.ADD_TAG,
 			payload: newTag,
 		})
-		return newTag
+		return newTag*/
 	}
 
 	const deleteTag = async (tag: Tag) => {
-		database.deleteTag(tag)
+		/*database.deleteTag(tag)
 		dispatch({
 			type: types.DELETE_TAG,
 			payload: tag,
-		})
+		})*/
 	}
 
 	const setActiveTag = async (tag: Tag | null) => {
@@ -263,18 +274,16 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 	}
 
 	const syncUserDecks = async (user: User) => {
-		const userDecks = await database.getDecksByUser(user)
-		if (userDecks) {
-			const sortedDecks = userDecks.sort((a, b) => a.order - b.order)
+			const sortedDecks: any = []
 			dispatch({
 				type: types.SET_DECKS,
 				payload: sortedDecks,
 			})
-		}
 	}
 
 	const syncUserFromSession = async () => {
-		const { data } = await supabase.auth.getSession()
+		
+		/*const { data } = await supabase.auth.getSession()
 		if (data?.session?.user) {
 			const user = data.session.user
 			if (user.identities) {
@@ -292,11 +301,11 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 				type: types.SIGN_OUT,
 				payload: null,
 			})
-		}
+		}*/
 	}
 
 	const syncUserTags = async (user: User) => {
-		const tags = await database.getTagsByUser(user)
+		const tags: any = []
 		dispatch({
 			type: types.SET_TAGS,
 			payload: tags,

@@ -1,8 +1,6 @@
-# Contribute to Messenger Wrapped
+# Contribute to Memeo
 
 Memeo is an open-source project. See the [LICENSE](./LICENSE.md) licensing information.
-
-I really appreciate your interest in the project.
 
 ## Feature Requests
 
