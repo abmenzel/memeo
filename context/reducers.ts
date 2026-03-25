@@ -35,7 +35,10 @@ const reducer = (state: AppState, action: Actions) => {
 				decks: [
 					...state.decks.map((deck) => {
 						if (deck.id === action.payload.id) {
-							return action.payload
+							return {
+								...deck,
+								...action.payload
+							}
 						}
 						return deck
 					}),

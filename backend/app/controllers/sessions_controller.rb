@@ -5,11 +5,19 @@ class SessionsController < ApplicationController
   def new
   end
 
+  def show
+    if Current.user
+      render json: { user: Current.user }
+    else
+      render json: {}, status: :unauthorized
+    end
+  end
+
   def create
     params.expect(:email_address, :password)
     if user = User.authenticate_by(params.permit(:email_address, :password))
       start_new_session_for user
-      render json: { token: Current.session.token }
+      render json: { token: Current.session.token, user: user }
     else
       render json: {}, status: :unauthorized
     end

@@ -1,8 +1,8 @@
 import classNames from 'classnames'
-import Tag from '../models/Tag'
+import TagType from '../models/Tag'
 
 type TagProps = React.HTMLAttributes<HTMLParagraphElement> & {
-	tag: Tag
+	tag: TagType
 	className?: string
 }
 

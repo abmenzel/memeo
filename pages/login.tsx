@@ -28,13 +28,11 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 			return
 		}
 
-		console.log("LOGGED IN", res.data)
-
 		localStorage.setItem('token', res.data.token)
 
 		actions.signIn({
-			name: 'Test',
-			id: -1,
+			email_address: res.data.user.email_address,
+			id: res.data.user.id,
 		})
 	}
 

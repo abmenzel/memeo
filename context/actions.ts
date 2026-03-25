@@ -11,6 +11,7 @@ import User from '../models/User'
 import { database } from '../lib/api'
 import { listDecks } from '../lib/api/decks'
 import { listTags } from '../lib/api/tags'
+import { getSession } from '../lib/api/sessions'
 
 enum types {
 	SIGN_IN = 'SIGN_IN',
@@ -280,14 +281,19 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 
 	const syncUserFromSession = async () => {
 		const storedToken = localStorage.getItem('token')
+
 		if (storedToken) {
-			dispatch({
-				type: types.SIGN_IN,
-				payload: {
-					id: -1, // TODO: remove
-					name: 'Test',
-				},
-			})
+			const res = await getSession()
+			if(res.ok){
+				dispatch({
+					type: types.SIGN_IN,
+					payload: {
+						id: res.data.user.id, // TODO: remove
+						email_address: res.data.user.email_address,
+					},
+				})
+			}
+			
 			return
 		}
 		dispatch({

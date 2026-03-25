@@ -1,6 +1,6 @@
 interface User {
 	id: number
-	name: string
+	email_address: string
 }
 
 export default User

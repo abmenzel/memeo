@@ -6,9 +6,9 @@ import { Button } from './ui'
 const DeckRename = (props: { deck: Deck }) => {
 	const { actions } = useContext(AppContext)
 	const { deck } = props
-	const [input, setInput] = useState(deck.title)
+	const [input, setInput] = useState(deck.name)
 	const handleSave = () => {
-		actions.updateDeck({ ...deck, title: input })
+		actions.updateDeck({ ...deck, name: input })
 		actions.hideModal()
 	}
 	const inputRef = useRef<HTMLInputElement>(null)

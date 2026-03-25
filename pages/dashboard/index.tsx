@@ -29,7 +29,7 @@ const Dashboard: NextPage = forwardRef((props, ref: DashboardPageRef) => {
 						<div className='absolute top-0 left-0 right-0 z-20 w-full text-center flex flex-col items-center pt-4 h-28'>
 							{state.user && (
 								<p className='text-xs mb-1'>
-									{state.user.name}'s
+									{state.user.email_address}'s
 								</p>
 							)}
 							<h1 className='text-3xl mb-0 font-serif font-extrabold'>
