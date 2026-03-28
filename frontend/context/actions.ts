@@ -272,7 +272,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			console.error(res.error)
 			return
 		}
-		const sortedDecks: Deck[] = res.data
+		const sortedDecks: Deck[] = res.data ?? []
 		dispatch({
 			type: types.SET_DECKS,
 			payload: sortedDecks,
@@ -308,7 +308,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			console.error(res.error)
 			return
 		}
-		const tags: Tag[] = res.data
+		const tags: Tag[] = res.data ?? []
 		dispatch({
 			type: types.SET_TAGS,
 			payload: tags,

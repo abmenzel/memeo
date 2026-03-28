@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost
+    ports:
+      - "80:80"
+    environment:
+      - RAILS_MASTER_KEY
+      - SECRET_KEY_BASE
+      - DISABLE_SSL
+      - SMTP_ADDRESS
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - MAILER_FROM_ADDRESS
+    volumes:
+      - ${STORAGE_PATH:-storage}:/rails/storage
+
+volumes:
+  storage:

@@ -5,6 +5,7 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
 	reactStrictMode: false,
 	swcMinify: true,
+	output: "export",
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/i,

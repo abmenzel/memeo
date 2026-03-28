@@ -35,7 +35,7 @@ const Dashboard: NextPage = forwardRef((props, ref: DashboardPageRef) => {
 							<h1 className='text-3xl mb-0 font-serif font-extrabold'>
 								Card Decks
 							</h1>
-							{state.tags.length > 0 && <DeckListFilter />}
+							{state.tags && state.tags.length > 0 && <DeckListFilter />}
 						</div>
 						<div className='pointer-events-none bg-gradient-to-b from-orange-100 via-orange-100 absolute z-10 inset-x-0 top-0 h-32' />
 						<div className='pointer-events-none bg-gradient-to-t from-orange-100  absolute z-10 inset-x-0 bottom-0 h-20' />
