@@ -7,8 +7,6 @@ Memeo let's you create card decks with as many cards you want.
 When practicing a card you can rate your confidence level. Thereby you can get a better overview of your progression.
 This can be ideal when studying for an exam or learning a language.
 
-Memeo is a work in progress, but the live version is functional and will remain so.
-
 ## Technologies
 
 -   Next JS
