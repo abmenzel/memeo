@@ -35,20 +35,10 @@ npm run dev
 
 ### 🖐 Requirements
 
-**Docker Desktop**
-
-**Supabase**
-
--   [Supabase CLI](https://github.com/supabase/cli) >= 1.11.2
-
-**Telebit**
-
--   [Telebit](https://telebit.cloud/) >= 0.20.8, free Ngrok alternative
-
 **Node:**
 
--   NodeJS >= 14
--   NPM >= 6.x
+-   NodeJS >= 20
+-   NPM >= 10.x
 
 ## Contributing
 
