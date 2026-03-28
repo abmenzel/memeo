@@ -1,4 +1,3 @@
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 
 type ApiError = {
   status: number
@@ -27,11 +26,9 @@ export const apiFetch = async <T>(
   init: RequestInit = {},
 ): Promise<ApiResult<T>> => {
 
-  const url = new URL(`/api${path}`, BASE_URL).toString()
-
   const token = localStorage.getItem('token')
 
-  const res = await fetch(url, {
+  const res = await fetch(`/api${path}`, {
     ...init,
     headers: {
       accept: 'application/json',
