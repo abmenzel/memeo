@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
 import { AppProvider } from '../context/app'
+import { ToastProvider } from '../context/ToastContext'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,11 +14,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<AppProvider>
-			<Layout hideNavBar={hideNavBar}>
-				<AnimatePresence initial={false} mode='popLayout'>
-					<Component {...pageProps} key={pageKey} />
-				</AnimatePresence>
-			</Layout>
+			<ToastProvider>
+				<Layout hideNavBar={hideNavBar}>
+					<AnimatePresence initial={false} mode='popLayout'>
+						<Component {...pageProps} key={pageKey} />
+					</AnimatePresence>
+				</Layout>
+			</ToastProvider>
 		</AppProvider>
 	)
 }

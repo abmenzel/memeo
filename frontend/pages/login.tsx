@@ -5,6 +5,7 @@ import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from 'react
 import LoadingScreen from '../components/LoadingScreen'
 import PageTransition from '../components/animations/PageTransition'
 import { AppContext } from '../context/app'
+import { toast } from '../context/ToastContext'
 import { Button } from '../components/ui'
 import { createSession } from '../lib/api/sessions'
 
@@ -18,13 +19,17 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 
 	const handleLogin = async (event: FormEvent) => {
 		event.preventDefault()
+		if(!email || !password){
+			toast({ message: 'Enter an email and password', type: 'error' })
+			return
+		}
 		const res = await createSession({
 			email_address: email,
 			password: password
 		})
 
 		if(!res.ok){
-			console.error(res.error)
+			toast({ message: 'Login failed', type: 'error' })
 			return
 		}
 
