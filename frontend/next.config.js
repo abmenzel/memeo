@@ -1,6 +1,7 @@
 const withPWA = require('next-pwa')({
 	dest: 'public',
 })
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	reactStrictMode: false,
@@ -17,5 +18,22 @@ const nextConfig = {
 	},
 }
 
+/** @type {import('next').NextConfig} */
+const devConfig = {
+	...nextConfig,
+	async rewrites() {
+		return [
+			{
+				source: '/api/:path*',
+				destination: 'http://localhost:8000/api/:path*',
+			},
+			{
+				source: '/auth/:path*',
+				destination: 'http://localhost:8000/auth/:path*',
+			},
+		]
+	},
+}
+
 module.exports =
-	process.env.NODE_ENV === 'development' ? nextConfig : withPWA(nextConfig)
+	process.env.NODE_ENV === 'development' ? devConfig : withPWA(nextConfig)

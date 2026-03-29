@@ -149,11 +149,32 @@ backend/
 
 ### Development Workflow
 
-1. **Setup**: Install frontend deps (`npm install`) and backend deps (`bundle install`)
-2. **Frontend dev**: Run `npm run dev` in `frontend/`
-3. **Backend dev**: Run `bin/rails server` in `backend/`
-4. **Testing**: Run tests with `bin/rails test` (backend only - no frontend tests)
-5. **Linting**: Run `npm run lint` (frontend) or `bundle exec rubocop` (backend)
+#### Running Both Services (Recommended)
+
+This setup runs both frontend and backend through a single port (3000), similar to production Docker:
+
+1. **Start Backend** (port 8000):
+   ```bash
+   cd backend && bin/rails server
+   ```
+
+2. **Start Frontend** (port 3000, proxies API calls to backend):
+   ```bash
+   cd frontend && npm run dev
+   ```
+
+The frontend is configured to proxy `/api/*` and `/auth/*` requests to the Rails backend, so both are accessible at `http://localhost:3000`.
+
+#### Individual Services
+
+- **Frontend only**: `cd frontend && npm run dev` (runs on port 3000)
+- **Backend only**: `cd backend && bin/rails server` (runs on port 8000)
+
+#### Testing & Linting
+
+- Run backend tests: `cd backend && bin/rails test`
+- Lint frontend: `cd frontend && npm run lint`
+- Lint backend: `cd backend && bundle exec rubocop`
 
 ### API Integration
 

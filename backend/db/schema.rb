@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema[8.1].define(version: 2026_02_08_215020) do
   create_table "cards", force: :cascade do |t|
-    t.string "back"
+	t.string "back"
     t.datetime "created_at", null: false
     t.integer "deck_id", null: false
     t.string "front"

@@ -292,10 +292,10 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 						email_address: res.data.user.email_address,
 					},
 				})
+				return
 			}
-			
-			return
 		}
+		localStorage.removeItem('token')
 		dispatch({
 			type: types.SIGN_OUT,
 			payload: null,
