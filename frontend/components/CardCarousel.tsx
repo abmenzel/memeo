@@ -1,7 +1,7 @@
 import arrayShuffle from 'array-shuffle'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PlusCircle } from 'lucide-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { AppContext } from '../context/app'
 import { usePrevious } from '../hooks/usePrevious'
 import { cardIsEmpty, template } from '../lib/utils'
@@ -12,8 +12,9 @@ import Toolbar from './Toolbar'
 
 const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const { state, actions } = useContext(AppContext)
-	const [activeCard, setActiveCard] = useState<ICard | null>(null)
+	const [cards, setCards] = useState<ICard[]>(deck.cards)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
+	const activeCard = useMemo(() => cards[activeCardIdx], [activeCardIdx, cards])
 	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const [direction, setDirection] = useState<'left' | 'right'>('right')
@@ -23,15 +24,16 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
-	const [cards, setCards] = useState<ICard[]>(deck.cards)
 
 	const updateCard = async (card: ICard) => {
 		const updatedCard = await actions.updateCard(card)
-		setActiveCard(updatedCard)
 	}
 
 	useEffect(() => {
-		setCards(deck.cards)
+		setCards(prev => prev.map(c => {
+			const updated = deck.cards.find(d => d.id === c.id)
+			return updated ?? c
+		}))
 	}, [deck.cards])
 
 	useEffect(() => {
@@ -85,10 +87,6 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 		}
 	}, [cards.length])
 
-	useEffect(() => {
-		const newActiveCard = cards[activeCardIdx]
-		setActiveCard(newActiveCard)
-	}, [activeCardIdx, cards])
 
 	useEffect(() => {
 		if (!prevActiveCard || !activeCard) return
@@ -132,6 +130,7 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const handleShuffle = () => {
 		const shuffledCards = arrayShuffle(cards)
 		setCards(shuffledCards)
+		setActiveCardIdx(0)
 	}
 
 	const handleEdit = (event: React.MouseEvent) => {
@@ -164,7 +163,7 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							className='text-center text-xs'>
-							{activeCardIdx + 1} / {deck.cards.length} cards
+							{activeCardIdx + 1} / {cards.length} cards
 						</motion.div>
 					</AnimatePresence>
 					<AnimatePresence>
