@@ -79,7 +79,7 @@ const Card = ({
 
 	const handleCardClick: MouseEventHandler<Element> = (event) => {
 		if (!editing) {
-			//setFlipCard(!flipCard)
+			setFlipCard(!flipCard)
 		}
 	}
 
