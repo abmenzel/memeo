@@ -23,11 +23,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete existing image
-        run: |
-          curl -s -X DELETE -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://ghcr.io/v2/abmenzel/memeo/manifests/latest" || true
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
@@ -37,6 +32,6 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/abmenzel/memeo:latest,ghcr.io/abmenzel/memeo:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: |
+            ghcr.io/abmenzel/memeo:latest
+            ghcr.io/abmenzel/memeo:${{ github.sha }}
