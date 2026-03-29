@@ -13,7 +13,7 @@ import {
 	useState,
 } from 'react'
 import { useDoubleTap } from 'use-double-tap'
-import Card from '../models/Card'
+import CardType from '../models/Card'
 
 const Card = ({
 	card,
@@ -26,12 +26,12 @@ const Card = ({
 	setEditing,
 }: {
 	direction: 'left' | 'right'
-	card: Card
+	card: CardType
 	setFlipCard: Function
 	flipCard: boolean
-	editing: Card | null
+	editing: CardType | null
 	setActiveInput: (input: HTMLTextAreaElement | null) => void
-	updateCard: (card: Card) => Promise<void>
+	updateCard: (card: CardType) => Promise<void>
 	setEditing: Function
 }) => {
 	const [front, setFront] = useState<string>(card.front)
@@ -79,7 +79,7 @@ const Card = ({
 
 	const handleCardClick: MouseEventHandler<Element> = (event) => {
 		if (!editing) {
-			setFlipCard(!flipCard)
+			//setFlipCard(!flipCard)
 		}
 	}
 
@@ -113,6 +113,7 @@ const Card = ({
 	return (
 		<AnimatePresence mode='popLayout' initial={false}>
 			<motion.div
+				
 				initial={{
 					x:
 						direction === 'right'
