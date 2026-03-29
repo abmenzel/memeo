@@ -38,6 +38,7 @@ const Modal: React.FC<Props> = (props) => {
 						className='fixed inset-0 z-10 flex items-end justify-center'
 						transition={{
 							ease: 'easeInOut',
+							duration: 0.15,
 						}}
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
