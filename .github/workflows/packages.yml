@@ -32,6 +32,8 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
+          sbom: false
+          provenance: false
           tags: |
             ghcr.io/abmenzel/memeo:latest
             ghcr.io/abmenzel/memeo:${{ github.sha }}
