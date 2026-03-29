@@ -35,10 +35,14 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, [state.user])
 
 	useEffect(() => {
-		if (state.user && router.pathname === '/login') {
+				const publicPages = ['/', '/login', '/signup']
+
+		if (state.user && publicPages.includes(router.pathname)) {
 			router.push('/dashboard')
 		}
-		if (!state.user && router.pathname !== '/') router.push('/login')
+		if (!state.user && !publicPages.includes(router.pathname)) {
+			router.push('/login')
+		}
 	}, [state.user, router.pathname])
 
 	return (

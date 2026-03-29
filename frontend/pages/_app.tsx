@@ -10,7 +10,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter()
 	const pageKey = router.asPath
 
-	const hideNavBar = pageKey === '/' || pageKey === '/login'
+	const publicPages = ['/', '/login', '/signup']
+	const hideNavBar = publicPages.includes(pageKey)
 
 	return (
 		<AppProvider>

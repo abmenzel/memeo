@@ -2,41 +2,31 @@ import { AnimatePresence } from 'framer-motion'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import {
-	FormEvent,
-	ForwardedRef,
-	forwardRef,
-	useContext,
-	useState,
-} from 'react'
+import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from 'react'
 import LoadingScreen from '../components/LoadingScreen'
 import PageTransition from '../components/animations/PageTransition'
 import { AppContext } from '../context/app'
 import { toast } from '../context/ToastContext'
 import { Button } from '../components/ui'
-import { createSession } from '../lib/api/sessions'
+import { createUser } from '../lib/api/users'
 
-type LoginPageRef = ForwardedRef<HTMLDivElement>
+type SignupPageRef = ForwardedRef<HTMLDivElement>
 
-const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
+const Signup: NextPage = forwardRef((props, ref: SignupPageRef) => {
 	const { state, actions } = useContext(AppContext)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const isLoading = state.userLoading
 
-	const handleLogin = async (event: FormEvent) => {
+	const handleSignup = async (event: FormEvent) => {
 		event.preventDefault()
-		if (!email || !password) {
-			toast({ message: 'Enter an email and password', type: 'error' })
-			return
-		}
-		const res = await createSession({
+		const res = await createUser({
 			email_address: email,
-			password: password,
+			password: password
 		})
 
-		if (!res.ok) {
-			toast({ message: 'Login failed', type: 'error' })
+		if(!res.ok){
+			toast({ message: 'Signup failed', type: 'error' })
 			return
 		}
 
@@ -51,7 +41,7 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 	return (
 		<>
 			<Head>
-				<title>Memeo - Simple Flashcards</title>
+				<title>Memeo - Sign Up</title>
 				<meta name='description' content='Memeo' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
@@ -60,11 +50,9 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 					{isLoading && <LoadingScreen />}
 				</AnimatePresence>
 				{!isLoading && !state.user && (
-					<form
-						onSubmit={handleLogin}
-						className='mb-8 mx-auto text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>
+					<form onSubmit={handleSignup} className='mb-8 mx-auto text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>
 						<h1 className='font-extrabold text-3xl mb-0 font-serif'>
-							Login
+							Sign Up
 						</h1>
 						<div className='flex flex-col gap-2 my-4'>
 							<input
@@ -102,11 +90,13 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 								placeholder='Password'
 							/>
 						</div>
-						<Button variant='primary'>Continue</Button>
+						<Button variant='primary'>
+							Sign Up
+						</Button>
 						<p className='text-sm mt-2 absolute bottom-4'>
-							Don't have an account?{" "}
-							<Link href='/signup' className='underline'>
-								Sign up
+							Have an account?{" "}
+							<Link href='/login' className='underline'>
+								Log in
 							</Link>
 						</p>
 					</form>
@@ -116,4 +106,4 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 	)
 })
 
-export default Login
+export default Signup
