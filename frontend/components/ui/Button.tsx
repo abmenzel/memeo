@@ -3,6 +3,7 @@ import { Variants, motion } from 'framer-motion'
 
 type Props = {
 	className?: string
+	disabled?: boolean
 	onClick?: (event: React.MouseEvent) => void
 	rounded?: boolean
 	animateScale?: boolean
@@ -17,6 +18,7 @@ const Button: React.FC<Props> = (props) => {
 		variant = 'secondary',
 		rounded = true,
 		animateScale = true,
+		disabled,
 		...rest
 	} = props
 

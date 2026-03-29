@@ -1,6 +1,6 @@
 import arrayShuffle from 'array-shuffle'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PlusCircle } from 'lucide-react'
+import { PlusCircle, Shuffle } from 'lucide-react'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { AppContext } from '../context/app'
 import { usePrevious } from '../hooks/usePrevious'
@@ -14,27 +14,36 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	const { state, actions } = useContext(AppContext)
 	const [cards, setCards] = useState<ICard[]>(deck.cards)
 	const [activeCardIdx, setActiveCardIdx] = useState(0)
-	const activeCard = useMemo(() => cards[activeCardIdx], [activeCardIdx, cards])
+	const activeCard = useMemo(
+		() => cards[activeCardIdx],
+		[activeCardIdx, cards],
+	)
 	const [flipCard, setFlipCard] = useState(state.options.initialFlipState)
 	const [editing, setEditing] = useState<ICard | null>(null)
 	const [direction, setDirection] = useState<'left' | 'right'>('right')
 	const [activeInput, setActiveInput] = useState<HTMLTextAreaElement | null>(
-		null
+		null,
 	)
+	const [shuffling, setShuffling] = useState(false)
 
 	const prevActiveCard: ICard | null = usePrevious<ICard | null>(activeCard)
 
-
 	const updateCard = async (card: ICard) => {
-		const updatedCard = await actions.updateCard(card)
+		await actions.updateCard(card)
 	}
 
 	useEffect(() => {
-		setCards(prev => prev.map(c => {
-			const updated = deck.cards.find(d => d.id === c.id)
-			return updated ?? c
-		}))
-	}, [deck.cards])
+    setCards(prev => {
+        const updated = prev
+            .filter(c => deck.cards.some(d => d.id === c.id))
+            .map(c => {
+                const updatedCard = deck.cards.find(d => d.id === c.id)
+                return updatedCard ?? c
+            })
+        const newCards = deck.cards.filter(d => !prev.some(c => c.id === d.id))
+        return [...updated, ...newCards]
+    })
+}, [deck.cards])
 
 	useEffect(() => {
 		setFlipCard(state.options.initialFlipState)
@@ -87,7 +96,6 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 		}
 	}, [cards.length])
 
-
 	useEffect(() => {
 		if (!prevActiveCard || !activeCard) return
 		if (
@@ -128,9 +136,18 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 	}
 
 	const handleShuffle = () => {
-		const shuffledCards = arrayShuffle(cards)
-		setCards(shuffledCards)
-		setActiveCardIdx(0)
+		setShuffling(true)
+
+		// Shuffle after a brief delay to show the shuffling state
+		setTimeout(() => {
+			const shuffledCards = arrayShuffle(cards)
+			setCards(shuffledCards)
+
+			// If we had an active card, find its new position after shuffle
+			setActiveCardIdx(0)
+
+			setShuffling(false)
+		}, 500) // Show shuffling state for 500ms
 	}
 
 	const handleEdit = (event: React.MouseEvent) => {
@@ -166,24 +183,36 @@ const CardCarousel = ({ deck }: { deck: Deck }) => {
 							{activeCardIdx + 1} / {cards.length} cards
 						</motion.div>
 					</AnimatePresence>
-					<AnimatePresence>
-						<motion.div
-							initial={{ scale: 0.9, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							className='relative flex-grow flex flex-col items-center justify-center'>
-							{cards.length > 0 && activeCard && (
-								<Card
-									card={activeCard}
-									setFlipCard={setFlipCard}
-									updateCard={updateCard}
-									direction={direction}
-									setActiveInput={setActiveInput}
-									setEditing={setEditing}
-									editing={editing}
-									flipCard={flipCard}
-								/>
-							)}
-						</motion.div>
+					<AnimatePresence mode='wait'>
+						{shuffling ? (
+							<motion.div
+								key="shuffling"
+								initial={{ scale: 0.5, opacity: 0 }}
+								animate={{ scale: 1, opacity: 1 }}
+								exit={{ scale: 1.1, opacity: 0 }}
+								className='flex-grow text-xl flex flex-col items-center justify-center'>
+									Shuffling
+							</motion.div>
+						) : (
+							<motion.div
+								key="card"
+								initial={{ scale: 0.9, opacity: 0 }}
+								animate={{ scale: 1, opacity: 1 }}
+								className='relative flex-grow flex flex-col items-center justify-center'>
+								{cards.length > 0 && activeCard && (
+									<Card
+										card={activeCard}
+										setFlipCard={setFlipCard}
+										updateCard={updateCard}
+										direction={direction}
+										setActiveInput={setActiveInput}
+										setEditing={setEditing}
+										editing={editing}
+										flipCard={flipCard}
+									/>
+								)}
+							</motion.div>
+						)}
 					</AnimatePresence>
 
 					<Toolbar
