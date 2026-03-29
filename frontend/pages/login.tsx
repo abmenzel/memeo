@@ -81,6 +81,7 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 								}}
 								className='bg-black bg-opacity-[0.05] p-2 px-2.5 placeholder-theme-dark rounded-md focus-visible:outline-theme-dark outline-offset-4'
 								type='email'
+								autoComplete='email'
 								name='email'
 								placeholder='E-mail'
 							/>
@@ -99,6 +100,7 @@ const Login: NextPage = forwardRef((props, ref: LoginPageRef) => {
 								className='bg-black bg-opacity-[0.05] p-2 px-2.5 placeholder-theme-dark rounded-md focus-visible:outline-theme-dark outline-offset-4'
 								type='password'
 								name='password'
+								autoComplete='off'
 								placeholder='Password'
 							/>
 						</div>

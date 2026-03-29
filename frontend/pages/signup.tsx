@@ -2,7 +2,13 @@ import { AnimatePresence } from 'framer-motion'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from 'react'
+import {
+	FormEvent,
+	ForwardedRef,
+	forwardRef,
+	useContext,
+	useState,
+} from 'react'
 import LoadingScreen from '../components/LoadingScreen'
 import PageTransition from '../components/animations/PageTransition'
 import { AppContext } from '../context/app'
@@ -22,10 +28,10 @@ const Signup: NextPage = forwardRef((props, ref: SignupPageRef) => {
 		event.preventDefault()
 		const res = await createUser({
 			email_address: email,
-			password: password
+			password: password,
 		})
 
-		if(!res.ok){
+		if (!res.ok) {
 			toast({ message: 'Signup failed', type: 'error' })
 			return
 		}
@@ -50,7 +56,9 @@ const Signup: NextPage = forwardRef((props, ref: SignupPageRef) => {
 					{isLoading && <LoadingScreen />}
 				</AnimatePresence>
 				{!isLoading && !state.user && (
-					<form onSubmit={handleSignup} className='mb-8 mx-auto text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>
+					<form
+						onSubmit={handleSignup}
+						className='mb-8 mx-auto text-center max-w-sm h-full flex flex-col justify-center items-center gap-2'>
 						<h1 className='font-extrabold text-3xl mb-0 font-serif'>
 							Sign Up
 						</h1>
@@ -70,6 +78,7 @@ const Signup: NextPage = forwardRef((props, ref: SignupPageRef) => {
 								className='bg-black bg-opacity-[0.05] p-2 px-2.5 placeholder-theme-dark rounded-md focus-visible:outline-theme-dark outline-offset-4'
 								type='email'
 								name='email'
+								autoComplete='email'
 								placeholder='E-mail'
 							/>
 							<input
@@ -87,14 +96,13 @@ const Signup: NextPage = forwardRef((props, ref: SignupPageRef) => {
 								className='bg-black bg-opacity-[0.05] p-2 px-2.5 placeholder-theme-dark rounded-md focus-visible:outline-theme-dark outline-offset-4'
 								type='password'
 								name='password'
+								autoComplete='new-password'
 								placeholder='Password'
 							/>
 						</div>
-						<Button variant='primary'>
-							Sign Up
-						</Button>
+						<Button variant='primary'>Sign Up</Button>
 						<p className='text-sm mt-2 absolute bottom-4'>
-							Have an account?{" "}
+							Have an account?{' '}
 							<Link href='/login' className='underline'>
 								Log in
 							</Link>
