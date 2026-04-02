@@ -1,6 +1,6 @@
 import arrayShuffle from 'array-shuffle'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PlusCircle, Shuffle } from 'lucide-react'
+import { PlusCircle } from 'lucide-react'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { AppContext } from '../context/app'
 import { usePrevious } from '../hooks/usePrevious'

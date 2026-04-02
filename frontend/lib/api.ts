@@ -15,7 +15,9 @@ export const database = {
 		})
 	},
 	deleteCard: async (card: DeleteCardProps) => {
-		return apiFetch(`/decks/${card.deck_id}/cards/${card.id}/`)
+		return apiFetch(`/decks/${card.deck_id}/cards/${card.id}/`, {
+			method: 'DELETE'
+		})
 	},
 	updateCard: async (card: UpdateCardProps) => {
 		return apiFetch<Card>(`/decks/${card.deck_id}/cards/${card.id}`, {

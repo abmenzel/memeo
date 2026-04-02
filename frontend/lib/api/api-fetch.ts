@@ -25,7 +25,6 @@ export const apiFetch = async <T>(
   path: string,
   init: RequestInit = {},
 ): Promise<ApiResult<T>> => {
-
   const token = localStorage.getItem('token')
 
   const res = await fetch(`/api${path}`, {
