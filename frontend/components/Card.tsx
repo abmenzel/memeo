@@ -110,27 +110,28 @@ const Card = ({
 		}
 	}, [activeCardInputRef])
 
+	const variants = {
+		initial: (direction: 'left' | 'right') => ({
+			x: direction === 'right' ? 'calc(100% + 1rem)' : 'calc(-100% - 1rem)',
+			opacity: 0,
+			rotate: direction === 'right' ? '5deg' : '-5deg',
+		}),
+		animate: { x: 0, opacity: 1, rotate: '0deg' },
+		exit: (direction: 'left' | 'right') => ({
+			x: direction === 'left' ? 'calc(100% + 1rem)' : 'calc(-100% - 1rem)',
+			opacity: 0,
+			rotate: direction === 'left' ? '5deg' : '-5deg',
+		}),
+	}
+
 	return (
-		<AnimatePresence mode='popLayout' initial={false}>
+		<AnimatePresence custom={direction} mode='popLayout' initial={false}>
 			<motion.div
-				
-				initial={{
-					x:
-						direction === 'right'
-							? 'calc(100% + 1rem)'
-							: 'calc(-100% - 1rem)',
-					opacity: 0,
-					rotate: direction === 'right' ? '5deg' : '-5deg',
-				}}
-				animate={{ x: 0, opacity: 1, rotate: '0deg' }}
-				exit={{
-					x:
-						direction === 'left'
-							? 'calc(100% + 1rem)'
-							: 'calc(-100% - 1rem)',
-					opacity: 0,
-					rotate: direction === 'left' ? '5deg' : '-5deg',
-				}}
+				variants={variants}
+				custom={direction}
+				initial="initial"
+				animate="animate"
+				exit="exit"
 				key={card.id}
 				transition={{ duration: 0.2, ease: 'easeOut' }}
 				ref={wrapperRef}
