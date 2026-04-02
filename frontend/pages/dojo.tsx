@@ -29,10 +29,6 @@ const Dojo = forwardRef((props, ref: DojoPageRef) => {
 		)
 	}, [state.decks])
 
-	useEffect(() => {
-		//console.log('active deck updated', activeDeck)
-	}, [activeDeck])
-
 	return (
 		<>
 			<Head>
