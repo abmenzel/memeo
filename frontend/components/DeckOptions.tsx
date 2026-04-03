@@ -1,4 +1,4 @@
-import { Edit3, Tag, Trash2 } from 'lucide-react'
+import { Edit3, Tag, Trash2, LayoutList } from 'lucide-react'
 import { useContext } from 'react'
 import { AppContext } from '../context/app'
 import Deck from '../models/Deck'
@@ -8,7 +8,7 @@ import { Button } from './ui'
 
 const DeckOptions = (props: { deck: Deck }) => {
 	const { actions } = useContext(AppContext)
-	const { showModal } = actions
+	const { showModal, hideModal, pickDeckForEdit } = actions
 	const { deck } = props
 
 	const handleDelete = () => {
@@ -16,7 +16,16 @@ const DeckOptions = (props: { deck: Deck }) => {
 	}
 
 	return (
-		<div className='flex gap-1'>
+		<div className='flex gap-1 flex-wrap'>
+			<Button
+				animateScale={false}
+				rounded={false}
+				onClick={() => {
+					hideModal()
+					pickDeckForEdit(deck)
+				}}>
+				<LayoutList size={'1rem'} /> Bulk Edit
+			</Button>
 			<Button
 				animateScale={false}
 				rounded={false}

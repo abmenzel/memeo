@@ -84,7 +84,8 @@ export type IActions = {
 	updateDeck: (deck: UpdateDeckProps) => void
 	setDecks: (decks: Deck[]) => void
 	pickDeck: (deck: Deck) => void
-	addCard: (card: Card) => void
+	pickDeckForEdit: (deck: Deck) => void
+	addCard: (card: Card) => Promise<Card>
 	duplicateDeck: (deck: Deck) => Promise<Deck>
 	deleteCard: (card: Card) => void
 	updateCard: (card: Card) => Promise<Card>
@@ -171,6 +172,15 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			payload: deck.id,
 		})
 		router.push('/dojo')
+	}
+
+	const pickDeckForEdit = (deck: Deck) => {
+		if (!deck.id) return
+		dispatch({
+			type: types.PICK_DECK,
+			payload: deck.id,
+		})
+		router.push('/editor')
 	}
 
 	const duplicateDeck = async (deck: Deck) => {
@@ -337,6 +347,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		setDecks,
 		updateDeck,
 		pickDeck,
+		pickDeckForEdit,
 		addCard,
 		deleteCard,
 		updateCard,

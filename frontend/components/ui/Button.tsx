@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { forwardRef } from 'react'
 import { Variants, motion } from 'framer-motion'
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
 	children: React.ReactNode
 }
 
-const Button: React.FC<Props> = (props) => {
+const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
 	const {
 		className,
 		onClick,
@@ -66,6 +67,7 @@ const Button: React.FC<Props> = (props) => {
 
 	return (
 		<motion.button
+			ref={ref}
 			variants={buttonVariants}
 			initial='initial'
 			whileTap='tap'
@@ -81,6 +83,8 @@ const Button: React.FC<Props> = (props) => {
 			{props.children}
 		</motion.button>
 	)
-}
+})
+
+Button.displayName = 'Button'
 
 export default Button
