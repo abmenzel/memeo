@@ -21,6 +21,11 @@ zips
 # production
 /build
 
+# build artifacts in public/
+/public/sw.js
+/public/workbox-*.js
+/public/worker-*.js
+
 # misc
 .DS_Store
 *.pem
