@@ -35,7 +35,9 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	}, [state.user])
 
 	useEffect(() => {
-				const publicPages = ['/', '/login', '/signup']
+		if (state.userLoading) return
+
+		const publicPages = ['/', '/login', '/signup']
 
 		if (state.user && publicPages.includes(router.pathname)) {
 			router.push('/dashboard')
@@ -43,7 +45,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
 		if (!state.user && !publicPages.includes(router.pathname)) {
 			router.push('/login')
 		}
-	}, [state.user, router.pathname])
+	}, [state.user, state.userLoading, router.pathname])
 
 	return (
 		<AppContext.Provider value={{ state, actions }}>
