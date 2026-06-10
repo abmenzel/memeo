@@ -7,17 +7,14 @@ const DeckRename = (props: { deck: Deck }) => {
 	const { actions } = useContext(AppContext)
 	const { deck } = props
 	const [input, setInput] = useState(deck.name)
+	const inputRef = useRef<HTMLInputElement>(null)
 	const handleSave = () => {
 		actions.updateDeck({ ...deck, name: input })
 		actions.hideModal()
 	}
-	const inputRef = useRef<HTMLInputElement>(null)
 	useEffect(() => {
-		setTimeout(() => {
-			if (!inputRef.current) return
-			inputRef.current.focus()
-		}, 500) // Hack to get focus to work
-	}, [inputRef])
+		inputRef.current?.focus()
+	}, [])
 
 	return (
 		<div className='flex gap-4 items-center'>
