@@ -43,7 +43,7 @@ const Modal: React.FC<Props> = (props) => {
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}>
-						<Dialog.Panel className='w-full rounded-t-2xl bg-orange-100 border-t border-black text-black p-4'>
+						<Dialog.Panel className='max-w-lg w-full rounded-t-2xl bg-orange-100 border-t border-x border-black text-black p-4'>
 							<Dialog.Title className='text-xl font-bold font-serif mb-2'>
 								{options.title}
 							</Dialog.Title>
