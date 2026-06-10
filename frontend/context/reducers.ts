@@ -140,6 +140,11 @@ const reducer = (state: AppState, action: Actions) => {
 				...state,
 				modalStack: state.modalStack.slice(0, -1),
 			}
+		case types.HIDE_ALL_MODALS:
+			return {
+				...state,
+				modalStack: [],
+			}
 		default:
 			console.error('Error with action', action)
 			throw new Error('Error with action')

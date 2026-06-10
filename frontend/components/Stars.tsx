@@ -40,6 +40,7 @@ const Stars = ({ rating, size = '1rem', callback }: StarsProps) => {
 					<span key={idx}>
 						<Star
 							onClick={() => {
+								navigator.vibrate?.(5)
 								if (idx + 1 == 5 && rating !== 1) {
 									setConfetti(true)
 								}

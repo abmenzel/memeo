@@ -6,7 +6,7 @@ type PageTransitionRef = ForwardedRef<HTMLDivElement>
 
 const PageTransition = forwardRef(
 	({ children, ...rest }: PageTransitionProps, ref: PageTransitionRef) => {
-		const transition = { duration: 0.2, ease: 'easeInOut' }
+		const transition = { type: 'spring' as const, stiffness: 300, damping: 28 }
 
 		return (
 			<motion.div

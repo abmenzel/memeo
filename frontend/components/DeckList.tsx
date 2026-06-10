@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import clsx from 'clsx'
 import { PlusCircle } from 'lucide-react'
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useRef } from 'react'
 import {
 	DragDropContext,
 	Draggable,
@@ -36,6 +36,13 @@ const DeckList: React.FC<Props> = (props) => {
 		)
 	}, [state.decks, state.user])
 
+	const draggedRef = useRef(false)
+
+	const handleDragStart = useCallback(() => {
+		draggedRef.current = true
+		navigator.vibrate?.(10)
+	}, [])
+
 	const handleDragEnd = useCallback(
 		(result: DropResult) => {
 			if (!result.destination) return
@@ -59,7 +66,7 @@ const DeckList: React.FC<Props> = (props) => {
 				className
 			)}>
 			{state.decks.length > 0 ? (
-				<DragDropContext onDragEnd={handleDragEnd}>
+				<DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
 					<Droppable droppableId='droppable'>
 						{(provided) => (
 							<div

@@ -19,6 +19,7 @@ const DeckPreview = (props: DeckPreviewProps) => {
 	const { showModal } = actions
 
 	const handlePick = (event: React.MouseEvent) => {
+		navigator.vibrate?.(5)
 		actions.pickDeck(deck)
 	}
 
