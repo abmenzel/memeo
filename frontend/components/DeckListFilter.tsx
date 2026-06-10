@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Filter } from 'lucide-react'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { AppContext } from '../context/app'
 import ITag from '../models/Tag'
 import Tag from './Tag'
@@ -33,16 +33,15 @@ const DeckListFilter = () => {
 
 const TagFilter = () => {
 	const { state, actions } = useContext(AppContext)
-	const [selectedTag, setSelectedTag] = useState<ITag | null>(state.activeTag)
 
-	useEffect(() => {
-		actions.setActiveTag(selectedTag)
-	}, [selectedTag])
 	return (
 		<div className={clsx('flex', 'gap-2', 'flex-wrap')}>
 			<>
 				<p
-					onClick={() => setSelectedTag(null)}
+					onClick={() => {
+						actions.setActiveTag(null)
+						actions.hideModal()
+					}}
 					className={clsx(
 						'btn-tag',
 						'px-2',
@@ -50,20 +49,26 @@ const TagFilter = () => {
 						'rounded-md',
 						'bg-orange-175',
 						'border',
-						{ 'border-transparent': selectedTag },
 						{
-							'border-theme-dark': selectedTag === null,
+							'border-transparent': state.activeTag,
+						},
+						{
+							'border-theme-dark': state.activeTag === null,
 						}
 					)}>
 					All
 				</p>
 				{state.tags.map((tag, index) => {
-					const isSelected = selectedTag && selectedTag.id === tag.id
+					const isSelected =
+						state.activeTag && state.activeTag.id === tag.id
 					return (
 						<Tag
-							onClick={() =>
-								setSelectedTag(isSelected ? null : tag)
-							}
+							onClick={() => {
+								actions.setActiveTag(
+									isSelected ? null : tag
+								)
+								actions.hideModal()
+							}}
 							tag={tag}
 							key={index}
 							className={clsx(
