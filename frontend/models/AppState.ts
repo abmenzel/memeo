@@ -1,6 +1,6 @@
 import User from '../models/User'
 import Deck from './Deck'
-import { ModalState } from './ModalState'
+import { ShowModalConfig } from './ModalState'
 import Options from './Options'
 import Tag from './Tag'
 
@@ -13,5 +13,5 @@ export default interface AppState {
 	activeTag: Tag | null
 	activeDeckId: null | number
 	options: Options
-	modal: ModalState
+	modalStack: ShowModalConfig[]
 }

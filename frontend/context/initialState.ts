@@ -8,13 +8,7 @@ const initialAppState: AppState = {
 	tags: [],
 	activeTag: null,
 	activeDeckId: null,
-	modal: {
-		show: false,
-		options: {
-			title: '',
-			description: '',
-		},
-	},
+	modalStack: [],
 	options: {
 		initialFlipState: false,
 	},

@@ -330,6 +330,7 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 			type: types.SHOW_MODAL,
 			payload: modal,
 		})
+		window.history.pushState({ modal: true }, "", window.location.href)
 	}
 
 	const hideModal = () => {

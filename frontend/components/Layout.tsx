@@ -15,7 +15,7 @@ const Layout = ({
 	const { hideModal } = actions
 	return (
 		<div className='font-body bg-orange-100 text-black height-actual-screen flex flex-col items-center justify-between'>
-			<Modal {...state.modal} onClose={() => hideModal()} />
+			<Modal stack={state.modalStack} onClose={() => hideModal()} />
 			<div className='overflow-y-auto scrollbar-none max-w-xl w-full flex flex-col items-center px-4 flex-grow'>
 				{children}
 			</div>

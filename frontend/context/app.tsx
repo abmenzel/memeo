@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useReducer, useRef } from 'react'
 
 import { useRouter } from 'next/router'
 import AppState from '../models/AppState'
-import { IActions, useActions } from './actions'
+import { IActions, types, useActions } from './actions'
 import initialAppState from './initialState'
 import { reducer } from './reducers'
 
@@ -19,6 +19,21 @@ const AppProvider = ({ children }: AppProviderProps) => {
 	const [state, dispatch] = useReducer(reducer, initialAppState)
 	const actions = useActions(state, dispatch)
 	const router = useRouter()
+	const modalStackLenRef = useRef(state.modalStack.length)
+
+	useEffect(() => {
+		modalStackLenRef.current = state.modalStack.length
+	}, [state.modalStack])
+
+	useEffect(() => {
+		const onPopState = () => {
+			if (modalStackLenRef.current > 0) {
+				dispatch({ type: types.HIDE_MODAL, payload: null })
+			}
+		}
+		window.addEventListener("popstate", onPopState)
+		return () => window.removeEventListener("popstate", onPopState)
+	}, [])
 
 	useEffect(() => {
 		if (!state.user) {

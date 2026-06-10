@@ -1,30 +1,27 @@
 import { Dialog } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { ModalState } from '../models/ModalState'
+import { ShowModalConfig } from '../models/ModalState'
 import { Button } from './ui'
 
-type Props = ModalState & {
+type Props = {
+	stack: ShowModalConfig[]
 	onClose: Function
 	className?: string
 }
 
 const Modal: React.FC<Props> = (props) => {
-	const { show, options, onClose } = props
-	const [showModal, setShowModal] = useState<boolean>(show)
-
-	useEffect(() => {
-		setShowModal(show)
-	}, [show])
+	const { stack, onClose } = props
+	const options = stack[stack.length - 1]
+	const show = stack.length > 0
 
 	return (
 		<AnimatePresence>
-			{showModal && (
+			{show && options && (
 				<Dialog
 					key='modal-dialog'
 					onClick={(event: any) => event.stopPropagation()}
-					open={showModal}
+					open={show}
 					onClose={() => onClose()}
 					className='relative z-50'>
 					<motion.div
