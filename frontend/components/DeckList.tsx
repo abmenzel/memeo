@@ -55,7 +55,7 @@ const DeckList: React.FC<Props> = (props) => {
 	return (
 		<div
 			className={clsx(
-				'overflow-y-auto hide-scrollbar flex-grow flex relative flex-col items-center gap-y-2 w-full',
+				'deck-list overflow-y-auto hide-scrollbar flex-grow flex relative flex-col items-center gap-y-2 w-full',
 				className
 			)}>
 			{state.decks.length > 0 ? (
@@ -71,9 +71,10 @@ const DeckList: React.FC<Props> = (props) => {
 										draggableId={`draggable-${deck.id}`}
 										key={deck.id}
 										index={idx}>
-										{(pr) => (
+										{(pr, snapshot) => (
 											<div
-												className={classNames({
+												data-is-dragging={snapshot.isDragging}
+												className={classNames('transition-opacity', {
 													hidden: state.activeTag && !deck.tags.some((t) => state.activeTag && t.id === state.activeTag.id)
 												})}
 												ref={pr.innerRef}

@@ -106,3 +106,6 @@ a {
 	}
 }
 
+.deck-list:has([data-is-dragging="true"]) [data-is-dragging="false"]{
+	opacity: 0.4;
+}
