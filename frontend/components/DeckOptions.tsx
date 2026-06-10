@@ -13,7 +13,6 @@ const DeckOptions = (props: { deck: Deck }) => {
 
 	const handleDelete = () => {
 		actions.deleteDeck(deck)
-		actions.hideAllModals()
 	}
 
 	return (

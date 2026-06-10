@@ -44,7 +44,6 @@ const Toolbar = ({
 	const { showModal } = actions
 
 	const handleDelete = () => {
-		navigator.vibrate?.(10)
 		actions.deleteCard(activeCard)
 		setActiveCardIdx(activeCardIdx - 1)
 	}

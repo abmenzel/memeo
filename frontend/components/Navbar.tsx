@@ -21,7 +21,7 @@ const Navbar = () => {
 				y: '100%',
 			}}
 			className='w-full bg-orange-100 flex justify-center items-center shrink-0 relative z-30'>
-			<nav className='border-t border-black pt-1  flex items-center border-opacity-10 max-w-lg w-full pb-[env(safe-area-inset-bottom)]'>
+			<nav className='border-t border-black h-16 flex items-center border-opacity-10 max-w-lg w-full'>
 				<ul className='w-full flex justify-center gap-x-2 whitespace-nowrap overflow-hidden'>
 					<NavItem
 						route='/dashboard'

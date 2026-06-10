@@ -36,7 +36,6 @@ enum types {
 
 	SHOW_MODAL = 'SHOW_MODAL',
 	HIDE_MODAL = 'HIDE_MODAL',
-	HIDE_ALL_MODALS = 'HIDE_ALL_MODALS',
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -72,8 +71,7 @@ type Payloads = {
 	[types.SET_ACTIVE_TAG]: Tag | null
 
 	[types.SHOW_MODAL]: ShowModalConfig
-	[types.HIDE_MODAL]: null,
-	[types.HIDE_ALL_MODALS]: null,
+	[types.HIDE_MODAL]: null
 }
 
 export type Actions = ActionMap<Payloads>[keyof ActionMap<Payloads>]
@@ -100,7 +98,6 @@ export type IActions = {
 	syncUserTags: (user: User) => Promise<void>
 	showModal: (modal: ShowModalConfig) => void
 	hideModal: () => void
-	hideAllModals: () => void
 }
 
 const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
@@ -343,13 +340,6 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		})
 	}
 
-	const hideAllModals = () => {
-		dispatch({
-			type: types.HIDE_ALL_MODALS,
-			payload: null,
-		})
-	}
-
 	return {
 		signIn,
 		signOut,
@@ -371,7 +361,6 @@ const useActions = (state: AppState, dispatch: Dispatch<Actions>): IActions => {
 		syncUserTags,
 		showModal,
 		hideModal,
-		hideAllModals,
 		duplicateDeck,
 	}
 }

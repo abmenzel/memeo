@@ -133,7 +133,7 @@ const Card = ({
 				animate="animate"
 				exit="exit"
 				key={card.id}
-				transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+				transition={{ duration: 0.2, ease: 'easeOut' }}
 				ref={wrapperRef}
 				className={clsx('relative flex text-center w-full max-w-md')}>
 				<div
