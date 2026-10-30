@@ -1,5 +1,5 @@
 # ── Stage 1: Build Next.js ─────────────────────────────────────
-FROM node:20-alpine AS frontend
+FROM node:24-alpine AS frontend
 WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json* ./
